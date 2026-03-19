@@ -226,7 +226,7 @@ The orchestrator must handle:
 2. **Agent Runner** — Spawns `claude -p --model <model> "<prompt>"` as subprocesses
 3. **Cycle State Machine** — Tracks which phase the cycle is in, which tasks are done
 4. **File Bus** — All agent communication is through files, never in-memory
-5. **Rate Limiter** — Detects 429 from claude output, adaptive backoff, per-model tracking
+5. **Rate Limiter & Auth Guard** — Detects 429 (rate limit) with adaptive backoff, per-model tracking. Also detects 401 (authentication failure / session expiry) — 3 consecutive 401s trigger graceful shutdown to prevent wasted compute.
 6. **Shutdown Handler** — Watches `shutdown_signal.json` for graceful/immediate flags
 7. **Resume Logic** — Can restart mid-cycle by reading `cycle_state.json`
 8. **Report Generator** — End-of-cycle reports in md (director) and html (admin)

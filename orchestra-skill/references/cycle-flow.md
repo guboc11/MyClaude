@@ -229,7 +229,7 @@ breakdown-summary.md # How many tasks, dependencies, estimated complexity
 Each task file format:
 ```markdown
 # Task: [concise title]
-- **ID**: task-eng-01
+- **ID**: task-eng-01 (orchestrator가 scan 시 cycle prefix 부착 → c003-eng-01)
 - **Depends on**: none (or task-eng-XX)
 - **Estimated complexity**: low / medium / high
 
@@ -365,17 +365,23 @@ performance-report.md        # Build size, load times
    - Input: director-report.md + screenshots + cycle data
    - Output: clean, readable HTML report in Korean → .orchestra/reports/cycle-{N}/
 
-4. **Git commit** (on orchestra branch, NOT main):
+4. **Build gate** — MUST pass before commit:
+   ```bash
+   {package_manager} build 2>&1
+   ```
+   If build fails → skip commit, log error. Next cycle fixes it.
+
+5. **Git commit** (on orchestra branch, NOT main) — only if build gate passed:
    ```bash
    git add -A
    git commit -m "cycle-{N}: [summary from director report]"
    ```
 
-5. **Archive**: workspace/current-cycle/ → workspace/archive/cycle-{N}/
+6. **Archive**: workspace/current-cycle/ → workspace/archive/cycle-{N}/
 
-6. **State update**: cycle_number increments, workspace reset for next cycle
+7. **State update**: cycle_number increments, workspace reset for next cycle
 
-7. **Next cycle begins** immediately (back to Analysis) — unless graceful shutdown requested
+8. **Next cycle begins** immediately (back to Analysis) — unless graceful shutdown requested
 
 **Completion signal**: `wrapup-complete.md` written by orchestrator itself (not an agent)
 

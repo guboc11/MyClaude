@@ -523,10 +523,19 @@ class FileBus:
         Returns [] if the directory doesn't exist or contains no task files — callers
         must handle empty list gracefully (log warning, don't crash)."""
 
-    def scan_task_breakdown(self) -> list[Task]:
+    def scan_task_breakdown(self, cycle_number: int) -> list[Task]:
         """Read engineering task files produced during the task_breakdown phase.
         Scans workspace/current-cycle/task_breakdown/tasks/task-eng-*.md
         Each file becomes one Engineering Task (model=sonnet, single agent per task).
+
+        CRITICAL — Task ID must include cycle number:
+            # file.stem = "task-eng-05" → extract number "05"
+            nn = file.stem.split("-")[-1]   # "05"
+            task_id = f"c{cycle_number:03d}-eng-{nn}"  # "c003-eng-05"
+        This prevents cross-cycle ID collision in JobQueue._completed.
+        Without the cycle prefix, tasks from cycle N are silently deduplicated
+        in cycle N+1 because JobQueue treats them as already-completed jobs.
+
         Returns [] if no files found — Engineering phase will complete immediately
         with a warning logged. This is intentional: if Director wrote no tasks,
         there is nothing to engineer this cycle."""
@@ -788,6 +797,7 @@ async def main():
     loop.add_signal_handler(signal.SIGTERM, _handle_signal)
 
     audit_task: asyncio.Task | None = None  # Holds current audit task handle
+    consecutive_auth_failures = 0     # Tracks 401s — 3 consecutive → shutdown (메인 루프 스코프)
 
     while True:
         # Check asyncio-safe shutdown event AND file-based signal  [FIX BUG-9]
@@ -866,13 +876,26 @@ async def main():
         # Phase transition hook: load task_breakdown output into engineering queue.
         # Must happen BEFORE engineering phase's get_pending_tasks() is called.
         if next_phase == "engineering":
-            eng_tasks = file_bus.scan_task_breakdown()
+            eng_tasks = file_bus.scan_task_breakdown(cycle_mgr.cycle_number)
             if not eng_tasks:
                 log.warning("task_breakdown produced no task files — engineering phase will be empty")
             cycle_mgr.load_phase_tasks("engineering", eng_tasks)
 
         if next_phase is None:
-            # Cycle complete
+            # ── Cycle complete: build gate → git commit ──
+            # CRITICAL: This block MUST run the build gate and git commit.
+            # Without these, all code changes made by engineering agents
+            # during this cycle will remain uncommitted — effectively lost.
+            # See also: "Build gate — never commit broken code" section (L995-1008).
+            build_result = run(f"{config.project.package_manager} build 2>&1")
+            if build_result.exit_code == 0:
+                summary = cycle_mgr.get_cycle_summary()   # wrapup director의 요약 (구현 시: wrapup-director-done.md에서 첫 줄 추출)
+                run("git add -A")
+                run(f'git commit -m "cycle-{cycle_mgr.cycle_number}: {summary}"')
+            else:
+                log.error(f"Cycle {cycle_mgr.cycle_number}: build failed — skipping commit")
+                # Next cycle's Analysis will pick up the broken state and fix it
+
             if cycle_mgr.graceful_shutdown_requested:  # [FIX BUG-9]
                 # Wait for any running audit before exiting — audit takes ~40min,
                 # main cycle ~20min, so audit is often still running at shutdown.
@@ -899,6 +922,7 @@ if result.exit_code == 0:
     cycle_mgr.mark_task_complete(job.id)
     cycle_mgr.save_task_state(job.id)  # [FIX BUG-10] Save immediately, not just on phase transition
     rate_limiter.record_success(job.model)
+    consecutive_auth_failures = 0     # Reset auth failure counter on any success
 
 # Agent task failed (non-429)
 elif result.exit_code != 0 and not result.rate_limited:
@@ -924,6 +948,18 @@ elif result.rate_limited:
         log.error(f"Task {job.id} rate-limited 3 times. Marking failed.")
         cycle_mgr.mark_task_failed(job.id, "Rate limited 3 times — daily quota likely exhausted")
         cycle_mgr.save_task_state(job.id)
+
+# Authentication failure (401) — session expired or invalid API key
+# Claude Max sessions expire after several hours. API keys can be revoked.
+# Unlike 429 (temporary, retryable), 401 is permanent until re-authentication.
+# Continuing to spawn agents after 401 wastes compute with zero chance of success.
+elif "authentication_error" in result.stderr:
+    log.critical(f"Task {job.id}: authentication failed (401). Triggering shutdown.")
+    consecutive_auth_failures += 1
+    cycle_mgr.mark_task_failed(job.id, "Authentication failed (401)")
+    if consecutive_auth_failures >= 3:
+        log.critical("3 consecutive auth failures — initiating graceful shutdown.")
+        cycle_mgr.graceful_shutdown_requested = True
 ```
 
 ## Allowed Tools per Role
