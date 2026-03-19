@@ -515,13 +515,19 @@ class FileBus:
     def archive_cycle(self, cycle_number: int):
         """Move current-cycle/ to archive/cycle-{N}/ for the next cycle."""
 
-    def read_task_files(self, phase: str) -> list[Task]:
+    def read_task_files(self, phase: str, cycle_number: int) -> list[Task]:
         """Read task assignment files written by a Dept Head for the given phase.
         Scans workspace/current-cycle/{phase}/tasks/task-*.md
         Parses each file for: task_id, assigned role (lead/member/intern), objective.
         Returns a list of Task objects ready to be submitted to the job queue.
         Returns [] if the directory doesn't exist or contains no task files — callers
-        must handle empty list gracefully (log warning, don't crash)."""
+        must handle empty list gracefully (log warning, don't crash).
+
+        CRITICAL — Task ID must include cycle number (same rule as scan_task_breakdown):
+            nn = file.stem.split("-")[-1]   # "task-01" → "01"
+            task_id = f"c{cycle_number:03d}-{phase}-{nn}"  # "c003-analysis-01"
+        This prevents cross-cycle ID collision in JobQueue._completed.
+        See conventions.md Task IDs section."""
 
     def scan_task_breakdown(self, cycle_number: int) -> list[Task]:
         """Read engineering task files produced during the task_breakdown phase.
@@ -859,6 +865,15 @@ async def main():
             phase_done = cycle_mgr.advance_phase_step()
             cycle_mgr.save_state()
             if phase_done:
+                # Phase gate: check if enough tasks succeeded before advancing.
+                # is_phase_complete() enforces the 30% failure threshold defined above.
+                if not cycle_mgr.is_phase_complete():
+                    # >30% failure — retry MEMBERS once with error context appended
+                    log.warning(f"Phase {cycle_mgr.current_phase}: >30% failure, retrying MEMBERS")
+                    cycle_mgr.reset_to_members_step()  # back to MEMBERS
+                    continue  # re-run inner loop for retry round
+                    # If retry round ALSO fails >30%, is_phase_complete() force-completes
+                    # the phase on the second call — the cycle is not blocked indefinitely.
                 break  # All steps complete — fall through to advance_phase()
 
         # Check if audit should run (parallel)
@@ -872,6 +887,18 @@ async def main():
 
         # Advance to next phase
         next_phase = cycle_mgr.advance_phase()
+
+        # Phase transition hook: preload MEMBERS tasks before the phase starts.
+        # For standard phases, DEPT_HEAD_INITIAL writes task files to disk.
+        # The orchestrator must read those files and inject them into phase_tasks
+        # BEFORE the MEMBERS step calls get_pending_tasks().
+        # Without this hook, get_pending_tasks() returns [] for MEMBERS → no agents spawn.
+        if next_phase in STANDARD_PHASES:
+            member_tasks = file_bus.read_task_files(next_phase, cycle_mgr.cycle_number)
+            if member_tasks:
+                cycle_mgr.load_phase_tasks(next_phase, member_tasks)
+            # Note: empty task list is OK — dept_head may not have written tasks yet.
+            # Tasks are loaded AGAIN after DEPT_HEAD_INITIAL completes (see inner loop).
 
         # Phase transition hook: load task_breakdown output into engineering queue.
         # Must happen BEFORE engineering phase's get_pending_tasks() is called.
