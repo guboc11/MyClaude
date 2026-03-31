@@ -1,0 +1,24 @@
+{
+  "currentCycle": 3,
+  "maxCycles": 50,
+  "currentPhase": "research",
+  "currentVersion": "v2",
+  "phaseRetryCount": 0,
+  "spawnRetryCount": 0,
+  "completedVersions": ["v0", "v1"],
+  "usedReferences": ["wedding_photobook_trends", "motion_micro_interaction", "luxury_brand_digital", "immersive_storytelling_web", "interactive_scroll_web", "illustration_art_direction", "european_wedding_stationery", "photo_gallery_exhibition", "typography_calligraphy", "korean_modern_wedding", "editorial_wedding_design", "festive_confetti_particle", "maximalist_celebration_design", "interactive_scroll_storytelling", "bold_typography_color"],
+  "usedMoods": ["Quiet Ceremony / Quiet Luxury / Heirloom", "Joyful Celebration / Editorial Festivity"],
+  "suggestions": [
+    "엔딩 감정 밀도 강화 (시적 구성, 수치가 말하는 감동)",
+    "인터랙티브 요소 도입 (사진 확대, 카드 플립, 타임라인 내비게이션)",
+    "다른 무드 계열 탐색 (핸드메이드, 모던 미니멀, 에디토리얼)",
+    "표지 컨페티/파티클 효과 구현",
+    "반응형 완성도 (데스크탑 3열, 호버 인터랙션)",
+    "내러티브 타임라인 구조 (결혼식 하루의 시간 흐름을 따라가는 크로노로지컬 내러티브)",
+    "인터랙티브 양방향 요소 (커플이 메시지에 답장, 하이라이트 등)",
+    "사진 중심 시네마틱 경험 (풀스크린 사진 + 오버레이 메시지, Ken Burns/parallax)",
+    "미니멀 모던 (Swiss/Bauhaus 그리드, sans-serif, 흑백+단일 악센트)",
+    "손글씨/수공예 감성 (스크랩북, 폴라로이드, 종이 질감, 스큐오모피즘)"
+  ],
+  "lastError": null
+}
