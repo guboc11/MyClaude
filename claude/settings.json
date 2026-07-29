@@ -20,6 +20,19 @@
     "deny": [],
     "defaultmode": "auto"
   },
+  "model": "claude-fable-5[1m]",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /Users/taewonpark/.claude/tools/reminder-mcp/hook.mjs"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "codex@openai-codex": true
@@ -43,18 +56,5 @@
   "verbose": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "model": "opus[1m]",
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node /Users/taewonpark/.claude/tools/reminder-mcp/hook.mjs"
-          }
-        ]
-      }
-    ]
-  }
+  "voiceEnabled": true
 }

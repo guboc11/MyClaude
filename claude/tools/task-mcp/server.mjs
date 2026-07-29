@@ -36,7 +36,8 @@ function taskFileName(number, status, content, tag) {
   return `task-${number}-${status}${t}-${slug(content, 40)}.json`;
 }
 function today() {
-  return new Date().toISOString().slice(0, 10);
+  // KST 기준 날짜. toISOString은 UTC라 KST 00:00~08:59에 그룹 폴더가 어제 날짜로 찍힌다 (2026-07-30 발견).
+  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
 }
 function now() {
   return new Date().toISOString();
