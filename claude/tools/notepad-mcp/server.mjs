@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // notepad-mcp — 무의존성 MCP stdio 서버 (사람용 메모장)
 //
-// 설계 원천: _ARCHITECTURE/2026-07-28-notepad-mcp/DESIGN.md
+// 설계 원천: .claude/tools/notepad-mcp/DESIGN.md
 //
 // 절대 원칙 (DESIGN §2 — 어기면 이 도구의 존재 이유가 무너진다):
 //   1. 제목·키워드·태그를 만들지 않는다. 에이전트가 채우는 메타는 context 하나뿐.
@@ -9,9 +9,12 @@
 //   2. 표시 없는 텍스트는 절대 클로드가 쓴 것이 아니다. 클로드가 쓴 덩어리엔 반드시 구분선.
 //   3. 발췌를 복사하지 않는다. transcript + lines 참조만 둔다.
 //   4. 삭제 없음. 수정·삭제 도구를 만들지 않는다 (md 파일이라 사람이 직접 고친다).
+//      note_append 는 붙이기지 고치기가 아니다 — 이미 적힌 줄에는 손대지 못한다.
 //   5. 구분선은 ASCII 하이픈 20개. 박스 문자(─)·## 헤딩 금지 (사람이 직접 칠 수 있어야 한다).
 //
-// 저장: {repo}/.claude/notepad/{YYYY-MM}/{YYYY-MM-DD-HHMM}.md  (gitignore 대상)
+// 저장 (둘 다 gitignore 대상):
+//   날짜 노트  {repo}/.claude/notepad/{YYYY-MM}/{YYYY-MM-DD-HHMM}.md   그 순간을 찍고 끝난다
+//   주제 노트  {repo}/.claude/notepad/{YYYY-MM-DD}-{주제}.md            줄이 계속 쌓인다 (루트, 하위 폴더 없음)
 
 import fs from 'node:fs';
 import os from 'node:os';
@@ -35,6 +38,8 @@ function root() {
 const P = {
   notepad: () => path.join(root(), '.claude', 'notepad'),
   month: (ym) => path.join(P.notepad(), ym),
+  // 주제 노트는 월 폴더에 들어가지 않고 notepad 루트에 바로 놓인다.
+  topic: (name) => path.join(P.notepad(), `${name}.md`),
   projects: () => path.join(os.homedir(), '.claude', 'projects'),
 };
 
@@ -53,8 +58,52 @@ function stamp(d = new Date()) {
   };
 }
 
+// 날짜 노트의 id 는 곧 시각이다: 2026-07-28-1544. 같은 분에 두 장이면 뒤에 -2, -3 이 붙는다.
+// 여기에 안 맞으면 주제 노트({만든 날}-{주제})로 본다.
+const DATE_NOTE_RE = /^\d{4}-\d{2}-\d{2}-\d{3,4}(-\d+)?$/;
+
+function isDateNoteId(id) {
+  return DATE_NOTE_RE.test(String(id));
+}
+
+// 주제 이름에서 막을 것: 경로 구분자·제어문자·파일명에 못 쓰는 글자.
+// 조용히 고쳐서 만들지 않는다 — 부른 이름과 다른 파일이 생기는 쪽이 더 나쁘다.
+// 그래서 앞뒤 공백도 지워주지 않고 튕긴다. 이름 안의 공백은 그대로 쓴다.
+const TOPIC_BAD_RE = /[\\/:*?"<>|\x00-\x1f\x7f]/;
+
+function safeTopic(topic) {
+  const t = String(topic ?? '');
+  if (!t) throw new Error('주제 이름이 비어 있습니다.');
+  if (t !== t.trim()) throw new Error(`주제 이름 앞뒤에 공백이 있습니다: "${topic}"`);
+  if (TOPIC_BAD_RE.test(t)) throw new Error(`주제 이름에 쓸 수 없는 글자가 있습니다: ${topic}`);
+  if (t.includes('..')) throw new Error(`주제 이름에 상위 이동이 있습니다: ${topic}`);
+  if (t.startsWith('.')) throw new Error(`주제 이름은 점으로 시작할 수 없습니다: ${topic}`);
+  return t;
+}
+
+// 주제 노트의 실제 경로. 이름 방어를 뚫더라도 여기서 막힌다 —
+// 계산된 경로는 반드시 notepad 루트의 바로 아래여야 한다.
+// 읽기(note_read·note_source)도 이 문을 지나게 해서 루트 밖을 직접 열 수 없게 한다.
+function topicFileOf(name) {
+  const p = P.topic(safeTopic(name));
+  if (path.dirname(path.resolve(p)) !== path.resolve(P.notepad())) {
+    throw new Error(`주제 노트는 notepad 루트에만 있습니다: ${name}`);
+  }
+  return p;
+}
+
+// 날짜 노트는 월 폴더 안에, 주제 노트는 notepad 루트에 있다.
 function notePathOf(id) {
-  return path.join(P.month(id.slice(0, 7)), `${id}.md`);
+  const s = String(id);
+  return isDateNoteId(s) ? path.join(P.month(s.slice(0, 7)), `${s}.md`) : topicFileOf(s);
+}
+
+// {오늘}-{주제}. 날짜는 서버가 붙인다 — 만든 날로 고정이고 이후 갱신돼도 바뀌지 않는다.
+// 시각은 한 번만 찍어 id 와 created 가 같은 스냅샷에서 나오게 한다.
+// 두 번 부르면 자정을 사이에 두고 파일명 날짜와 created 날짜가 어긋난다.
+function topicPathOf(topic, s = stamp()) {
+  const id = `${s.id.slice(0, 10)}-${safeTopic(topic)}`;
+  return { id, path: topicFileOf(id), created: s.created };
 }
 
 // 같은 분에 두 장이 생기면 -2, -3 … 을 붙여 충돌을 피한다.
@@ -281,6 +330,56 @@ function toolNoteAddConversation(a) {
   return `적었습니다 — ${id} (사용자 ${users} · 클로드 ${claudes})\n${relPath(p)}`;
 }
 
+// 주제 노트를 새로 만든다. 날짜 노트와 달리 이름이 곧 정체라 같은 이름 둘이 생기면 안 된다.
+function toolNoteNewTopic(a) {
+  // id 와 created 를 같은 스냅샷에서 받는다 — 자정을 넘어도 둘이 어긋나지 않는다.
+  const { id, path: p, created } = topicPathOf(a.topic);
+  const s = sessionInfo();
+  const meta = { created, context: a.context || '', transcript: s.transcript, lines: s.lines };
+  try {
+    // wx = 이미 있으면 실패. 같은 순간에 둘이 불러도 덮어쓰지 않고,
+    // 그 자리에 symlink 가 놓여 있어도 EEXIST 로 튕긴다.
+    fs.writeFileSync(p, serializeNote(meta, String(a.body ?? '')), { flag: 'wx' });
+  } catch (e) {
+    if (e.code === 'EEXIST') throw new Error(`이미 있는 주제 노트입니다: ${id}`);
+    throw e;
+  }
+  return `만들었습니다 — ${id}\n${relPath(p)}`;
+}
+
+// 주제 노트 끝에 잇는다. 고치는 게 아니라 붙이는 것이다.
+function toolNoteAppend(a) {
+  const id = String(a.id ?? '').trim();
+  if (!id) throw new Error('주제 노트 id 가 없습니다.');
+  // 날짜 노트는 그 순간을 찍고 끝나는 것이라 나중에 덧붙이지 않는다.
+  if (isDateNoteId(id)) throw new Error(`날짜 노트에는 덧붙이지 않습니다: ${id}`);
+
+  const body = String(a.body ?? '');
+  if (!body.trim()) throw new Error('붙일 내용이 없습니다.');
+  // 이 도구는 한 줄만 붙인다. 줄바꿈이 들었으면 조용히 걷어내지 않고 튕긴다 —
+  // body 를 받은 그대로 넣는다는 계약과, 시각을 줄 끝에 앉힌다는 형태를 둘 다 지키려면 여기서 갈라야 한다.
+  if (/[\r\n]/.test(body)) {
+    throw new Error('note_append 는 한 줄만 붙입니다. 줄바꿈이 든 내용은 받지 않습니다.');
+  }
+
+  const p = topicFileOf(id);
+  // lstat 으로 본다 — symlink 를 따라가면 notepad 밖 파일에 덧붙게 된다.
+  const st = fs.lstatSync(p, { throwIfNoEntry: false });
+  if (!st) {
+    throw new Error(`그런 주제 노트가 없습니다: ${id} — 새 주제는 note_new_topic 으로 만듭니다.`);
+  }
+  if (!st.isFile()) {
+    throw new Error(`주제 노트가 아닙니다(심볼릭 링크이거나 일반 파일이 아님): ${id}`);
+  }
+
+  // 파싱해서 다시 쓰지 않는다. frontmatter 와 기존 본문의 바이트를 그대로 두고 끝에만 잇는다.
+  const prev = fs.readFileSync(p, 'utf8');
+  const lead = prev.length && !prev.endsWith('\n') ? '\n' : '';
+  const when = stamp().created.slice(5); // '2026-08-05 09:20' → '08-05 09:20'
+  fs.appendFileSync(p, `${lead}${body}  (${when})\n`);
+  return `붙였습니다 — ${id}`;
+}
+
 // ── 꺼내기 ────────────────────────────────────────────────────
 
 // 대화 메모의 첫 줄은 구분선이라 목록에 그대로 띄우면 무엇인지 알아볼 수 없다.
@@ -307,16 +406,37 @@ function readNote(file) {
   return { id: path.basename(file, '.md'), file, raw, meta, body };
 }
 
+// 훑을 때는 언제나 lstat 으로 본다. stat 은 링크를 따라가서, notepad 안에 걸린 symlink 하나로
+// 바깥 파일이 목록·검색·읽기에 그대로 새어나온다. 링크와 비정규 파일은 조용히 건너뛴다.
+function isRealFile(p) {
+  const st = fs.lstatSync(p, { throwIfNoEntry: false });
+  return !!st && st.isFile();
+}
+
+function isRealDir(p) {
+  const st = fs.lstatSync(p, { throwIfNoEntry: false });
+  return !!st && st.isDirectory();
+}
+
 function allNotes(month) {
   const base = P.notepad();
   if (!fs.existsSync(base)) return [];
-  const months = (month ? [month] : fs.readdirSync(base))
-    .filter((m) => fs.existsSync(P.month(m)) && fs.statSync(P.month(m)).isDirectory());
+  // 월 폴더도 실제 디렉터리만 — symlink 월 폴더를 따라가지 않는다.
+  const months = (month ? [month] : fs.readdirSync(base)).filter((m) => isRealDir(P.month(m)));
   const out = [];
   for (const m of months) {
     for (const f of fs.readdirSync(P.month(m))) {
-      if (f.endsWith('.md')) out.push(readNote(path.join(P.month(m), f)));
+      if (!f.endsWith('.md')) continue;
+      const full = path.join(P.month(m), f);
+      if (isRealFile(full)) out.push(readNote(full));
     }
+  }
+  // 주제 노트는 루트에 바로 놓이므로 월 폴더만 훑으면 통째로 놓친다.
+  // 월을 지정해도 주제 노트는 그대로 나온다 — 월 필터는 날짜 노트에만 걸리는 것이다.
+  for (const f of fs.readdirSync(base)) {
+    if (!f.endsWith('.md')) continue;
+    const full = path.join(base, f);
+    if (isRealFile(full)) out.push(readNote(full));
   }
   // 파일명이 곧 시각이라 이름 역순이 최근순이다.
   return out.sort((a, b) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
@@ -333,19 +453,43 @@ function renderList(notes) {
 }
 
 function findNote(id) {
+  // notePathOf 가 이름·경로 검증(topicFileOf)을 이미 지난다. 여기서는 그 자리에 실제 파일이
+  // 있는지만 lstat 으로 본다 — 있더라도 링크면 따라가지 않고 튕긴다.
   const direct = notePathOf(String(id));
-  if (fs.existsSync(direct)) return direct;
+  const st = fs.lstatSync(direct, { throwIfNoEntry: false });
+  // lstat 은 마지막 조각만 본다. 담긴 폴더(월 폴더 또는 notepad 루트)도 실제 디렉터리인지 봐야
+  // symlink 월 폴더를 지나 바깥 파일을 읽는 길이 막힌다.
+  if (st && st.isFile() && isRealDir(path.dirname(direct))) return direct;
+  if (st) throw new Error(`메모가 아닙니다(심볼릭 링크이거나 일반 파일이 아님): ${id}`);
   const hit = allNotes().find((n) => n.id === String(id));
   if (!hit) throw new Error(`그런 메모가 없습니다: ${id}`);
   return hit.file;
 }
 
+// 목록은 두 묶음으로 나눈다 — 주제 노트가 위, 날짜 노트가 아래.
+// 한 덩어리로 두면 같은 날 주제 노트가 날짜 노트 위로 섞여 올라간다(한글이 숫자보다 뒤라서).
+// allNotes 가 이미 id 역순으로 정렬해 주므로 나누기만 하면 묶음 안의 최근순은 그대로 유지된다.
+function splitByKind(notes) {
+  const topics = [];
+  const dates = [];
+  for (const n of notes) (isDateNoteId(n.id) ? dates : topics).push(n);
+  return { topics, dates };
+}
+
 function toolNoteList(a) {
   const limit = Number.isInteger(a.limit) && a.limit > 0 ? a.limit : 20;
-  const notes = allNotes(a.month);
-  const shown = notes.slice(0, limit);
-  const tail = notes.length > shown.length ? `\n\n(전체 ${notes.length}장 중 ${shown.length}장)` : '';
-  return renderList(shown) + tail;
+  const { topics, dates } = splitByKind(allNotes(a.month));
+  if (!topics.length && !dates.length) return '노트가 없습니다.';
+
+  // 주제 노트는 수가 적고 계속 자라는 장이라 전량 보여준다. limit 은 날짜 노트에만 건다.
+  const shownDates = dates.slice(0, limit);
+  const blocks = [];
+  if (topics.length) blocks.push(`■ 주제 노트\n\n${renderList(topics)}`);
+  if (dates.length) blocks.push(`■ 날짜 노트\n\n${renderList(shownDates)}`);
+  const tail = dates.length > shownDates.length
+    ? `\n\n(날짜 노트 전체 ${dates.length}장 중 ${shownDates.length}장)`
+    : '';
+  return blocks.join('\n\n') + tail;
 }
 
 function toolNoteRead(a) {
@@ -363,8 +507,11 @@ function toolNoteSearch(a) {
   const hits = allNotes().filter(
     (n) => n.body.toLowerCase().includes(needle) || (n.meta.context || '').toLowerCase().includes(needle),
   );
+  // 검색은 목록과 달리 묶지 않는다 — 찾은 것을 적중 순서대로 늘어놓는 자리라 나누면 오히려 헤맨다.
+  // 다만 적중이 limit 을 넘으면 머리글 숫자와 실제 표시 수가 어긋나므로 둘 다 적는다.
+  const shown = hits.slice(0, limit);
   let out = hits.length
-    ? `메모 ${hits.length}건\n\n${renderList(hits.slice(0, limit))}`
+    ? `메모 ${hits.length}건${hits.length > shown.length ? ` 중 ${shown.length}건` : ''}\n\n${renderList(shown)}`
     : `메모에서 "${q}" 를 찾지 못했습니다.`;
 
   if (!a.deep) return out;
@@ -484,6 +631,57 @@ const TOOLS = [
     },
   },
   {
+    name: 'note_new_topic',
+    description:
+      '주제 노트를 새로 만든다. 날짜 노트와 달리 한 주제로 줄이 계속 쌓이는 장이다.\n'
+      + '\n'
+      + '[언제] "○○ 리스트 만들자", "이건 따로 모아두자" 처럼 앞으로 계속 쌓일 자리가 필요할 때.\n'
+      + '[아닐 때] 그 순간을 찍어두는 것은 note_add 다. 주제 노트는 나중에 note_append 로 이어 붙이는 자리다.\n'
+      + '\n'
+      + '[동작] 파일명은 서버가 {만든 날}-{주제}.md 로 짓고 notepad 루트에 둔다. 날짜를 직접 적지 않는다.\n'
+      + '  이 날짜는 만든 날로 고정이다 — 나중에 줄이 붙어도 파일명은 바뀌지 않는다.\n'
+      + '  같은 이름이 이미 있으면 만들지 않고 튕긴다. 이름이 곧 정체라 덮어쓰지도, 뒤에 번호를 붙이지도 않는다.\n'
+      + '\n'
+      + '[절대 규칙] note_add 와 같다 — 제목·요약·키워드를 만들지 않는다. body 와 context 는 받은 그대로 넣는다.\n'
+      + '  주제 이름도 사용자가 부른 대로 쓴다. 한글·영문 자유.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        topic: { type: 'string', description: '주제 이름. 날짜는 서버가 앞에 붙이므로 적지 않는다. 경로 구분자·제어문자는 쓸 수 없고, 앞뒤 공백이 있으면 튕긴다(이름 안의 공백은 쓸 수 있다).' },
+        body: { type: 'string', description: '첫 내용. 그대로 넣는다. 없으면 빈 주제 노트가 된다.' },
+        context: { type: 'string', description: '"○○ 대화 중" 같은 정황 한 줄.' },
+      },
+      required: ['topic'],
+    },
+  },
+  {
+    name: 'note_append',
+    description:
+      '주제 노트 끝에 한 줄 잇는다. 지금까지 없어서 파일을 직접 고쳐야 했던 자리다.\n'
+      + '\n'
+      + '[언제] 이미 있는 주제 노트에 항목을 더할 때. "그것도 리스트에 추가해".\n'
+      + '[아닐 때] 새 주제는 note_new_topic 으로 만든다. 없는 id 를 주면 만들지 않고 튕긴다.\n'
+      + '\n'
+      + '[고치는 도구가 아니다] 붙이기만 한다. 기존 줄과 frontmatter 는 한 글자도 건드리지 않는다.\n'
+      + '  날짜 노트에는 붙일 수 없다 — 그 순간을 찍고 끝난 것이라 뒤에 덧대지 않는다.\n'
+      + '  이미 적힌 것을 고치거나 지우는 도구는 여전히 없다. 그건 사용자가 md 파일을 직접 연다.\n'
+      + '\n'
+      + '[한 줄짜리다] 한 번에 한 줄만 붙는다. 줄바꿈이 든 body 는 조용히 고치지 않고 튕긴다.\n'
+      + '  여러 줄을 남기려면 한 줄씩 나눠 부른다.\n'
+      + '\n'
+      + '[동작] 붙는 줄 끝에 (MM-DD HH:MM) 으로 언제 들어왔는지 남는다. body 는 받은 그대로 넣는다.\n'
+      + '\n'
+      + '[저장 뒤] 영수증 한 줄만 말한다. 무엇을 붙였는지 길게 되풀이하지 않는다.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: '주제 노트 id (예: 2026-08-05-표현교정). 날짜 노트 id 는 받지 않는다.' },
+        body: { type: 'string', description: '붙일 텍스트 한 줄. 다듬지 않고 그대로 넣는다. 줄바꿈이 들어 있으면 튕긴다.' },
+      },
+      required: ['id', 'body'],
+    },
+  },
+  {
     name: 'note_list',
     description:
       '노트를 최근순으로 훑는다. "노트 보여줘", "오늘 노트 꺼내줘" 일 때.\n'
@@ -563,6 +761,8 @@ const TOOLS = [
 const DISPATCH = {
   note_add: toolNoteAdd,
   note_add_conversation: toolNoteAddConversation,
+  note_new_topic: toolNoteNewTopic,
+  note_append: toolNoteAppend,
   note_list: toolNoteList,
   note_read: toolNoteRead,
   note_search: toolNoteSearch,
@@ -619,9 +819,10 @@ if (IS_MAIN) {
 }
 
 export {
-  BAR, META_KEYS, P, root, stamp, notePathOf, freshNote,
+  BAR, META_KEYS, P, root, stamp, notePathOf, freshNote, isDateNoteId,
   serializeNote, parseNote,
   projectSlug, transcriptDir, currentTranscript, lastUserLine, sessionInfo,
   stripNoise, textOf, renderConversation,
-  toolNoteAdd, toolNoteAddConversation,
+  toolNoteAdd, toolNoteAddConversation, toolNoteNewTopic, toolNoteAppend,
+  safeTopic, topicPathOf, topicFileOf,
 };

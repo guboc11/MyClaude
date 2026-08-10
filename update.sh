@@ -20,7 +20,8 @@ DRY=0
 [ "${1:-}" = "--dry-run" ] && DRY=1
 
 # usage.jsonl·*.log = 도구가 남기는 실행 기록 (머신 상태) — 코드가 아니므로 수집하지 않는다.
-RSYNC_FLAGS=(-a --delete --exclude .DS_Store --exclude usage.jsonl --exclude '*.log')
+# node_modules = package.json 으로 복원되는 설치물 — 레포에 넣지 않는다 (md-convert 의 marked 등).
+RSYNC_FLAGS=(-a --delete --exclude .DS_Store --exclude usage.jsonl --exclude '*.log' --exclude node_modules)
 if [ "$DRY" = 1 ]; then
   RSYNC_FLAGS+=(-n -v)
   echo "── dry-run: 실제로는 아무것도 바꾸지 않습니다 ──"

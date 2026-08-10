@@ -31,6 +31,17 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /Users/taewonpark/.claude/tools/manage-env/hook.mjs"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
