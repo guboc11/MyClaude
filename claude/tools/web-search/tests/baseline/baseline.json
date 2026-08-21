@@ -1,0 +1,567 @@
+{
+  "schema": "web-search-v2-baseline/1",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#1",
+  "generated_at": "2026-08-12T22:46:53.131Z",
+  "project_root": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+  "node_version": "v22.21.0",
+  "hash_algorithm": "sha256",
+  "aggregate_algorithm": "sha256( concat( sorted_by_bytes(relpath) → `${sha256(file)}  ${relpath}\\n` ) )",
+  "content_aggregate_algorithm": "sha256( concat( sorted_by_bytes(relpath) → `${sha256(file)}  ${relpath}\\n` ) )",
+  "inventory_algorithm": "sha256( concat( sorted_by_bytes(relpath) → `${size} ${mtime_ms} ${relpath}\\n` ) )",
+  "measured": {
+    "frozen": {
+      "legacy": {
+        "path": "/Users/taewonpark/.claude/tools/web-search/LEGACY",
+        "exists": true,
+        "file_count": 36,
+        "total_bytes": 703767,
+        "aggregate_sha256": "e1b55fbfd1ebafc5e0bfa980d828d2c0754a50e07624ca26e12cf35cf2d79215",
+        "files": {
+          "MANUAL.md": {
+            "bytes": 20192,
+            "sha256": "8f4c7e96ad1092b140fbbbe79f8939cf20ed7f96f3871bb450f98f9feb989dbe"
+          },
+          "field/launch.mjs": {
+            "bytes": 7095,
+            "sha256": "51b8c57ab709579f0ad7cde5d67ec52df035e69ddd130dcea94918a26f853f9b"
+          },
+          "field/smoke-assert.mjs": {
+            "bytes": 9665,
+            "sha256": "8a7e9504a1ebd023a293c2e0c8184a0c28a6cb8346f1834293c0b6d4c2540d09"
+          },
+          "field/smoke.sh": {
+            "bytes": 3322,
+            "sha256": "b0123a01a1cb77483bf8d33bf12d6dc5e69fa69a7ddae32d291fb89dba1830d7"
+          },
+          "field/worker.mjs": {
+            "bytes": 16816,
+            "sha256": "b713450b72bb45fa97c2d6026a4217e43414e4510d81cb3200b24dd2a3476829"
+          },
+          "fixtures/server.mjs": {
+            "bytes": 27979,
+            "sha256": "73857812dae1d5f0a4f064413e403fa69ad759146f89e748070c3ca82319e2c6"
+          },
+          "lib/__pycache__/crop_cards.cpython-312.pyc": {
+            "bytes": 4640,
+            "sha256": "46c8f66a1c31788243d88c17bde60de7746364dd484f3c8594efe57326c22572"
+          },
+          "lib/boundary.mjs": {
+            "bytes": 11822,
+            "sha256": "a6ab57bea82de2be1fdf0f978822d121e868712610578f41e69971b79f0ceeac"
+          },
+          "lib/browser.mjs": {
+            "bytes": 10092,
+            "sha256": "7a6b858189ed48d727705391612e4c9d79a1fe7e5c8c3b38aaf0cfdfee53476c"
+          },
+          "lib/cards.mjs": {
+            "bytes": 6667,
+            "sha256": "06f5b7ebf3339c7e9993f1b2590cf41a43c961d4c6b45991dbf4177a0cba5395"
+          },
+          "lib/crop_cards.py": {
+            "bytes": 3400,
+            "sha256": "b6a1ed1c9c622a6b6544081926c8e8d911a851697131bb170f645e0d14614ae0"
+          },
+          "lib/deps.mjs": {
+            "bytes": 1733,
+            "sha256": "95d4852ae0cb1e64b9304ba86b9755c55c0a706e7c9cc5c94bbe474bc0d00c16"
+          },
+          "lib/discover.mjs": {
+            "bytes": 33717,
+            "sha256": "15ff63a8e980f69a4f7aaef5d41bab40d7632164a8f9b99c679c3cc745642ba1"
+          },
+          "lib/fetch.mjs": {
+            "bytes": 36058,
+            "sha256": "a205f39e2e5384d3fa8564444d0a9fd2c0f0d3d901aeb3fa8d4eff7d513ae616"
+          },
+          "lib/judge.mjs": {
+            "bytes": 15090,
+            "sha256": "2452bfbf04b19f9b0d4bfaeaa05e2f5c960be3568f1beb9ee12783f882ec8a9c"
+          },
+          "lib/kind.mjs": {
+            "bytes": 2501,
+            "sha256": "df53837340bc5cdbf6a56c1d9f203b1a6b5fae3c389c7d9f839cdb06a82c43d2"
+          },
+          "lib/lock.mjs": {
+            "bytes": 16465,
+            "sha256": "29f8c77b1ef5e18c3d38c224b2f5c61a2a48bed5e6dcd20880e0e7e78b1b2df1"
+          },
+          "lib/pace.mjs": {
+            "bytes": 9164,
+            "sha256": "5bc4f721c068d4c75a08cfd037579c7fddf062f1f70b14660f0da709f07512c5"
+          },
+          "lib/pagination.mjs": {
+            "bytes": 7264,
+            "sha256": "be71c32c348c6c62d8cf047a0f3870d0fbb744b83a2c6db24bbec143800ef5e1"
+          },
+          "lib/paths.mjs": {
+            "bytes": 4503,
+            "sha256": "d97c2cf2128a41820c59296e26d00466a8b6fddd82f59596fd38dcfddf3bfb5e"
+          },
+          "lib/policy.mjs": {
+            "bytes": 22612,
+            "sha256": "cf468e3226cd95c5c7fd8e8dbb15c2abbb5f2ef39aaf3fe4149ca894cdf98aa6"
+          },
+          "lib/store.mjs": {
+            "bytes": 71322,
+            "sha256": "c5bec716afd1d881a7c888260ff2516c8c4c914fc987f5d54d35186cdb02d9c0"
+          },
+          "lib/text.mjs": {
+            "bytes": 2794,
+            "sha256": "ee8d72348eeb440c0f3050c41434d62ecfabae9bbf3c3f2d3519ac051e954731"
+          },
+          "lib/url.mjs": {
+            "bytes": 5542,
+            "sha256": "c53f33724ffda1ea595b96f1161283aca78025fc9fd149fd326d29f83af2046a"
+          },
+          "server.mjs": {
+            "bytes": 31366,
+            "sha256": "55cfd68775a3e21ca374e1db7111e077a1bdc6b90ac305c40fb06d8e3fb78235"
+          },
+          "tests/gate1.mjs": {
+            "bytes": 10902,
+            "sha256": "efbc99ceac0afb8352c600034322e69195c09d673a1e4eb570b2a1c4b9213f72"
+          },
+          "tests/gate2.mjs": {
+            "bytes": 37337,
+            "sha256": "014b07084b55d05a8a2192dbf0880967c23ff938624a132084a494c6d4ffaa27"
+          },
+          "tests/gate3.mjs": {
+            "bytes": 54120,
+            "sha256": "fe7f9c738ecd203d5236f9cb77a331726c229fc5454ad0142f275de42f3a506d"
+          },
+          "tests/gate4-report.md": {
+            "bytes": 5202,
+            "sha256": "515b9458c1ae235f770025951f24ad2d30c3778b178c77b401f2ea67ba845f70"
+          },
+          "tests/gate4.mjs": {
+            "bytes": 149125,
+            "sha256": "751ff7007c078b35d2029e43cd154428809e8f21d2c2cacc45d521047cc9fc36"
+          },
+          "tests/gate5-report.md": {
+            "bytes": 5020,
+            "sha256": "23141f0a37695dcb03f6ca735d6b65b7ec2f0eee157b4d6c006565b735912a3b"
+          },
+          "tests/manual-check.mjs": {
+            "bytes": 9988,
+            "sha256": "f8fcc08acbe585143e55a5c02af783c26e63683d53162b85219f6f5a43ccd0de"
+          },
+          "tests/observe-external.mjs": {
+            "bytes": 6808,
+            "sha256": "f46a5e2267c2aca2a1ed26376329999122c7a50b279a78d71881684bac2bd6b9"
+          },
+          "tests/probe-roles.mjs": {
+            "bytes": 5315,
+            "sha256": "eef49ddb046213bb384601f4efa59ffcd10e72d0602fb5e694ea4c62c3b863d2"
+          },
+          "tests/regress.mjs": {
+            "bytes": 29947,
+            "sha256": "90eaed3c20bea33a2d9c5494e4539db1f27c4915c315742211b5d1947580300b"
+          },
+          "tests/task22-report.md": {
+            "bytes": 8182,
+            "sha256": "11c7ada04b56606d9a6965954cfc6c30a9686030e6e53bda9629914d574895a6"
+          }
+        }
+      },
+      "existing_crawl_data": {
+        "path": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/web-search",
+        "exists": false,
+        "file_count": 0,
+        "total_bytes": 0,
+        "content_aggregate_sha256": null,
+        "inventory_sha256": null,
+        "top_entries": []
+      },
+      "read_only_boundary": {
+        "statement": "LEGACY 와 기존 .claude/web-search 는 읽기 전용이다. 변환·삭제·이동하지 않는다.",
+        "applies_to": [
+          "/Users/taewonpark/.claude/tools/web-search/LEGACY",
+          "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/web-search"
+        ],
+        "allowed": [
+          "읽기",
+          "해시 계산"
+        ],
+        "forbidden": [
+          "수정",
+          "삭제",
+          "이동",
+          "형식 변환",
+          "새 workspace 로 자동 이관"
+        ]
+      }
+    },
+    "current": {
+      "tool_root": {
+        "path": "/Users/taewonpark/.claude/tools/web-search",
+        "files": [
+          "MANUAL.md",
+          "lib/artifacts.mjs",
+          "lib/attempts.mjs",
+          "lib/collect/browser-images.mjs",
+          "lib/collect/browser.mjs",
+          "lib/collect/extract-images.mjs",
+          "lib/collect/extract-links.mjs",
+          "lib/collect/extract-text.mjs",
+          "lib/collect/html.mjs",
+          "lib/collect/http.mjs",
+          "lib/collect/images.mjs",
+          "lib/collect/index.mjs",
+          "lib/db.mjs",
+          "lib/errors.mjs",
+          "lib/export.mjs",
+          "lib/fixture-allow.mjs",
+          "lib/http.mjs",
+          "lib/import.mjs",
+          "lib/items.mjs",
+          "lib/judgments.mjs",
+          "lib/lease.mjs",
+          "lib/map/index.mjs",
+          "lib/map/robots.mjs",
+          "lib/map/sitemap.mjs",
+          "lib/network-policy.mjs",
+          "lib/pace.mjs",
+          "lib/paths.mjs",
+          "lib/report.mjs",
+          "lib/retry.mjs",
+          "lib/robots.mjs",
+          "lib/schema.mjs",
+          "lib/status.mjs",
+          "lib/tool-schemas.mjs",
+          "lib/url.mjs",
+          "lib/workspace.mjs",
+          "runtime/pace.db",
+          "server.mjs",
+          "tests/artifacts/kill-child.mjs",
+          "tests/artifacts/verify.mjs",
+          "tests/baseline/README.md",
+          "tests/baseline/baseline.mjs",
+          "tests/baseline/forbidden-imports.json",
+          "tests/baseline/reuse-audit.md",
+          "tests/baseline/verify-reuse-audit.mjs",
+          "tests/browser-images/verify.mjs",
+          "tests/browser/verify.mjs",
+          "tests/collect-http/verify.mjs",
+          "tests/collect-run/no-deps-child.mjs",
+          "tests/collect-run/verify.mjs",
+          "tests/contracts/fixtures/public-tools.json",
+          "tests/contracts/public-tools.mjs",
+          "tests/diagnostics/verify.mjs",
+          "tests/e2e/mcp-client.mjs",
+          "tests/e2e/scenario-a-input.json",
+          "tests/e2e/scenario-a.mjs",
+          "tests/e2e/scenario-b.mjs",
+          "tests/e2e/scenario-c.mjs",
+          "tests/export/verify.mjs",
+          "tests/final-gate.mjs",
+          "tests/fixtures/README.md",
+          "tests/fixtures/false-success/A-status-200-error-page/case.json",
+          "tests/fixtures/false-success/A-status-200-error-page/input/page.html",
+          "tests/fixtures/false-success/A-status-200-error-page/input/transport.json",
+          "tests/fixtures/false-success/B-requested-final-mismatch/case.json",
+          "tests/fixtures/false-success/B-requested-final-mismatch/input/final-page.html",
+          "tests/fixtures/false-success/B-requested-final-mismatch/input/redirect-chain.json",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/case.json",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/legacy-extraction.json",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/listing.html",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/screenshot.svg",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/case.json",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/events.jsonl",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/judgments.jsonl",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/legacy-state.json",
+          "tests/fixtures/false-success/verify.mjs",
+          "tests/fixtures/manifest.json",
+          "tests/fixtures/server.mjs",
+          "tests/fixtures/url-samples.json",
+          "tests/fixtures/verify-fixtures.mjs",
+          "tests/gate0.mjs",
+          "tests/gate1.mjs",
+          "tests/gate2-worker.mjs",
+          "tests/gate2.mjs",
+          "tests/gate3.mjs",
+          "tests/gate4.mjs",
+          "tests/gate5.mjs",
+          "tests/gate6-manager.mjs",
+          "tests/gate6.mjs",
+          "tests/gate7.mjs",
+          "tests/images/verify.mjs",
+          "tests/judgments/verify.mjs",
+          "tests/map-domain/verify.mjs",
+          "tests/map-parser/verify.mjs",
+          "tests/network/README.md",
+          "tests/network/verify.mjs",
+          "tests/pace/README.md",
+          "tests/pace/verify.mjs",
+          "tests/pace/worker.mjs",
+          "tests/report-judgments/verify.mjs",
+          "tests/reports/final.json",
+          "tests/reports/final.md",
+          "tests/reports/gate0.json",
+          "tests/reports/gate0.md",
+          "tests/reports/gate1.json",
+          "tests/reports/gate1.md",
+          "tests/reports/gate2.json",
+          "tests/reports/gate2.md",
+          "tests/reports/gate3.json",
+          "tests/reports/gate3.md",
+          "tests/reports/gate4.json",
+          "tests/reports/gate4.md",
+          "tests/reports/gate5.json",
+          "tests/reports/gate5.md",
+          "tests/reports/gate6.json",
+          "tests/reports/gate6.md",
+          "tests/reports/gate7.json",
+          "tests/reports/gate7.md",
+          "tests/reports/scenario-a.md",
+          "tests/reports/scenario-b.md",
+          "tests/reports/scenario-c.md",
+          "tests/reports/transition.json",
+          "tests/reports/transition.md",
+          "tests/spikes/search-provider/artifacts/probe/bing-rss.txt",
+          "tests/spikes/search-provider/artifacts/probe/ddg-html.txt",
+          "tests/spikes/search-provider/artifacts/probe/ddg-lite.txt",
+          "tests/spikes/search-provider/artifacts/robots/api.duckduckgo.com.txt",
+          "tests/spikes/search-provider/artifacts/robots/html.duckduckgo.com.txt",
+          "tests/spikes/search-provider/artifacts/robots/index.commoncrawl.org.txt",
+          "tests/spikes/search-provider/artifacts/robots/lite.duckduckgo.com.txt",
+          "tests/spikes/search-provider/artifacts/robots/marginalia-followed.txt",
+          "tests/spikes/search-provider/artifacts/robots/search.marginalia.nu.txt",
+          "tests/spikes/search-provider/artifacts/robots/searx.be.txt",
+          "tests/spikes/search-provider/artifacts/robots/www.bing.com.txt",
+          "tests/spikes/search-provider/artifacts/robots/www.mojeek.com.txt",
+          "tests/spikes/search-provider/artifacts/robots/www.startpage.com.txt",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-acceptable-use-v2.html",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-acceptable-use.html",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-terms.html",
+          "tests/spikes/search-provider/artifacts/tos/microsoft-services-agreement.html",
+          "tests/spikes/search-provider/candidates.json",
+          "tests/spikes/search-provider/decision.md",
+          "tests/spikes/search-provider/probe.mjs",
+          "tests/spikes/search-provider/results/probe.json",
+          "tests/spikes/search-provider/verify.mjs",
+          "tests/spikes/sqlite-wal/README.md",
+          "tests/spikes/sqlite-wal/pace-spike.mjs",
+          "tests/spikes/sqlite-wal/pace-worker.mjs",
+          "tests/spikes/sqlite-wal/results/pace.json",
+          "tests/spikes/sqlite-wal/results/workspace.json",
+          "tests/spikes/sqlite-wal/run-all.mjs",
+          "tests/spikes/sqlite-wal/workspace-spike.mjs",
+          "tests/spikes/sqlite-wal/workspace-worker.mjs",
+          "tests/status-full/verify.mjs",
+          "tests/transition/trace-hook.mjs",
+          "tests/transition/trace-register.mjs",
+          "tests/transition/verify.mjs",
+          "tests/unit/db.mjs",
+          "tests/unit/import.mjs",
+          "tests/unit/items.mjs",
+          "tests/unit/lease.mjs",
+          "tests/unit/paths.mjs",
+          "tests/unit/status.mjs",
+          "tests/unit/url.mjs",
+          "tests/unit/workspace-new.mjs"
+        ],
+        "sha256": {
+          "MANUAL.md": "b03618917a444bd9d4f5d6b04e50a4a315c91777d75bd912c5856b8c646d8264",
+          "lib/artifacts.mjs": "a985b60c9a72672274bdc338035ebc3857654fab3811414fa3709c83cd0aeccc",
+          "lib/attempts.mjs": "123846e66ffbde317dbe20b254cd6054bb1b90545059913d4cbab44e2c3ecc14",
+          "lib/collect/browser-images.mjs": "1bd6d7bb514c0148d2d3bec3bb6b0c9983e7ad086c3f7a297135699840a423bd",
+          "lib/collect/browser.mjs": "ea444eefdc47922039d9e15f453be53ffd1cf4e776f67a059900dab6a8d48bb5",
+          "lib/collect/extract-images.mjs": "6837f39668fce754787b985ad530ad642044066fac73c662af7b45b2764cffeb",
+          "lib/collect/extract-links.mjs": "ace2d463ab607f5ef4f597737f464c5107d7b8d143c68765b1654aa8572a3b6e",
+          "lib/collect/extract-text.mjs": "755cb93323586620ccb1c21543084349a704b8bcda5277156091a4812b09da0f",
+          "lib/collect/html.mjs": "71e693f069d3c2fb6a17f1d3595a8f789440fe901aabc14ccc0bc6e04216ea98",
+          "lib/collect/http.mjs": "be78dec0fbf00e3035b5c30c332699c4f3f610f73fe8092e73ac9a36746ecbba",
+          "lib/collect/images.mjs": "6576f365340a75d650576e9e54d2055ef1b01b35eb748ddb022d591a7d8a7892",
+          "lib/collect/index.mjs": "c807ee18d3616319003f3f88c7644c3c86a7e1466d578d864397d2c90a03078a",
+          "lib/db.mjs": "660e6ffeb9d1a39d123d704f0a1cf4760d7704a6893339a9e0efc7ed494bff14",
+          "lib/errors.mjs": "49363fadb7695bef5924d76262f8760ff355361176c6fc9585d8abff18d54b70",
+          "lib/export.mjs": "cc33f45a96d7416ead27b4fb1544c4a820522402ff9026f97d55166f6b36113a",
+          "lib/fixture-allow.mjs": "13441c065b525058cc567ad164634f39042e765cff67077bed699c39184185c9",
+          "lib/http.mjs": "6afecb24cc7f2e718bb20eb810f207dc02fe4c760581f622392dfeb27be7479b",
+          "lib/import.mjs": "d1e0d437e2c34a0c2a3eace7d42d2218f5982f28c093c2f06373e7174d3f1088",
+          "lib/items.mjs": "9226e4109dd8e17b7906ed5a78b8bd536178aba032ab1194dd3d361716bfd0ff",
+          "lib/judgments.mjs": "f408d08fed9c52f72683a467c2d1baeffa2b5f0074df61b7725db178d4165a95",
+          "lib/lease.mjs": "d46289c9f8ed4b00aeb8db51e6720bb6d60ccc46253001191578da8f48efe138",
+          "lib/map/index.mjs": "6c7c3805206951d9b93c1a79e44dd4351061e87d1130ab791358500578ea28d5",
+          "lib/map/robots.mjs": "5e6707d126606f60e130298f5d23a320fc4cc0bde1e35963eb49eb23d01bf6c7",
+          "lib/map/sitemap.mjs": "b5f8b9ab16b90d96fdf5b7748bf00afa39753013841c34fe4debef8f53113ac7",
+          "lib/network-policy.mjs": "0f16c1daefc36ee9c78b5b0d2febde916a6b64bddc08a95d0ea13682985e2ed9",
+          "lib/pace.mjs": "5e61b130f527df0ab3711cf6e8345c970780f2c0ed4eddd04af643c584af2aae",
+          "lib/paths.mjs": "a462bee3c0e55649b4655438c3de52cb818b6b1bf9af2cc46bdc224232e501b2",
+          "lib/report.mjs": "6aad72570a381d950ae3a7a53aa976c9004927f9b3feaba3f639cbd252bae862",
+          "lib/retry.mjs": "70e5f65485420d36d1f7d4e94b2ba8cbd1036b94c4e45160331392b26038bf29",
+          "lib/robots.mjs": "265886dad998e5891f5eee965d65c423077f51d306629716f09988040de7a73a",
+          "lib/schema.mjs": "6012a2545506ea709c8c3c2a6787d99db171498ae60d788b00b93cbc891fb94f",
+          "lib/status.mjs": "f02cb749010f45abe770a7d5ad0feefd141929034f017a57cc2135e6117dcdc9",
+          "lib/tool-schemas.mjs": "6984a207ef3beb17e1fde168d64e73ca597b75dee503b325acdcbc7c5d36b659",
+          "lib/url.mjs": "a75cb6641f941ef5e38043ada7a1b91183b34624bdedcf7ca9f9930ce3cb474e",
+          "lib/workspace.mjs": "51fb7abaad410e8be3c38c2f3ba5cfc24598d1e27e2e844dbf8055079d67cf89",
+          "runtime/pace.db": "83490bb4ae7bee145b893a11ac4174562bb6bc17e2ea6e0918cf0e93e9475d7c",
+          "server.mjs": "80a3a1f2294ad47b23e423f3cbbf0e4ef6493eed937d3fa282e3a11426c2d6c3",
+          "tests/artifacts/kill-child.mjs": "708a1752a3852425e3698721cce6d72e3bfc4068fd3b5c94b73430c60d3c5a1a",
+          "tests/artifacts/verify.mjs": "0e0c53c82c2602e7cbb952a98018b5dd2c4877ff65714b9efb820fae6936c11a",
+          "tests/baseline/README.md": "6de95af9929028535cb3029063835a45656fa030ba59bf0d1cb2588e32a21bda",
+          "tests/baseline/baseline.mjs": "bb7bba24f7bb6f9a0499ea01531aad9a565f482d5906d00ddf3a32c2e9294063",
+          "tests/baseline/forbidden-imports.json": "4a8070e9db744703957f6e395a695175359f0e0fbde5c7a1c807b280be00871a",
+          "tests/baseline/reuse-audit.md": "9c1d86a4f68178f8078a7bdd3c5d1790f2b41cb346e42689b07f807fe9fa3991",
+          "tests/baseline/verify-reuse-audit.mjs": "a6b1f499552fa2647af5a36f74354eb679bc222c42fddd773f40a62f02f7a20a",
+          "tests/browser-images/verify.mjs": "797c2e802acb51b1bb54f7ad05f051d7a0b89addf390d4959013f17c69804c94",
+          "tests/browser/verify.mjs": "06a5a7aede259b21bb3c1aa56514370c6b91aac46e024f6cac4a44af19197668",
+          "tests/collect-http/verify.mjs": "63f80aa32dfcc5deae20b2ddec97c0bd3005082d50fc7cd8265390d3d28664a0",
+          "tests/collect-run/no-deps-child.mjs": "10ee817f8222fa436030987311d6ecf8be52bc5412efb9f85c8c4e41f8479095",
+          "tests/collect-run/verify.mjs": "88ccda0d0f26ebcee7ea6999c2099e37c5057dd98a54fb5b308011177e6ffef0",
+          "tests/contracts/fixtures/public-tools.json": "cac51ab135287786a3c89c3631affa86d0245db1584500990aa5144a4a56b695",
+          "tests/contracts/public-tools.mjs": "75a866081b6cb6b51ee67c123919ba53763cace1bf423dcb3a8b0bc8add1ef8a",
+          "tests/diagnostics/verify.mjs": "29b00d2c469d2ddd81d08f668e1ad7e1a9e76493663ddb39d9b4108d6aa8ce73",
+          "tests/e2e/mcp-client.mjs": "ecccfd80f4e3c8c2fba6cae792d604ca0c1100dbfe4c36e46634e36492ef02ed",
+          "tests/e2e/scenario-a-input.json": "651af111917337a6e80bd5968450a072b18a1d1ecd14aef28310fb848f892ba7",
+          "tests/e2e/scenario-a.mjs": "3fe2bb89c4f3bd4f84e52261b4274d76159cdef52c971f4a1f4e58cc392392e7",
+          "tests/e2e/scenario-b.mjs": "48f77cc488ad641c9ecf1da272cc026f2721d554192eaf58a480752fc2dc548d",
+          "tests/e2e/scenario-c.mjs": "73d6fb6e11d4ace9ffc07c0411c54ef05559ad3b6aa1c17516c3379526abd107",
+          "tests/export/verify.mjs": "31ef5df3416e29d9aa3ae6b26ee1ac044e943ea023a58f07c916e3de75c2df73",
+          "tests/final-gate.mjs": "b801faad434c413006cb9a49bb9d4380aebcdb31f0aad73ec8976cdde06114e5",
+          "tests/fixtures/README.md": "a15b736af3ee91ff675acdb1c47c70ce310387ba311041debe4883d3aeb19545",
+          "tests/fixtures/false-success/A-status-200-error-page/case.json": "e48779ba627d0b37b8f04fe6d52dd41821d2b0cd3d230df5667349b0185b903d",
+          "tests/fixtures/false-success/A-status-200-error-page/input/page.html": "8a1ee5b84f63e2be23849c315b493504c70cd811bf7b60ea2f326a9e6a53108f",
+          "tests/fixtures/false-success/A-status-200-error-page/input/transport.json": "dee558d7d7628b29dc5bf59401873845b83a5b662f27d68adc566b88c5dbcfb8",
+          "tests/fixtures/false-success/B-requested-final-mismatch/case.json": "202ab957c3b7692b680698dc53da1b43f2f3d51f45b6a31757bdd896146f3721",
+          "tests/fixtures/false-success/B-requested-final-mismatch/input/final-page.html": "eb1510209e69c05504ae7422b21e375197f098d96104208912a0b7e47d3a7f3d",
+          "tests/fixtures/false-success/B-requested-final-mismatch/input/redirect-chain.json": "4442b38ef983140f7aad14bd394d490645b414c07be0f82fad326ed1c5657f8a",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/case.json": "5cf11590bb1d8d89a222b78880dde82329e221a0cd35669fefa25673c55b95e9",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/legacy-extraction.json": "ef7f2405730eed0c4bd03cf5d41cf8bdf8f677afd2e92565388ca5cf1ef34266",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/listing.html": "ed42bce47a674ee9e8998c6a84311dd27e9a57d6ab537345b078586708c5a616",
+          "tests/fixtures/false-success/C-visible-cards-extractor-zero/input/screenshot.svg": "928b8ac92157b468a220f41c0b5b171053d0bf21ea95b920b90d52c275f054c9",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/case.json": "b9759d4376b5b411480997069e11c4eb8168d9a0309c6d80746d5bbb6ad47d85",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/events.jsonl": "704ff7294d172141709e2a01cbf629bb41d0c7dd9ca02615b82af66decaeca75",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/judgments.jsonl": "885bda9d2b89a4722c6205f534b55f22e1035c969a48893255d9ae7933253877",
+          "tests/fixtures/false-success/D-false-complete-unvisited-112/input/legacy-state.json": "ed2c15ab487f1ef675a6acd21833af615a9f81b07a38c5ca5f30283d3bc812c1",
+          "tests/fixtures/false-success/verify.mjs": "0e6d4072d30a92cb2ed5f39ff6e6a4b31855bb6e3b3debbc4b1e537e1d03941c",
+          "tests/fixtures/manifest.json": "4021ad70cedef2c451093139caf59d243c06bd2d0c5e8ae5565a0df66ea21e14",
+          "tests/fixtures/server.mjs": "ddcf0a9c43de78389ba5957e121de37ba82665747f1c037b827c98c5129d5eed",
+          "tests/fixtures/url-samples.json": "643ae841d07d69e0758c05c9058e12422c014c1f7a6489f2a846269370fb9a75",
+          "tests/fixtures/verify-fixtures.mjs": "da554c46842708aba4c506538d8183327b7e4e5e6fe8c11997cac57311c3d56a",
+          "tests/gate0.mjs": "67d384e496b97f55e8e22729305423b52791bcff181a78d2a64f3807488a81d5",
+          "tests/gate1.mjs": "70ae7c3091d88641e48f6b4a38046dc08c12822069f63c4e5ef7423a2a1dc1ce",
+          "tests/gate2-worker.mjs": "e03769521422e2c85750b1ed8a3a0f7d8bf89ddeb9eba6763bee725f6809fbd0",
+          "tests/gate2.mjs": "4e76c8af36a7561f86b7ceeb1925eb4f34f68d429476b8e3c9ed8495193b3655",
+          "tests/gate3.mjs": "d4eab81595b7af5146de6ad498344ca15375c24b4036d83c6fbdbd478077be5c",
+          "tests/gate4.mjs": "f48ac5215f59461143c267a46316d691f7665cae2954b2019fe54f4b403d5c87",
+          "tests/gate5.mjs": "a740bac27fdb8575213b3cc8e4624dbeb792a4524575bf508fa9174c22312f07",
+          "tests/gate6-manager.mjs": "bbf4166a18143a0afc4f62fcf4db68319b8d68c60f589810feb41958f6fb04e5",
+          "tests/gate6.mjs": "aaebf33b2900c81d41511f4593a3696e0e5a084d5ed572d0cd3eb6db039c55de",
+          "tests/gate7.mjs": "fea5acf229d1022862d01b690f89c855b3890dd67b8c6e03f358f8b696028fc7",
+          "tests/images/verify.mjs": "5db0fbb0a53b12fef9b6f069eef9f65f50546bbf33dfa3d5edb5a46e2f4027d8",
+          "tests/judgments/verify.mjs": "8501e28df54ce0917ed4145dcde3d2a3f890bccfa9b158a182077c82ccdea473",
+          "tests/map-domain/verify.mjs": "c4c2161f372f7b6012d58c93895c8f6373def1d82dc37fb04bf4e289dd4cd879",
+          "tests/map-parser/verify.mjs": "63e310cb1fe5d08c29739c742c96b569b8c901042a13dbd8a2aa25931780d614",
+          "tests/network/README.md": "acab75531f742f34fa612ebe0277dbbf74b56a0715d64e52b7eac3fe4631a592",
+          "tests/network/verify.mjs": "4f3807d40e4c1b40ed21252c166f83c98abb14a6ad4dd83dd97851d488aca379",
+          "tests/pace/README.md": "d00ed3dffcda39e6c889a083b0a3fd98d6540c0cd0a25a5f7b77ea6500971aca",
+          "tests/pace/verify.mjs": "a16269551f75adc2031daed66514ef68f099d57e92da7d26aafca23b9efdb438",
+          "tests/pace/worker.mjs": "46dcf020aea2e23e3f25bc720725b00bde2b22c72b2654e935c67b6984bdf523",
+          "tests/report-judgments/verify.mjs": "0d96a26da73307d53d64e91d9ddb9c9a5a932c7f037eb3d541fa5aba5291378d",
+          "tests/reports/final.json": "054c919ddd915bdea33e1c78dcd366af8d485b4d0d85ac9998875ad9cff5981a",
+          "tests/reports/final.md": "d4c6bba3f0f35ba81a2509d0c82f27d7496610312e5b215f58f2fd5326ad3d38",
+          "tests/reports/gate0.json": "683ff609b7201f8a650725ecbf68d261eae3e64447431f56bc71a193fc96c778",
+          "tests/reports/gate0.md": "352c943c7f0f4001bfe739a8a697cfee75a3e3546624ec56863fac74cd65553d",
+          "tests/reports/gate1.json": "fb5f82a1ccf17d7b01c49dedab37abf55b87d83124bdf6ab270eb20026cf20e2",
+          "tests/reports/gate1.md": "73efb81b615deb51049dbcc79494853166ab64dea5c5441319347237c93e3958",
+          "tests/reports/gate2.json": "1c38876115a15730f0890f71d05d3796ed41461cfc932d87a1bc49b30cdf9cff",
+          "tests/reports/gate2.md": "d866d945934a20cc992255cf5bd040a5a9f12ceca2ac7accedc7157953d4a1f4",
+          "tests/reports/gate3.json": "0cdf2c51368c3f7ecce4048c78fae0eb0584eaf2cbac0507f14b01e6bd98c4da",
+          "tests/reports/gate3.md": "2360d95210987bd562a7a61bd33b9421ba67ef6201dd7532249a4583c8fa8404",
+          "tests/reports/gate4.json": "c866b7f1f651dd5ccaa04796404d62d66c0f303be523547b49f1c2c495fb3ca4",
+          "tests/reports/gate4.md": "02c888aa2549b900279b26feb01df484b861e3302c6cfab247153e774a4e1a10",
+          "tests/reports/gate5.json": "d370943a850f5bb73c3eb9020e5961b37cd551332127255f2adbb45437ecb999",
+          "tests/reports/gate5.md": "c513f8bc0a88afb34c11aa431159a415e1e4bc1a3fbb603a58d0f7949326b6da",
+          "tests/reports/gate6.json": "92c43b3a07742511aa84911cacdb67c5cc39ee03364f394656181452483d2f87",
+          "tests/reports/gate6.md": "4d893dc21a983d198f1f68efd9bb8d627b713363ebf72a51bda44f0eafe54fce",
+          "tests/reports/gate7.json": "b3828d16da354272e4e5736533ef512652d784766d8d9788a7ec22408aa8790b",
+          "tests/reports/gate7.md": "6007c5fd8f352bf6d1159df9c19d29d56fa3373c0ca1be1e9dfb89ca8e7b407b",
+          "tests/reports/scenario-a.md": "4fc26a924c74c2c1050592b63369477df7c4e3b32122dbd19e3af937f761a621",
+          "tests/reports/scenario-b.md": "bd4615b8f53876318854a7924ef930feecb5960bce1e8ad9fb0a80728e2adf03",
+          "tests/reports/scenario-c.md": "9a3c1bd6906a40afe1517854fb24a9641d2240cd70102c46eefffc57ec58f31c",
+          "tests/reports/transition.json": "5b4c6d83ad49b42cc9a33db738314f15b003c4cb65a232620f9d5a84f2af4d5f",
+          "tests/reports/transition.md": "f0d13dbe72ae5127fe577ea85bc1d8f78730d0c95f5712578c7347a2b8b59e58",
+          "tests/spikes/search-provider/artifacts/probe/bing-rss.txt": "854ab2dbfbf9e0a9049ad3c71d83a4b2da45bade4196d610bfe7468d462dd544",
+          "tests/spikes/search-provider/artifacts/probe/ddg-html.txt": "e9717e57ecd44ccc4630f79020475b8402784b332d65b552be82b2ba34b877a9",
+          "tests/spikes/search-provider/artifacts/probe/ddg-lite.txt": "a87f0d7dd1cdfa153aafbe4fb0652274853c06d275e2aecc2f17cbcba895e5bf",
+          "tests/spikes/search-provider/artifacts/robots/api.duckduckgo.com.txt": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+          "tests/spikes/search-provider/artifacts/robots/html.duckduckgo.com.txt": "2c0a4e6b1045007a90356d988c49c614d9f5079226e6476d57767cc2c68804c6",
+          "tests/spikes/search-provider/artifacts/robots/index.commoncrawl.org.txt": "f8fcf73067b07f1330225d83d2113ad21ffd0a8130e428692ba9555dcfa82da1",
+          "tests/spikes/search-provider/artifacts/robots/lite.duckduckgo.com.txt": "2c0a4e6b1045007a90356d988c49c614d9f5079226e6476d57767cc2c68804c6",
+          "tests/spikes/search-provider/artifacts/robots/marginalia-followed.txt": "cf1c0ed7da31c4e19a870dca79bfc4523daabbd57e9cf5b7bd752dc108379739",
+          "tests/spikes/search-provider/artifacts/robots/search.marginalia.nu.txt": "7e2e60c17c424cca46e70d14360a0df784d88720ff2e0c40e6c63869b4479e88",
+          "tests/spikes/search-provider/artifacts/robots/searx.be.txt": "95f1bac5ec5d956697cf8e241408ddd11a69da46e6fb1a55ee06649efc67b70b",
+          "tests/spikes/search-provider/artifacts/robots/www.bing.com.txt": "40d2da70c3b443225d5b01cc7b05117944980347637cc95ab285c6e4f5548235",
+          "tests/spikes/search-provider/artifacts/robots/www.mojeek.com.txt": "9249562d0d3731c25d7d0485d9d2297d21e65e8de477dc7d43605fe56d92420e",
+          "tests/spikes/search-provider/artifacts/robots/www.startpage.com.txt": "795bee4d79cfc811f19fa32f2ce9e9aaac481b367c34a2d85982f4ba2761624e",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-acceptable-use-v2.html": "a9d6562394efced8fcf2252ff30fbdc3b11e5abc5a0a5fe446739a1471306ea5",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-acceptable-use.html": "f6cee23756d636724ec83bf2e6ff808bae3c7b451b55e6646a33e25c941d5f66",
+          "tests/spikes/search-provider/artifacts/tos/duckduckgo-terms.html": "6f680184ffb10ea35a18180f3b92183b9ac392b36bd5b1071c439ffbd3428501",
+          "tests/spikes/search-provider/artifacts/tos/microsoft-services-agreement.html": "a26dd119ea338142e179925d7419ba38d85bc56cb1a0a1b5aea01694e5988e06",
+          "tests/spikes/search-provider/candidates.json": "55fe653af56f558007d882bc0b98370c12f11434b1c6a6cd4aa8adae5a01da76",
+          "tests/spikes/search-provider/decision.md": "9c2d2989c2927a24caaf38058e44fe17e6cf40ce83134b107bbcd18229bdf580",
+          "tests/spikes/search-provider/probe.mjs": "24cd24f8adebfb7be2f70ec30c78cd013d250403f2ce1af91609d9fa0f30c1fb",
+          "tests/spikes/search-provider/results/probe.json": "7f9a9d8bce049bdab7f20053db3f1ec9fb3f5d24f4019561902edf5d5228eefe",
+          "tests/spikes/search-provider/verify.mjs": "c75099ade3b65505af3387c9c78a98b02adb3a0e15986e7be3e44e1b6d9fd0e4",
+          "tests/spikes/sqlite-wal/README.md": "57a4965cde057f06d45e801fb5a67ae27876ec824b52b953c3caf996d9241116",
+          "tests/spikes/sqlite-wal/pace-spike.mjs": "e5f8d2925f6259837a16de50fa1a4cac38c3547aa977623c8e7c6bb7175be938",
+          "tests/spikes/sqlite-wal/pace-worker.mjs": "73a4938a0a5b6ccec86e33668ed4d9dc257c0ff6d33a57b4fd56735cd17ad6f0",
+          "tests/spikes/sqlite-wal/results/pace.json": "04b364a242a8f67be6153643f8df7736281d25367fad8d165f146297ace00495",
+          "tests/spikes/sqlite-wal/results/workspace.json": "2aaf6a3c0b74ccfde7159735e7f6c0a47c274c48d579c75b69e083ae1889528e",
+          "tests/spikes/sqlite-wal/run-all.mjs": "d44297c480ccbf4d6a6c133414964df4b2d867b39cd6681541b21cbed698f70b",
+          "tests/spikes/sqlite-wal/workspace-spike.mjs": "06bfd0ec72853fd96e6f8aa63f55bcb1dd56cd0524fd32063e2c54d24cc65f87",
+          "tests/spikes/sqlite-wal/workspace-worker.mjs": "23359d63616d760df1065fcf659ae91c3f072a6b70b3de3521552027de2abd5a",
+          "tests/status-full/verify.mjs": "b0432f75c3432fbcb4f05f189d364ec65f463b80301dca324e013a5e7a12ded2",
+          "tests/transition/trace-hook.mjs": "c3ed0851a5f33e012fbed7b4a845b65a1c296c867c1fb849a2a44069ce73133e",
+          "tests/transition/trace-register.mjs": "652f26b23fe6c440c08bdb84326a628ef85fc8fa6535b93609cb7202169ebbbd",
+          "tests/transition/verify.mjs": "d8f74a47d17abdf9a08581a8a4d24b505d025d818179f83f96064ac01c941531",
+          "tests/unit/db.mjs": "242133152390c23eb733673b3537e978f036599dca71dffddc1b56d8a327d2e7",
+          "tests/unit/import.mjs": "7ec5a6de56be8cd13f4f4aecd4c16f38ae8b439c4e02b375152a05619907dc82",
+          "tests/unit/items.mjs": "f382a4bdf6b4c8f4b6c321d2bbefd52860a3f58c332b5a7f41e355f8e673dc82",
+          "tests/unit/lease.mjs": "4c1f67ab5c1970c65f1d1be9c781d8b7c29aaffaa2e4eabb18cfac57b3b73d7d",
+          "tests/unit/paths.mjs": "22673cdc0613e3f1905ba80e16e6af0ee8782ca3005985b8a6294f2451eca4f5",
+          "tests/unit/status.mjs": "0f3a481973d11d3b53c839951c14008fd9e7e520064c84d0cc3d0e4e2065b50a",
+          "tests/unit/url.mjs": "7c4f4fdbf228cdaca2bd79cc4ea4cd6a34b5b84af48bdf3cd072c7dcd53f15b3",
+          "tests/unit/workspace-new.mjs": "aa05dbdf474ded20810e0e01f29f4d9a712862c583daf3b0ba351caf0cb3d59a"
+        }
+      },
+      "registration": {
+        "config_found": true,
+        "registered": true,
+        "command": "node",
+        "args": [
+          "/Users/taewonpark/.claude/tools/web-search/server.mjs"
+        ],
+        "env_keys": [
+          "WEBSEARCH_DEPS_DIR"
+        ],
+        "entrypoint_exists": true
+      },
+      "handshake": {
+        "server_name": "web-search",
+        "server_version": "2.0.0-dev",
+        "protocol_version": "2025-06-18",
+        "tool_count": 9,
+        "tool_names": [
+          "add_urls",
+          "collect",
+          "export",
+          "map_domain",
+          "next",
+          "report",
+          "retry",
+          "status",
+          "workspace_new"
+        ],
+        "tools_call_is_error": true,
+        "stderr_empty": false
+      },
+      "new_workspace_root": {
+        "path": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/websearch-workspace",
+        "exists": true
+      }
+    }
+  }
+}

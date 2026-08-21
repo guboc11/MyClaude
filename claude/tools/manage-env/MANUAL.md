@@ -8,10 +8,10 @@
 dibang 레포의 환경변수를 "값은 한 곳에만, 나머지는 생성물"로 관리하는 도구.
 설계 문서: `.claude/plans/2026-07-30-manage-env-mcp/PLAN.md`
 
-- 값의 단일 원천: `.claude/env/{localhost,dev,prod}.env` (gitignore, 사람이 에디터로만 편집)
-- 생성물: `apps/{api,dibang-wedding,guest-web}/.env.{환경}` + `.claude/env/docs/`(사람용 안내 문서)
+- 값의 단일 원천: `.claude/mcp-manage-env/{localhost,dev,prod}.env` (gitignore, 사람이 에디터로만 편집)
+- 생성물: `apps/{api,dibang-wedding,guest-web}/.env.{환경}` + `.claude/mcp-manage-env/docs/`(사람용 안내 문서)
 - 키 명세: 각 앱 `.env.example` (매핑 파일을 따로 만들지 않는다)
-- 사람용 정보: `.claude/env/guide.yaml` (설명·민감도·얻는 곳·스샷·주의 — 값 없음, 커밋)
+- 사람용 정보: `.claude/mcp-manage-env/guide.yaml` (설명·민감도·얻는 곳·스샷·주의 — 값 없음, 커밋)
 - 값 파일 표기: `KEY=값`(공유) / `KEY@앱=값`(그 앱에만)
 
 ## 도구 5개
@@ -45,5 +45,5 @@ dibang 레포의 환경변수를 "값은 한 곳에만, 나머지는 생성물"�
 - `lib.mjs` — 파서·상수의 단일 원천 (sync·check·docs·server 가 공유. 로직 중복 금지)
 - `sync.mjs` — 분배 생성기 (예: `node sync.mjs dev`)
 - `check.mjs` — 4원천 대조 순수 검증기 (아무 파일도 쓰지 않음)
-- `docs.mjs` — `.claude/env/docs/` 안내 문서 생성기
+- `docs.mjs` — `.claude/mcp-manage-env/docs/` 안내 문서 생성기
 - `server.mjs` — MCP 본체 (위 셋을 감싼다)

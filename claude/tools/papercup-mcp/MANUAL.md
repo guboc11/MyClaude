@@ -18,7 +18,7 @@ peer_inbox (number? unread_only? query?)    peer_mark (number, read)
 
 같은 와이파이(LAN)에 있는 다른 클로드에게 인터넷·커넥터·IP 손입력 없이 텍스트나 파일을
 보낸다. 서로 귀를 열어두면(peer_ear_up) 브로드캐스트로 자석처럼 상대를 찾고, 공개키를 교환해
-암호화된 통로로 한 통씩 주고받는다. 설계: `_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md`.
+암호화된 통로로 한 통씩 주고받는다. 설계: `_ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md`.
 
 핵심 성질:
 
@@ -81,7 +81,7 @@ peer_inbox (number? unread_only? query?)    peer_mark (number, read)
 | `.claude/tools/papercup-mcp/server.mjs` | MCP 창구 |
 | `.claude/tools/papercup-mcp/ear.mjs` | 귀 (수신 대기, detached) |
 | `.claude/tools/papercup-mcp/lib.mjs` · `send.mjs` · `inbox.mjs` | 공용 로직 · 송신 · 수신함 |
-| `.claude/papercup/` | 개인 상태 — 키·문패·지문 장부·수신함·받은 파일 (**git 제외**) |
+| `.claude/mcp-papercup/` | 개인 상태 — 키·문패·지문 장부·수신함·받은 파일 (**git 제외**) |
 
 ## 설치
 
@@ -89,4 +89,4 @@ peer_inbox (number? unread_only? query?)    peer_mark (number, read)
 MCP 재연결(/mcp) 필요. MCP 미지원 환경에서는 `node .claude/tools/mcp-call.mjs papercup <도구>`로 호출.
 
 같은 머신에서 시험하려면 `PAPERCUP_DIR`(상태 폴더)·`PAPERCUP_PORT`(UDP 포트)를 다르게 주어
-귀 두 개를 띄운다. 평소엔 기본값(`.claude/papercup/`, 47777).
+귀 두 개를 띄운다. 평소엔 기본값(`.claude/mcp-papercup/`, 47777).

@@ -46,7 +46,7 @@ UserPromptSubmit 훅이 그 문구를 컨텍스트에 주입한다.
 ```
 reminder_on{label: "lint"}                               → 프리셋 켜기
 reminder_on{text: "빌드 전에 lint 먼저"}                  → 즉석 문구 켜기
-reminder_on{file: "_CODE_CONVENTION/DB_MIGRATIONS.md"}   → 파일 참조 켜기
+reminder_on{file: "_CRAFT_GUIDE/DB_MIGRATIONS.md"}   → 파일 참조 켜기
 reminder_on{group: "coding"}                             → 그룹 통째로 켜기
 ```
 
@@ -64,7 +64,7 @@ reminder_on{group: "coding"}                             → 그룹 통째로 �
 ## 저장 (한 장 = 한 파일)
 
 ```
-.claude/reminders/                     ← .gitignore 한 줄 추가
+.claude/mcp-reminders/
   labels/{label}.md                    프리셋. 내용이 곧 문구, 파일 참조는 "@경로" 한 줄
   groups/{group}.md                    그룹. 프리셋 이름을 줄마다 하나씩
   always/{name}.md                     영구 점등. 세션을 가리지 않고 항상 나감
@@ -174,7 +174,7 @@ reminder_on{group:"coding"}
    `"reminder": { "type": "stdio", "command": "node", "args": [".claude/tools/reminder-mcp/server.mjs"] }`
 2. `.claude/settings.json` — UserPromptSubmit의 기존 codegraph echo 옆에 추가:
    `{ "type": "command", "command": "node .claude/tools/reminder-mcp/hook.mjs" }`
-3. `.gitignore` — `.claude/reminders/` 한 줄 (notepad와 같은 자리).
+3. `.gitignore` — `.claude/mcp-reminders/sessions/`만 제외한다. 프리셋·그룹은 팀 공유 자료로 추적한다.
 
 ## 다른 MCP 와의 연결 (2026-07-29 결정)
 

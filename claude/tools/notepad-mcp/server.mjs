@@ -13,8 +13,8 @@
 //   5. 구분선은 ASCII 하이픈 20개. 박스 문자(─)·## 헤딩 금지 (사람이 직접 칠 수 있어야 한다).
 //
 // 저장 (둘 다 gitignore 대상):
-//   날짜 노트  {repo}/.claude/notepad/{YYYY-MM}/{YYYY-MM-DD-HHMM}.md   그 순간을 찍고 끝난다
-//   주제 노트  {repo}/.claude/notepad/{YYYY-MM-DD}-{주제}.md            줄이 계속 쌓인다 (루트, 하위 폴더 없음)
+//   날짜 노트  {repo}/.claude/mcp-notepad/{YYYY-MM}/{YYYY-MM-DD-HHMM}.md   그 순간을 찍고 끝난다
+//   주제 노트  {repo}/.claude/mcp-notepad/{YYYY-MM-DD}-{주제}.md            줄이 계속 쌓인다 (루트, 하위 폴더 없음)
 
 import fs from 'node:fs';
 import os from 'node:os';
@@ -36,7 +36,7 @@ function root() {
 }
 
 const P = {
-  notepad: () => path.join(root(), '.claude', 'notepad'),
+  notepad: () => path.join(root(), '.claude', 'mcp-notepad'),
   month: (ym) => path.join(P.notepad(), ym),
   // 주제 노트는 월 폴더에 들어가지 않고 notepad 루트에 바로 놓인다.
   topic: (name) => path.join(P.notepad(), `${name}.md`),

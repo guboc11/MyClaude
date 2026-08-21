@@ -1,0 +1,466 @@
+{
+  "schema": "web-search-v2-fixture-manifest/1",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#22",
+  "source": "_PLAN/2026-08-11-web-search-mcp/PLAN.md 10단계 로컬 fixture 목록, 5-4 네트워크 안전",
+  "server": {
+    "file": "tests/fixtures/server.mjs",
+    "bind": "127.0.0.1",
+    "port": "argv[2] 로 고정할 수 있고, 안 주면 빈 포트를 잡아 stdout 첫 줄에 base URL 을 적는다",
+    "determinism": "본문에 절대 URL·시각·난수가 없다. 그래서 포트가 달라져도 같은 바이트가 나온다."
+  },
+
+  "how_to_read": {
+    "expect": "손으로 적은 구조 기대값이다. 시험이 받아 온 HTML 에서 따로 세어 대조한다. 두 수가 따로 만들어졌다는 것이 이 계약의 요점이다.",
+    "drift": "서버에서 실제로 잰 값이다(--write-drift 로 채운다). 사람이 지어내지 않는다. 이 값이 어긋나면 fixture 가 소리 없이 바뀐 것이다.",
+    "browser": "브라우저로 열었을 때만 다른 값. #27 browser collect 가 생긴 뒤 게이트 3 이 본다.",
+    "collect": "수집 계층(#26~#28)이 이 라우트에서 내야 할 결과. 게이트 3 이 본다. 여기서는 적어 두기만 한다."
+  },
+
+  "counting_rule": {
+    "links": "<script>·<style>·주석을 지운 뒤 href 를 가진 <a> 의 수",
+    "images": "같은 전처리 뒤 src 를 가진 <img> 의 수",
+    "why_strip_script": "/js/rendered 는 카드 HTML 을 script 안에 문자열로 들고 있다. 원문 그대로 세면 브라우저로 연 것과 구분되지 않는다.",
+    "chrome": "모든 HTML 쪽에 같은 머리·바닥이 붙는다 — 링크 6 · 그림 6. 본문 수에 늘 이만큼이 더해진다."
+  },
+
+  "warning_codes": {
+    "note": "수집이 남길 관찰. 판정이 아니다 — 유효성은 에이전트가 report 로 말한다. 정확한 문자열은 #26~#28 이 구현하고 게이트 3 이 이 표와 대조한다.",
+    "redirected": "요청한 URL 과 도착한 URL 이 다르다",
+    "http_error_status": "상태가 400 이상이다",
+    "error_page_text_detected": "본문에 오류 문구가 보인다(관찰일 뿐, 무효 판정이 아니다)",
+    "image_fetch_partial": "선언된 그림 중 일부를 못 받았다",
+    "response_truncated": "응답이 크기 상한에 걸려 잘렸다",
+    "robots_disallowed": "robots.txt 가 명시적으로 막았다"
+  },
+
+  "kinds": [
+    { "id": "static-normal", "title": "정상 정적", "routes": ["/static/normal", "/static/plain"] },
+    { "id": "js-rendered", "title": "JS 렌더링", "routes": ["/js/rendered"] },
+    { "id": "status-200-error", "title": "상태 200 오류", "routes": ["/error/soft-404"] },
+    { "id": "redirect", "title": "리다이렉트", "routes": ["/redirect/one", "/redirect/chain-3", "/redirect/chain-2", "/redirect/chain-1", "/redirect/permanent", "/redirect/loop", "/redirect/to-error", "/redirect/arrived"] },
+    { "id": "http-error", "title": "404·403·429", "routes": ["/status/404", "/status/403", "/status/429", "/status/500", "/status/429-then-200"] },
+    { "id": "hang-timeout", "title": "무한 로딩·타임아웃", "routes": ["/hang/headers", "/hang/body", "/slow/2s", "/infinite/scroll"] },
+    { "id": "image-partial", "title": "이미지 일부 실패", "routes": ["/images/partial"] },
+    { "id": "very-long", "title": "매우 긴 페이지", "routes": ["/long/page", "/long/huge"] }
+  ],
+
+  "routes": [
+    {
+      "path": "/static/normal",
+      "kind": "static-normal",
+      "expect": {
+        "status": 200,
+        "final_path": "/static/normal",
+        "content_type": "text/html; charset=utf-8",
+        "title": "청첩장 목록",
+        "links": 30,
+        "images": 18,
+        "text_contains": ["총 12개", "디자인 12"],
+        "text_not_contains": ["Something went wrong"],
+        "warnings": []
+      },
+      "notes": "카드 12장 = 링크 24 · 그림 12, 머리바닥 6·6 을 더해 30·18. JSON-LD 는 head 의 script 라 세는 대상이 아니다.",
+      "drift": { "body_bytes": 4528, "body_sha256": "895467cba726475c628ba16f93cea082d209feec4970b6a25c8232b0a0d540b8", "text_bytes": 183 }
+    },
+    {
+      "path": "/static/plain",
+      "kind": "static-normal",
+      "expect": {
+        "status": 200,
+        "final_path": "/static/plain",
+        "content_type": "text/html; charset=utf-8",
+        "title": "청첩장 목록(구조만)",
+        "links": 30,
+        "images": 18,
+        "text_contains": ["총 12개"],
+        "text_not_contains": ["schema.org"],
+        "warnings": []
+      },
+      "notes": "JSON-LD 가 없다. 선언을 못 찾았다고 목록을 버리면 안 되는 자리.",
+      "drift": { "body_bytes": 3178, "body_sha256": "747a55116759fc78c27c61fc573d9240d1e6b0c49d50c1b14e49c5c2bf99a90f", "text_bytes": 194 }
+    },
+    {
+      "path": "/js/rendered",
+      "kind": "js-rendered",
+      "expect": {
+        "status": 200,
+        "final_path": "/js/rendered",
+        "content_type": "text/html; charset=utf-8",
+        "title": "동적 목록",
+        "links": 6,
+        "images": 6,
+        "text_contains": [],
+        "text_not_contains": ["총 12개", "디자인 1"],
+        "warnings": []
+      },
+      "browser": { "links": 30, "images": 18, "text_contains": ["총 12개"], "checked_by": "gate3" },
+      "notes": "HTTP 로는 머리바닥뿐이다. 카드 HTML 은 script 안 문자열이라 원문에는 있지만 마크업이 아니다.",
+      "drift": { "body_bytes": 3578, "body_sha256": "82445dc9ba3b50545d66daedd570755c0f0e80676aa5925412c8a9a4636dfa08", "text_bytes": 13 }
+    },
+    {
+      "path": "/error/soft-404",
+      "kind": "status-200-error",
+      "regression": "R-FALSE-200-ERROR",
+      "expect": {
+        "status": 200,
+        "final_path": "/error/soft-404",
+        "content_type": "text/html; charset=utf-8",
+        "title": "Whoops",
+        "links": 6,
+        "images": 6,
+        "text_contains": ["Something went wrong", "고객센터"],
+        "text_not_contains": ["총 12개"],
+        "warnings": ["error_page_text_detected"]
+      },
+      "collect": { "result": "success", "why": "요청한 산출물이 다 생겼다. success 는 자료가 유효하다는 뜻이 아니다.", "judgment": null, "checked_by": "gate3" },
+      "notes": "본문을 길게 둔 이유: 글이 짧아서 걸리면 오류 문구를 실제로 봤는지 확인할 수 없다.",
+      "drift": { "body_bytes": 1520, "body_sha256": "c120736fe579f238d5de97b8d012e5879406fd4834fc2250c3b08dbf92548f18", "text_bytes": 798 }
+    },
+    {
+      "path": "/redirect/one",
+      "kind": "redirect",
+      "expect": {
+        "status": 302,
+        "location": "/redirect/arrived",
+        "final_path": "/redirect/arrived",
+        "hops": 1,
+        "content_type": "text/html; charset=utf-8",
+        "links": 7,
+        "images": 6,
+        "warnings": ["redirected"]
+      },
+      "notes": "302 본문에도 머리바닥이 있고 안내 링크가 하나 더 있다 — 링크 7. 따라간 뒤 본문은 /redirect/arrived 의 것이다.",
+      "drift": { "body_bytes": 778, "body_sha256": "19ee4b0a82bf98581feb29f25ae8e560a5398683d0a23cadbc5afef572c2f63f", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/chain-3",
+      "kind": "redirect",
+      "expect": {
+        "status": 302,
+        "location": "/redirect/chain-2",
+        "final_path": "/redirect/arrived",
+        "hops": 3,
+        "content_type": "text/html; charset=utf-8",
+        "links": 7,
+        "images": 6,
+        "warnings": ["redirected"]
+      },
+      "notes": "chain-3 → chain-2 → chain-1 → arrived. 홉마다 목적지 검사가 다시 일어나야 한다(#25).",
+      "drift": { "body_bytes": 778, "body_sha256": "2e5b8e5abf4dae84fc83e3470f0e8b4b5648106381fb4a2578d10f565576ec47", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/chain-2",
+      "kind": "redirect",
+      "expect": { "status": 302, "location": "/redirect/chain-1", "final_path": "/redirect/arrived", "hops": 2, "content_type": "text/html; charset=utf-8", "links": 7, "images": 6, "warnings": ["redirected"] },
+      "drift": { "body_bytes": 778, "body_sha256": "afd867e8a74b7c8a42e29f918ca902a00097c6072b36f31e7f629ed03af58912", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/chain-1",
+      "kind": "redirect",
+      "expect": { "status": 302, "location": "/redirect/arrived", "final_path": "/redirect/arrived", "hops": 1, "content_type": "text/html; charset=utf-8", "links": 7, "images": 6, "warnings": ["redirected"] },
+      "drift": { "body_bytes": 778, "body_sha256": "19ee4b0a82bf98581feb29f25ae8e560a5398683d0a23cadbc5afef572c2f63f", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/permanent",
+      "kind": "redirect",
+      "expect": { "status": 301, "location": "/redirect/arrived", "final_path": "/redirect/arrived", "hops": 1, "content_type": "text/html; charset=utf-8", "links": 7, "images": 6, "warnings": ["redirected"] },
+      "notes": "301 도 302 와 같은 자리로 간다. 영구·임시 차이를 기록하는지 보는 짝.",
+      "drift": { "body_bytes": 778, "body_sha256": "19ee4b0a82bf98581feb29f25ae8e560a5398683d0a23cadbc5afef572c2f63f", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/to-error",
+      "kind": "redirect",
+      "regression": "R-FALSE-REDIRECT-MISMATCH",
+      "expect": {
+        "status": 302,
+        "location": "/error/soft-404",
+        "final_path": "/error/soft-404",
+        "hops": 1,
+        "content_type": "text/html; charset=utf-8",
+        "links": 7,
+        "images": 6,
+        "warnings": ["redirected", "error_page_text_detected"]
+      },
+      "notes": "요청한 곳과 도착한 곳이 다르고 도착지가 오류 화면이다. 요청 URL 만 기록하면 이 사실이 사라진다.",
+      "drift": { "body_bytes": 776, "body_sha256": "bf3d7075e3f7d6d3485c370284286e513b02773bd98a18b49e2fcfb407b5eba9", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/loop",
+      "kind": "redirect",
+      "expect": {
+        "status": 302,
+        "location": "/redirect/loop",
+        "final_path": null,
+        "content_type": "text/html; charset=utf-8",
+        "links": 7,
+        "images": 6,
+        "warnings": []
+      },
+      "collect": { "result": "failed", "error_stage": "redirect", "error_code_family": "redirect_limit", "why": "자기 자신으로 돌아간다. 상한이 없으면 끝나지 않는다.", "checked_by": "gate3" },
+      "notes": "따라가면 안 되는 라우트다. 시험은 한 홉만 손으로 확인한다.",
+      "drift": { "body_bytes": 775, "body_sha256": "078ad329e14caadb691b71eb081ce6e316aa7fcd195861d53123f2353dbb67f4", "text_bytes": 55 }
+    },
+    {
+      "path": "/redirect/arrived",
+      "kind": "redirect",
+      "expect": {
+        "status": 200,
+        "final_path": "/redirect/arrived",
+        "content_type": "text/html; charset=utf-8",
+        "title": "청첩장 목록(도착)",
+        "links": 30,
+        "images": 18,
+        "text_contains": ["총 12개"],
+        "warnings": []
+      },
+      "drift": { "body_bytes": 4536, "body_sha256": "7ae167ffa8022de77913b16914578606d497cc446fccc1759be4a2c6bc3205fb", "text_bytes": 191 }
+    },
+    {
+      "path": "/status/404",
+      "kind": "http-error",
+      "expect": {
+        "status": 404,
+        "final_path": "/status/404",
+        "content_type": "text/html; charset=utf-8",
+        "title": "404 Not Found",
+        "links": 6,
+        "images": 6,
+        "text_contains": ["404 Not Found"],
+        "warnings": ["http_error_status"]
+      },
+      "collect": { "result": "success", "why": "상태가 404 여도 본문은 받았다. 상태는 기록하고 판정은 에이전트가 한다.", "checked_by": "gate3" },
+      "drift": { "body_bytes": 772, "body_sha256": "a319d1f728fb30b53c1e59f76bce5c68ead99b200de0cee28f2e0a2e8ddb9993", "text_bytes": 72 }
+    },
+    {
+      "path": "/status/403",
+      "kind": "http-error",
+      "expect": { "status": 403, "final_path": "/status/403", "content_type": "text/html; charset=utf-8", "title": "403 Forbidden", "links": 6, "images": 6, "text_contains": ["403 Forbidden"], "warnings": ["http_error_status"] },
+      "drift": { "body_bytes": 758, "body_sha256": "73e70a55c2ae936ed10682804e4274e2683b3c1e299cc921e66c4140efcef2a7", "text_bytes": 58 }
+    },
+    {
+      "path": "/status/429",
+      "kind": "http-error",
+      "expect": { "status": 429, "final_path": "/status/429", "content_type": "text/html; charset=utf-8", "title": "429 Too Many Requests", "links": 6, "images": 6, "retry_after": "1", "text_contains": ["429 Too Many Requests"], "warnings": ["http_error_status"] },
+      "notes": "언제 불러도 429 다. 물러남 간격을 시험하는 자리.",
+      "drift": { "body_bytes": 774, "body_sha256": "858d6852f7c9a7c26092d9133d27e9a50c7a60a54b42430694d2603d077650e6", "text_bytes": 74 }
+    },
+    {
+      "path": "/status/500",
+      "kind": "http-error",
+      "expect": { "status": 500, "final_path": "/status/500", "content_type": "text/html; charset=utf-8", "title": "500 Internal Server Error", "links": 6, "images": 6, "text_contains": ["500 Internal Server Error"], "warnings": ["http_error_status"] },
+      "drift": { "body_bytes": 790, "body_sha256": "0c07baf723f4f75f052beb3f5d2b3860b9ca5c45427da89576c1b5113da54e71", "text_bytes": 90 }
+    },
+    {
+      "path": "/status/429-then-200",
+      "kind": "http-error",
+      "stateful": {
+        "key_param": "key",
+        "rule": "같은 key 로 처음 두 번은 429, 세 번째부터 200",
+        "why_deterministic": "세는 단위가 key 라서 시험마다 새 key 를 쓰면 전역 상태를 지우지 않아도 언제나 같은 순서가 나온다"
+      },
+      "expect": {
+        "sequence": [
+          { "n": 1, "status": 429, "retry_after": "1", "links": 6, "images": 6 },
+          { "n": 2, "status": 429, "retry_after": "1", "links": 6, "images": 6 },
+          { "n": 3, "status": 200, "links": 30, "images": 18, "text_contains": ["총 12개"] }
+        ],
+        "content_type": "text/html; charset=utf-8",
+        "warnings": ["http_error_status"]
+      },
+      "drift": { "body_bytes": 3185, "body_sha256": "5f1541e2b184096fb41152f643391bb352a07ae417a480971b8f370c8857efbe", "text_bytes": 201, "measured_at_n": 3 }
+    },
+    {
+      "path": "/hang/headers",
+      "kind": "hang-timeout",
+      "expect": { "responds": false, "headers_sent": false },
+      "collect": { "result": "failed", "error_stage": "response", "error_code_family": "timeout", "checked_by": "gate3" },
+      "notes": "연결은 되는데 머리조차 오지 않는다. 부른 쪽이 스스로 끊지 않으면 영영 안 끝난다. /control/release-hangs 로 서버 쪽에서 풀 수 있다.",
+      "drift": { "body_bytes": null, "body_sha256": null, "text_bytes": null }
+    },
+    {
+      "path": "/hang/body",
+      "kind": "hang-timeout",
+      "expect": { "responds": true, "headers_sent": true, "status": 200, "body_complete": false, "content_type": "text/html; charset=utf-8" },
+      "collect": { "result": "failed", "error_stage": "body", "error_code_family": "timeout", "checked_by": "gate3" },
+      "notes": "머리와 본문 앞부분만 오고 멈춘다. 받다 만 본문이 정상 artifact 로 올라가면 안 된다.",
+      "drift": { "body_bytes": 425, "body_sha256": "8915dc71272f4f957c1e9827ef331c110396eb86a1f7e125ae1d056f5079fda8", "text_bytes": 45 }
+    },
+    {
+      "path": "/slow/2s",
+      "kind": "hang-timeout",
+      "expect": {
+        "status": 200,
+        "final_path": "/slow/2s",
+        "content_type": "text/html; charset=utf-8",
+        "title": "느린 쪽",
+        "links": 30,
+        "images": 18,
+        "min_elapsed_ms": 2000,
+        "text_contains": ["느리게 온 목록"],
+        "warnings": []
+      },
+      "notes": "상한이 2초보다 짧으면 걸리고 길면 통과해야 한다. 상한이 실제로 도는지 보는 양성 대조.",
+      "drift": { "body_bytes": 3172, "body_sha256": "f36f57fbe99452f1a6a35d97d55427a7b07182ef163c2c355a830d93f7fc745c", "text_bytes": 188 }
+    },
+    {
+      "path": "/infinite/scroll",
+      "kind": "hang-timeout",
+      "expect": {
+        "status": 200,
+        "final_path": "/infinite/scroll",
+        "content_type": "text/html; charset=utf-8",
+        "title": "무한 목록",
+        "links": 6,
+        "images": 6,
+        "warnings": []
+      },
+      "browser": { "grows_on_scroll": true, "requires_scroll_limit": true, "checked_by": "gate3" },
+      "notes": "HTTP 로는 평범하다. 브라우저로 열고 바닥까지 내려가려 하면 끝나지 않는다.",
+      "drift": { "body_bytes": 1378, "body_sha256": "a4796fec84cd5e3f572113e64f4e926c60fcf6b851f00835e0f2cd4741a65075", "text_bytes": 13 }
+    },
+    {
+      "path": "/images/partial",
+      "kind": "image-partial",
+      "expect": {
+        "status": 200,
+        "final_path": "/images/partial",
+        "content_type": "text/html; charset=utf-8",
+        "title": "그림이 일부 빠진 목록",
+        "links": 22,
+        "images": 14,
+        "text_contains": ["총 8개"],
+        "warnings": ["image_fetch_partial"]
+      },
+      "images_detail": {
+        "declared_in_main": 8,
+        "declared_in_chrome": 6,
+        "ok": 10,
+        "not_found": 3,
+        "truncated": 1,
+        "ok_paths": ["/img/ok/p1.png", "/img/ok/p2.png", "/img/ok/p3.png", "/img/ok/p4.png"],
+        "not_found_paths": ["/img/fail/p5.png", "/img/fail/p6.png", "/img/fail/p7.png"],
+        "truncated_paths": ["/img/truncated/p8.png"],
+        "truncated_rule": "content-length 는 온전한 길이를 적고 앞 20바이트만 보낸 뒤 소켓을 끊는다"
+      },
+      "notes": "카드 8장 = 링크 16 · 그림 8, 머리바닥 6·6 을 더해 22·14. 그림 실패가 쪽 전체의 실패는 아니다.",
+      "drift": { "body_bytes": 2397, "body_sha256": "3952a8142402802adb3bd6e3c0057469657e7fd5f29026b8c536216a7666fdb9", "text_bytes": 156 }
+    },
+    {
+      "path": "/long/page",
+      "kind": "very-long",
+      "expect": {
+        "status": 200,
+        "final_path": "/long/page",
+        "content_type": "text/html; charset=utf-8",
+        "title": "아주 긴 목록",
+        "links": 4006,
+        "images": 2006,
+        "text_contains": ["총 2000개", "디자인 2000"],
+        "warnings": []
+      },
+      "notes": "카드 2000장 = 링크 4000 · 그림 2000, 머리바닥 6·6 을 더해 4006·2006. 링크 manifest 가 몇 줄이어야 하는지의 기준.",
+      "drift": { "body_bytes": 421252, "body_sha256": "d4b762b6d48a4e9c667d7f57adb5a8eb252caa6866ea08088b0f8820c45d1778", "text_bytes": 28940 }
+    },
+    {
+      "path": "/long/huge",
+      "kind": "very-long",
+      "expect": {
+        "status": 200,
+        "final_path": "/long/huge",
+        "content_type": "text/html; charset=utf-8",
+        "title": "아주 무거운 쪽",
+        "links": 6,
+        "images": 6,
+        "min_body_bytes": 12582912,
+        "text_contains": ["채움 글"],
+        "warnings": []
+      },
+      "collect": { "note": "응답 크기 상한을 넘기면 response_truncated 가 붙어야 한다. 상한 값은 #25 가 정한다.", "checked_by": "gate3" },
+      "notes": "12MB 이상. 링크는 적고 본문만 무겁다 — 크기 상한과 텍스트 잘림을 링크 수와 분리해 보려는 것.",
+      "drift": { "body_bytes": 12583696, "body_sha256": "ff18d6fb6bb25b02e54754c36e9e368b3f8d98b7a5dcb23dd8ec9a2aa8d6aa26", "text_bytes": 12357153 }
+    }
+  ],
+
+  "supporting_routes": [
+    { "path": "/", "expect": { "status": 200, "title": "가짜 청첩장 가게", "links": 6, "images": 6, "text_contains": ["작은 가게"] }, "drift": { "body_bytes": 1462, "body_sha256": "1c0450bbcda94de70ff612c637837a1de784150f0528544f0f73dd0b907f6a8f", "text_bytes": 741 } },
+    { "path": "/about", "expect": { "status": 200, "title": "소개", "links": 6, "images": 6, "text_contains": ["시안"] }, "drift": { "body_bytes": 1336, "body_sha256": "efb28331fa468ef47dbe6f0e2088a0df8950d67c79951bc5fcbd5100cedb379d", "text_bytes": 622 } },
+    { "path": "/help", "expect": { "status": 200, "title": "도움말", "links": 6, "images": 6 }, "drift": { "body_bytes": 763, "body_sha256": "1726ef6da9e7562e87a7078ce00c92850cff23df6ee2437a20eb9faec3f83f5f", "text_bytes": 63 } },
+    { "path": "/terms", "expect": { "status": 200, "title": "이용약관", "links": 6, "images": 6 }, "drift": { "body_bytes": 769, "body_sha256": "36a739229e5c010b48e935e57bf4dac82b4ed2f214dd1c195cc4c66bb47a1013", "text_bytes": 69 } },
+    { "path": "/privacy", "expect": { "status": 200, "title": "개인정보 처리방침", "links": 6, "images": 6 }, "drift": { "body_bytes": 798, "body_sha256": "9a9e1f2c145911eb7243bbdd11ebff1310f649feaf5cb8286240e58de7a6a742", "text_bytes": 98 } },
+    { "path": "/contact", "expect": { "status": 200, "title": "문의", "links": 6, "images": 6 }, "drift": { "body_bytes": 782, "body_sha256": "bf1ec2d779643798d48f4e0ffb8e7394adef35573a52147d7242b443f7fbdc9a", "text_bytes": 82 } },
+    { "path": "/private/page", "expect": { "status": 200, "title": "막아 둔 쪽", "links": 6, "images": 6 }, "robots": "disallowed", "drift": { "body_bytes": 792, "body_sha256": "6e51408828306b4c03b257c0ca9099eb284775954303e32ef7f690d55a268775", "text_bytes": 92 } },
+    { "path": "/robots.txt", "expect": { "status": 200, "content_type": "text/plain; charset=utf-8", "disallow": ["/private/", "/hang/"] }, "drift": { "body_bytes": 160, "body_sha256": "75c1dc353e5a8be0992b154f01bba53953811833f6990bcdbb98e4653ba1681a", "text_bytes": 159 } },
+    { "path": "/no-such-page", "expect": { "status": 404, "title": "404 Not Found", "links": 6, "images": 6 }, "note": "표에 없는 경로는 모두 여기로 온다", "drift": { "body_bytes": 748, "body_sha256": "63b8b15ffbca071e226dc60426db70757f70d15309f67398b4ac6036e5093fb3", "text_bytes": 48 } },
+
+    { "path": "/redirect/private", "expect": { "status": 302, "location": "http://10.0.0.5/x", "links": 7, "images": 6 }, "note": "#25 — 첫 홉이 안전해도 다음 홉이 사설망이면 따라가지 않는다", "drift": { "body_bytes": 778, "body_sha256": "cfa13e91a4f27062c433334589e0b9c73a25814e7fbd4c04209e30bd1f506ce2", "text_bytes": 55 } },
+    { "path": "/redirect/other-port", "expect": { "status": 302, "location": "http://127.0.0.1:9/x", "links": 7, "images": 6 }, "note": "#25 — 같은 루프백이라도 허용 목록에 없는 포트면 막힌다", "drift": { "body_bytes": 781, "body_sha256": "b4c82445592bb776bcc9e85600ab8ff9855400fde809e489d47bf1649e9fba7c", "text_bytes": 55 } },
+    { "path": "/redirect/scheme", "expect": { "status": 302, "location": "ftp://example.com/x", "links": 7, "images": 6 }, "note": "#25 — http·https 밖의 규약으로는 안 나간다", "drift": { "body_bytes": 780, "body_sha256": "0377d86de9392419131e48c077ffeb64152630070461684b0ba5f34c698f0031", "text_bytes": 55 } },
+    { "path": "/redirect/no-location", "expect": { "status": 302, "title": "어디로?", "links": 6, "images": 6 }, "note": "#25 — 3xx 인데 Location 이 없다", "drift": { "body_bytes": 732, "body_sha256": "2124cfcb398bb6bd78e4744b35f35c389659af7b39e12a364d493a97afaaac8e", "text_bytes": 40 } },
+
+    { "path": "/encoding/euc-kr", "expect": { "status": 200, "content_type": "text/html; charset=euc-kr", "links": 1, "images": 0 }, "note": "#26 — 머리에 charset 이 있다. 본문이 EUC-KR 바이트라 UTF-8 로 읽으면 깨진다", "drift": { "body_bytes": 253, "body_sha256": "617230c9325d2447fe4984c59c4ae8c3b0f14fbe35d1cb777ec595de3f6b5e6b", "text_bytes": 220 } },
+    { "path": "/images/browser", "expect": { "status": 200, "title": "브라우저 그림", "links": 0, "images": 7 }, "note": "#30 — currentSrc·CSS 배경·화면 밖 lazy·리다이렉트·404·data URI. CSS 배경과 picture source 는 <img src> 가 아니라 이 셈에서 빠진다", "browser": { "css_background": 1, "lazy_below_fold": 1, "checked_by": "gate3" }, "drift": { "body_bytes": 1100, "body_sha256": "581aea07b49fff9fdba2181454329099e092e2d247036f6284e2ef0268406504", "text_bytes": 19 } },
+    { "path": "/images/rich", "expect": { "status": 200, "title": "그림 모음", "links": 0, "images": 9 }, "note": "#27 — 같은 주소 중복·srcset·picture source·og:image·리다이렉트·엉뚱한 형식·404·큰 파일·data URI·주소 없는 img. <img src> 만 세는 규칙이라 source srcset 과 og 는 이 셈에서 빠진다", "drift": { "body_bytes": 1160, "body_sha256": "9d923fed756977bc70538e95587d5396e3fc8f75922a233240a53d440225f352", "text_bytes": 13 } },
+    { "path": "/links/mixed", "expect": { "status": 200, "title": "링크 모음", "links": 13, "images": 1 }, "note": "#26 — 상대·뿌리·바깥·규약생략·자리표·mailto·tel·javascript·빈주소·주소없음·그림링크를 한 쪽에. href 없는 <a> 는 이 셈에서 빠진다(세는 규칙이 href 를 요구한다)", "drift": { "body_bytes": 906, "body_sha256": "1d4d7c2ecc205089b5587155c356872eb837a26854d79b58bdc6bfced89e2042", "text_bytes": 187 } },
+    { "path": "/links/with-base", "expect": { "status": 200, "title": "기준 주소", "links": 2, "images": 0 }, "note": "#26 — <base href=\"/deep/nested/\"> 가 상대 링크의 기준을 바꾼다", "drift": { "body_bytes": 201, "body_sha256": "8f0143b8e4f24fa91f5980c45ccf4f4bf484296f9a0b6ef88690b03a2357ae64", "text_bytes": 27 } },
+    { "path": "/encoding/meta-charset", "expect": { "status": 200, "content_type": "text/html", "links": 1, "images": 0 }, "note": "#26 — 같은 바이트인데 머리에 charset 이 없다. <meta charset> 을 봐야 읽힌다", "drift": { "body_bytes": 253, "body_sha256": "617230c9325d2447fe4984c59c4ae8c3b0f14fbe35d1cb777ec595de3f6b5e6b", "text_bytes": 220 } }
+  ],
+
+  "sitemaps": {
+    "note": "#33 — 규격상 <loc> 는 절대 URL 이라 Host 머리로 만든다. 본문에 포트가 들어가므로 지문 대조 대상이 아니고, 대신 **개수 계약**이 여기 있다.",
+    "robots_declares": ["/sitemaps/from-robots.xml", "/sitemaps/from-robots.xml", "/sitemaps/broken.xml"],
+    "robots_declares_distinct": 2,
+    "conventional_entry": "/sitemap.xml",
+    "files": {
+      "/sitemap.xml": { "kind": "sitemapindex", "children": 5 },
+      "/sitemaps/from-robots.xml": { "kind": "urlset", "entries": 7, "distinct": 6, "note": "정규화 세 갈래 포함 — 상대 /r/relative · 자리표 /r/frag#section(자리표는 떨어진다) · 추적 파라미터로만 다른 /r/dup 짝(한 줄로 합쳐진다)" },
+      "/sitemaps/urls-a.xml": { "kind": "urlset", "entries": 40, "distinct": 39, "note": "상대 1 · 추적 파라미터로만 다른 짝 1쌍(합쳐서 1) · 실체 참조 1 · /p/5~40 36개" },
+      "/sitemaps/urls-b.xml.gz": { "kind": "urlset", "entries": 10, "distinct": 10, "gzipped": true },
+      "/sitemaps/nested.xml": { "kind": "sitemapindex", "children": 1 },
+      "/sitemaps/deep-1.xml": { "kind": "sitemapindex", "children": 1 },
+      "/sitemaps/deep-2.xml": { "kind": "urlset", "entries": 5, "distinct": 5 },
+      "/sitemaps/broken.xml": { "kind": "unknown", "note": "상태 200 인데 HTML 오류 화면" },
+      "/sitemaps/moved.xml": { "kind": "redirect", "to": "/sitemaps/urls-a.xml", "note": "따라가면 이미 본 곳이라 새 URL 0" },
+      "/sitemaps/loop.xml": { "kind": "sitemapindex", "children": 2, "note": "자기 자신과 /sitemap.xml — 고리" },
+      "/sitemaps/wide.xml": { "kind": "sitemapindex", "children": 30, "note": "파일 수 상한 시험" }
+    },
+    "expected": {
+      "from_convention": {
+        "entry": "/sitemap.xml",
+        "distinct_urls": 54,
+        "source_kind": "sitemap",
+        "why": "urls-a 39 + urls-b 10 + deep-2 5. broken 은 0(읽을 수 없음), moved 는 urls-a 로 되돌아가 새 URL 0.",
+        "errors_at_least": 1,
+        "partial": true
+      },
+      "from_robots": { "entry": "/sitemaps/from-robots.xml", "distinct_urls": 6, "source_kind": "robots", "partial": true, "unreadable_files": 1,
+        "normalization": { "relative": "/r/relative", "fragment_dropped": "/r/frag", "tracking_collapsed": "/r/dup" } }
+    }
+  },
+
+  "dynamic_routes": {
+    "note": "번호가 붙는 자리. 지문 대조 대상이 아니라 규칙만 적는다.",
+    "/sitemap.xml, /sitemaps/**": "sitemap 묶음(#33). 절대 URL 이 들어가 지문 대조에서 빠진다 — 위 sitemaps 블록이 개수 계약이다.",
+    "/unique/{n}": "번호마다 고유한 표지(MARKER-{n}-ONLY)가 든 쪽. 게이트 3 의 교차 연결 시험이 쓴다.",
+    "/img/ok/*": "1x1 PNG · image/png",
+    "/img/fail/*": "404",
+    "/img/redirect/*": "302 → /img/ok/p1.png",
+    "/img/wrong-mime/*": "200 인데 text/html",
+    "/img/large/*": "3MB · image/png"
+  },
+
+  "control_routes": {
+    "note": "시험이 서버 쪽 사실을 확인하고 상태를 되돌리는 자리. 사이트의 일부가 아니라서 요청 수에 세지 않는다.",
+    "/control/hits": "경로별 요청 수를 JSON 으로 돌려준다. 수집기의 자기 보고가 아니라 맞은 쪽의 기록이다.",
+    "/control/reset": "요청 수와 429 세기를 지운다",
+    "/control/release-hangs": "붙잡고 있는 응답을 모두 끊고 그 수를 돌려준다",
+    "/control/echo": "받은 요청 머리를 그대로 돌려준다. Host 가 IP 가 아니라 원래 이름인지, 쿠키가 안 따라오는지를 서버 쪽에서 본다(#25). 응답이 요청마다 달라서 지문 대조 대상이 아니다.",
+    "/control/set-cookie": "쿠키 둘을 심고 /control/echo 로 보낸다. 따라간 요청에 쿠키가 실리면 안 된다."
+  },
+
+  "fixture_access": {
+    "rule": "이 서버로 나가려면 시험 프로세스가 --allow-fixture-host=127.0.0.1:<port> 를 argv 로 받아야 한다.",
+    "gate": "lib/fixture-allow.mjs",
+    "cannot_be_enabled_by": ["MCP tool 입력", "workspace 파일", "환경변수", "설정 파일"],
+    "why": "안전 규칙을 끄는 것이 아니라 시험 프로세스에만 좁은 문 하나를 여는 것이다. 문을 여는 자리가 한 곳이어야 감사할 수 있다."
+  }
+}

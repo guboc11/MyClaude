@@ -1,0 +1,149 @@
+{
+  "spike": "workspace.db",
+  "ran_at": "2026-08-12T22:55:05.603Z",
+  "node_version": "v22.21.0",
+  "sqlite_version": "3.50.4",
+  "sandbox": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/ws-spike-0qqqFe",
+  "settings": {
+    "workers": 10,
+    "rows_each": 20,
+    "kill_targets": 2,
+    "busy_timeout_ms": 5000
+  },
+  "limitation": {
+    "experimental": "node:sqlite 는 Node v22.21.0 에서 아직 실험 기능이라 실행마다 ExperimentalWarning 이 뜬다.",
+    "means": "이번 실측이 이 환경에서 통과했다는 뜻이지 API 가 앞으로 그대로 남는다는 보장은 아니다.",
+    "guard_needed": "구현에 Node 최소 버전 확인을 넣고, node:sqlite import 실패나 동작 변화를 명시적 오류로 드러내야 한다."
+  },
+  "measured": {
+    "journal_mode": "wal",
+    "foreign_keys": 1,
+    "planned_rows": 200,
+    "rows": 200,
+    "unique_canonical_url": 200,
+    "attempts": 200,
+    "leased": 200,
+    "sqlite_busy_retries": 0,
+    "gave_up": 0,
+    "accounting_holds": true,
+    "worker_errors": [],
+    "killed_pids": [
+      99837,
+      99838
+    ],
+    "kill_rounds": [
+      {
+        "target": "kill0",
+        "held": true,
+        "pid": 99837,
+        "exited": true,
+        "signal": "SIGKILL"
+      },
+      {
+        "target": "kill1",
+        "held": true,
+        "pid": 99838,
+        "exited": true,
+        "signal": "SIGKILL"
+      }
+    ],
+    "kill_design_note": "첫 설계는 과녁 둘의 쓰기 transaction 을 동시에 열어 두려 했고, SQLite 의 단일 writer 제약 때문에 뒤엣놈이 busy_timeout 에 막혀 시험이 멈췄다(2026-08-12 실측, 2분 한도 초과). 지금은 한 명씩 열고 죽이며, 모든 자식 대기에 벽시계 제한과 SIGKILL 정리를 걸었다.",
+    "integrity_check": "ok",
+    "uncommitted_rows_after_kill": 0,
+    "writable_after_kill": true,
+    "stale_lock_files": [],
+    "control_foreign_keys_off_accepts_orphan": true
+  },
+  "checks": [
+    {
+      "id": "W1-pragmas",
+      "pass": true,
+      "detail": "journal_mode=wal · foreign_keys=1 · busy_timeout=5000"
+    },
+    {
+      "id": "W2-rollback",
+      "pass": true,
+      "detail": "rollback 뒤 남은 행 0"
+    },
+    {
+      "id": "W3-foreign-keys-enforced",
+      "pass": true,
+      "detail": "없는 item_id 의 attempt 가 거절됨"
+    },
+    {
+      "id": "W4-all-workers-finished",
+      "pass": true,
+      "detail": "일꾼 10/10 가 결과를 냈다"
+    },
+    {
+      "id": "W5-row-accounting",
+      "pass": true,
+      "detail": "계획 200 = 들어감 200 + 포기 0 + 오류 0 · 장부 행 200"
+    },
+    {
+      "id": "W5b-none-given-up",
+      "pass": true,
+      "detail": "물러났다 다시 온 횟수 0회, 포기 0"
+    },
+    {
+      "id": "W6-unique-key",
+      "pass": true,
+      "detail": "고유 canonical_url 200 / 전체 200"
+    },
+    {
+      "id": "W7-update-applied",
+      "pass": true,
+      "detail": "leased 200 / 200"
+    },
+    {
+      "id": "W8-child-rows",
+      "pass": true,
+      "detail": "attempts 200 / items 200"
+    },
+    {
+      "id": "W9-no-worker-errors",
+      "pass": true,
+      "detail": "붐빔이 아닌 오류 0"
+    },
+    {
+      "id": "W-kill0-exited",
+      "pass": true,
+      "detail": "pid 99837 종료=true 신호=SIGKILL"
+    },
+    {
+      "id": "W-kill1-exited",
+      "pass": true,
+      "detail": "pid 99838 종료=true 신호=SIGKILL"
+    },
+    {
+      "id": "W10-reopen-integrity",
+      "pass": true,
+      "detail": "integrity_check = ok"
+    },
+    {
+      "id": "W11-uncommitted-rolled-back",
+      "pass": true,
+      "detail": "커밋 안 된 표식 행 0 · 강제 종료 pid 99837,99838"
+    },
+    {
+      "id": "W12-committed-survived",
+      "pass": true,
+      "detail": "강제 종료 뒤 행 200 / 이전 200"
+    },
+    {
+      "id": "W13-writable-after-kill",
+      "pass": true,
+      "detail": "강제 종료 뒤에도 새 쓰기가 된다(영구 잠금 없음)"
+    },
+    {
+      "id": "W14-no-stale-lock-files",
+      "pass": true,
+      "detail": "모든 연결을 닫은 뒤 -wal·-shm 이 남지 않았다"
+    },
+    {
+      "id": "W15-control-foreign-keys-off",
+      "pass": true,
+      "detail": "foreign_keys 를 끄면 없는 item_id 의 attempt 가 그대로 들어간다 → W3 이 실제로 재고 있다"
+    }
+  ]
+}

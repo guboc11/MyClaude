@@ -1,0 +1,364 @@
+{
+  "schema": "web-search-v2-search-provider-candidates/1",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#6",
+  "surveyed_at": "2026-08-12",
+  "constraints": [
+    "유료 등록 금지",
+    "키 발급 금지",
+    "CAPTCHA·차단 우회 금지",
+    "로그인 세션 금지"
+  ],
+  "user_agent": {
+    "used_for_verdicts": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+    "why": "브라우저로 가장한 채 통과한 결과는 채택 근거가 될 수 없다. 식별 가능한 자동화 UA 로 막히면 blocked 로 본다.",
+    "earlier_chrome_ua": "예비 조회(robots 수집)에는 Chrome 140 UA 를 썼다. 비교용이며 어떤 판정 근거로도 쓰지 않았다."
+  },
+  "evidence_kinds": {
+    "robots": "자동 접근에 대한 사이트의 신호. 이것만으로 제품에 넣어도 된다는 근거가 되지는 않는다.",
+    "terms": "공식 이용 조건. 제품에 넣을 권리는 여기서 나온다.",
+    "function": "일반 웹 검색 순위 결과를 주는가. 형식이 와도 기능이 다르면 쓸 수 없다.",
+    "probe": "식별 UA 로 한 번 두드려 본 실측."
+  },
+  "candidates": [
+    {
+      "id": "ddg-html",
+      "name": "DuckDuckGo HTML endpoint",
+      "endpoint": "https://html.duckduckgo.com/html/?q={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "documented_api": false,
+      "documented_api_note": "공개 문서가 없는 내부 엔드포인트다. 프로그램 접근을 허용한다는 공식 기술 문서를 찾지 못했다.",
+      "robots": {
+        "verdict": "allow",
+        "quote": "User-agent: *  Allow: /",
+        "artifact": "artifacts/robots/html.duckduckgo.com.txt"
+      },
+      "probe": {
+        "status": 200,
+        "bytes": 33670,
+        "content_type": "text/html; charset=utf-8",
+        "parsed": "result 클래스 앵커 30개 · 스니펫 10개 · uddg 리다이렉트 링크 40개 — 제목·URL·설명이 실제로 나온다",
+        "artifact": "artifacts/probe/ddg-html.txt"
+      },
+      "terms": {
+        "verdict": "unclear-to-prohibited",
+        "source": "https://duckduckgo.com/acceptable-use",
+        "artifact": "artifacts/tos/duckduckgo-acceptable-use-v2.html",
+        "quotes": [
+          "Frame, inline link, or similarly display any portion of the services within another service",
+          "Sell or resell any portion of the services",
+          "Interfere with or disrupt the integrity or performance of the services"
+        ],
+        "reading": "자동 접근을 딱 집어 금지하지는 않는다. 다만 '서비스의 일부를 다른 서비스 안에 표시'하지 말라는 조항이 있고, MCP 가 검색 결과 목록을 제품 안으로 들여오는 일이 바로 그 모양이다. 허용된다고 읽을 근거도, 금지라고 단정할 근거도 문서에 명시돼 있지 않다."
+      },
+      "verdict": "reject",
+      "reject_reason": "기술적으로는 되지만 제품에 넣을 권리 근거가 불명확하다. robots 가 허용한다는 것은 크롤링 신호일 뿐 사용권이 아니다."
+    },
+    {
+      "id": "ddg-lite",
+      "name": "DuckDuckGo Lite endpoint",
+      "endpoint": "https://lite.duckduckgo.com/lite/?q={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "documented_api": false,
+      "robots": {
+        "verdict": "allow",
+        "quote": "User-agent: *  Allow: /",
+        "artifact": "artifacts/robots/lite.duckduckgo.com.txt"
+      },
+      "probe": {
+        "status": 200,
+        "bytes": 23927,
+        "content_type": "text/html; charset=utf-8",
+        "parsed": "uddg 리다이렉트 링크 10개는 있으나 result 클래스 앵커 0개·스니펫 0개 — 표 기반 판이라 파서를 따로 만들어야 한다",
+        "artifact": "artifacts/probe/ddg-lite.txt"
+      },
+      "terms": {
+        "verdict": "unclear-to-prohibited",
+        "same_as": "ddg-html"
+      },
+      "verdict": "reject",
+      "reject_reason": "ddg-html 과 같은 이용 조건 문제. 더해서 설명(스니펫)이 없어 계약이 요구하는 필드를 채우지 못한다."
+    },
+    {
+      "id": "bing-rss",
+      "name": "Bing 공개 RSS 검색 형식",
+      "endpoint": "https://www.bing.com/search?q={query}&format=rss",
+      "keyless": true,
+      "kind": "general-web-results",
+      "documented_api": false,
+      "robots": {
+        "verdict": "disallow",
+        "quote": "User-agent: *  …  Disallow: /search",
+        "line": 61,
+        "artifact": "artifacts/robots/www.bing.com.txt",
+        "note": "RSS 형식도 /search 아래에 있어 같은 금지에 걸린다."
+      },
+      "probe": {
+        "status": 200,
+        "bytes": 4956,
+        "content_type": "application/rss+xml",
+        "parsed": "<item> 10개 · 제목·링크·설명이 모두 채워짐 (예: Wedding - Wikipedia / theknot.com / 아이웨딩)",
+        "artifact": "artifacts/probe/bing-rss.txt",
+        "note": "기능만 보면 후보 중 가장 좋다. 한국어 결과도 섞여 나왔다."
+      },
+      "terms": {
+        "verdict": "prohibited",
+        "source": "https://www.microsoft.com/en-us/servicesagreement",
+        "artifact": "artifacts/tos/microsoft-services-agreement.html",
+        "quotes": [
+          "Don't circumvent any restrictions on access to, usage, or availability of the Services (e.g., attempting to \"jailbreak\" an AI system or impermissible scraping)."
+        ],
+        "reading": "robots 의 Disallow: /search 가 곧 접근 제한이고, 그 제한을 우회해 자동으로 두드리는 것은 위 조항에 걸린다."
+      },
+      "verdict": "reject",
+      "reject_reason": "형식과 품질은 가장 좋지만 robots 가 /search 를 명시적으로 막고 공식 조건이 접근 제한 우회를 금지한다."
+    },
+    {
+      "id": "mojeek",
+      "name": "Mojeek",
+      "endpoint": "https://www.mojeek.com/search?q={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "robots": {
+        "verdict": "disallow",
+        "quote": "User-agent: *  Disallow: /search",
+        "artifact": "artifacts/robots/www.mojeek.com.txt"
+      },
+      "probe": {
+        "skipped": true,
+        "why": "robots 가 검색 경로를 막았다. 막힌 곳을 50번 두드리지 않는다."
+      },
+      "verdict": "reject",
+      "reject_reason": "robots 가 검색 경로를 명시적으로 금지. 무키 API 는 별도 신청이 필요해 이번 경계 밖이다."
+    },
+    {
+      "id": "marginalia",
+      "name": "Marginalia Search",
+      "endpoint": "https://marginalia-search.com/search?query={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "robots": {
+        "verdict": "disallow",
+        "quote": "User-agent: *  Disallow: /search",
+        "artifact": "artifacts/robots/marginalia-followed.txt",
+        "note": "search.marginalia.nu 는 302 로 marginalia-search.com 에 넘긴다."
+      },
+      "probe": {
+        "skipped": true,
+        "why": "robots 가 검색 경로를 막았다."
+      },
+      "verdict": "reject",
+      "reject_reason": "robots 가 검색 경로를 명시적으로 금지."
+    },
+    {
+      "id": "startpage",
+      "name": "Startpage",
+      "endpoint": "https://www.startpage.com/sp/search?query={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "robots": {
+        "verdict": "disallow",
+        "quote": "Disallow: /sp/  Disallow: /do/",
+        "artifact": "artifacts/robots/www.startpage.com.txt"
+      },
+      "probe": {
+        "skipped": true,
+        "why": "검색 경로 /sp/ 가 robots 로 막혀 있다."
+      },
+      "verdict": "reject",
+      "reject_reason": "robots 가 검색 경로를 금지."
+    },
+    {
+      "id": "searx-be",
+      "name": "SearXNG 공개 인스턴스 (searx.be)",
+      "endpoint": "https://searx.be/search?q={query}",
+      "keyless": true,
+      "kind": "general-web-results",
+      "robots": {
+        "verdict": "unavailable",
+        "artifact": "artifacts/robots/searx.be.txt",
+        "note": "robots.txt 자리에서 text/html 11,354바이트가 왔고 내용이 'Verifying your browser…' 사람 확인 화면이다. noscript 는 /antibot/captcha 로 보낸다."
+      },
+      "probe": {
+        "skipped": true,
+        "why": "robots.txt 조차 사람 확인 화면이라 자동 접근이 이미 막혀 있다. 우회하지 않는다."
+      },
+      "verdict": "reject",
+      "reject_reason": "CAPTCHA·봇 차단. 우회는 금지 사항이다. 제3자 인스턴스라 이용 조건도 운영자마다 다르다."
+    },
+    {
+      "id": "ddg-instant-answer",
+      "name": "DuckDuckGo Instant Answer API",
+      "endpoint": "https://api.duckduckgo.com/?q={query}&format=json",
+      "keyless": true,
+      "kind": "instant-answer",
+      "robots": {
+        "verdict": "disallow",
+        "quote": "User-agent: *  Disallow: /",
+        "artifact": "artifacts/robots/api.duckduckgo.com.txt"
+      },
+      "function": {
+        "verdict": "mismatch",
+        "why": "이름은 API 지만 돌려주는 것은 요약·정의·공식 사이트 같은 즉답이다. 순위가 매겨진 일반 웹 검색 결과 목록이 아니어서, 응답이 정상으로 와도 search 버튼이 필요로 하는 자료가 아니다."
+      },
+      "probe": {
+        "skipped": true,
+        "why": "robots 가 전체를 막았고 기능도 맞지 않는다."
+      },
+      "verdict": "reject",
+      "reject_reason": "기능 불일치가 먼저다. 순위 있는 웹 결과를 주지 않는다. robots 도 전체 금지."
+    },
+    {
+      "id": "commoncrawl-index",
+      "name": "Common Crawl URL 색인",
+      "endpoint": "https://index.commoncrawl.org/CC-MAIN-*-index?url={url}",
+      "keyless": true,
+      "kind": "url-index",
+      "robots": {
+        "verdict": "disallow",
+        "quote": "User-agent: *  Disallow: /  (몇몇 파일만 Allow)",
+        "artifact": "artifacts/robots/index.commoncrawl.org.txt"
+      },
+      "function": {
+        "verdict": "mismatch",
+        "why": "검색어로 순위를 매겨 주는 공급자가 아니라, 이미 아는 URL 이 크롤에 있는지 찾아보는 색인이다. '전 세계 후보 사이트 찾기' 에 쓸 수 없다."
+      },
+      "probe": {
+        "skipped": true,
+        "why": "검색 공급자가 아니다."
+      },
+      "verdict": "reject",
+      "reject_reason": "검색 순위 공급자가 아니다(기능 불일치). robots 도 색인 조회 경로를 막았다."
+    }
+  ],
+  "summary": {
+    "surveyed": 9,
+    "rejected_by_robots": [
+      "bing-rss",
+      "mojeek",
+      "marginalia",
+      "startpage",
+      "ddg-instant-answer",
+      "commoncrawl-index"
+    ],
+    "rejected_by_captcha": [
+      "searx-be"
+    ],
+    "rejected_by_function": [
+      "ddg-instant-answer",
+      "commoncrawl-index"
+    ],
+    "rejected_by_terms": [
+      "ddg-html",
+      "ddg-lite",
+      "bing-rss"
+    ],
+    "survivors": [],
+    "corpus_run": false,
+    "corpus_not_run_why": "5개 언어 50개 검색어 실측까지 간 후보가 없다. 이용 조건이나 robots 로 이미 걸러진 곳을 50번 더 두드리는 것은 남의 서비스에 부담만 준다."
+  },
+  "request_budget": {
+    "note": "이번 조사에서 실제로 보낸 요청",
+    "robots_survey_chrome_ua": 8,
+    "probe_and_terms_spike_ua": 6,
+    "extra_terms_fetches": 3,
+    "domain_gap_ms": 4000,
+    "total_seconds": "예비 조회 포함 1분 미만"
+  },
+  "evidence_manifest": {
+    "note": "보존한 근거 원문. verify.mjs 가 존재와 지문을 대조한다. 네트워크를 다시 부르지 않는다.",
+    "robots_count": 10,
+    "probe_count": 3,
+    "terms_count": 4,
+    "total": 17,
+    "files": [
+      {
+        "path": "artifacts/probe/bing-rss.txt",
+        "bytes": 4956,
+        "sha256": "854ab2dbfbf9e0a9049ad3c71d83a4b2da45bade4196d610bfe7468d462dd544"
+      },
+      {
+        "path": "artifacts/probe/ddg-html.txt",
+        "bytes": 33670,
+        "sha256": "e9717e57ecd44ccc4630f79020475b8402784b332d65b552be82b2ba34b877a9"
+      },
+      {
+        "path": "artifacts/probe/ddg-lite.txt",
+        "bytes": 23927,
+        "sha256": "a87f0d7dd1cdfa153aafbe4fb0652274853c06d275e2aecc2f17cbcba895e5bf"
+      },
+      {
+        "path": "artifacts/robots/api.duckduckgo.com.txt",
+        "bytes": 26,
+        "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+      },
+      {
+        "path": "artifacts/robots/html.duckduckgo.com.txt",
+        "bytes": 99,
+        "sha256": "2c0a4e6b1045007a90356d988c49c614d9f5079226e6476d57767cc2c68804c6"
+      },
+      {
+        "path": "artifacts/robots/index.commoncrawl.org.txt",
+        "bytes": 181,
+        "sha256": "f8fcf73067b07f1330225d83d2113ad21ffd0a8130e428692ba9555dcfa82da1"
+      },
+      {
+        "path": "artifacts/robots/lite.duckduckgo.com.txt",
+        "bytes": 99,
+        "sha256": "2c0a4e6b1045007a90356d988c49c614d9f5079226e6476d57767cc2c68804c6"
+      },
+      {
+        "path": "artifacts/robots/marginalia-followed.txt",
+        "bytes": 141,
+        "sha256": "cf1c0ed7da31c4e19a870dca79bfc4523daabbd57e9cf5b7bd752dc108379739"
+      },
+      {
+        "path": "artifacts/robots/search.marginalia.nu.txt",
+        "bytes": 145,
+        "sha256": "7e2e60c17c424cca46e70d14360a0df784d88720ff2e0c40e6c63869b4479e88"
+      },
+      {
+        "path": "artifacts/robots/searx.be.txt",
+        "bytes": 11354,
+        "sha256": "95f1bac5ec5d956697cf8e241408ddd11a69da46e6fb1a55ee06649efc67b70b"
+      },
+      {
+        "path": "artifacts/robots/www.bing.com.txt",
+        "bytes": 2676,
+        "sha256": "40d2da70c3b443225d5b01cc7b05117944980347637cc95ab285c6e4f5548235"
+      },
+      {
+        "path": "artifacts/robots/www.mojeek.com.txt",
+        "bytes": 174,
+        "sha256": "9249562d0d3731c25d7d0485d9d2297d21e65e8de477dc7d43605fe56d92420e"
+      },
+      {
+        "path": "artifacts/robots/www.startpage.com.txt",
+        "bytes": 188,
+        "sha256": "795bee4d79cfc811f19fa32f2ce9e9aaac481b367c34a2d85982f4ba2761624e"
+      },
+      {
+        "path": "artifacts/tos/duckduckgo-acceptable-use-v2.html",
+        "bytes": 93820,
+        "sha256": "a9d6562394efced8fcf2252ff30fbdc3b11e5abc5a0a5fe446739a1471306ea5"
+      },
+      {
+        "path": "artifacts/tos/duckduckgo-acceptable-use.html",
+        "bytes": 25110,
+        "sha256": "f6cee23756d636724ec83bf2e6ff808bae3c7b451b55e6646a33e25c941d5f66"
+      },
+      {
+        "path": "artifacts/tos/duckduckgo-terms.html",
+        "bytes": 105529,
+        "sha256": "6f680184ffb10ea35a18180f3b92183b9ac392b36bd5b1071c439ffbd3428501"
+      },
+      {
+        "path": "artifacts/tos/microsoft-services-agreement.html",
+        "bytes": 288515,
+        "sha256": "a26dd119ea338142e179925d7419ba38d85bc56cb1a0a1b5aea01694e5988e06"
+      }
+    ],
+    "robots_note": "10개다. marginalia 는 search.marginalia.nu 의 302 응답과 따라간 marginalia-search.com 의 robots 를 둘 다 남겼다."
+  }
+}

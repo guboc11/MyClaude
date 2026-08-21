@@ -1,0 +1,80 @@
+{
+  "gate": 6,
+  "pass": true,
+  "total": 12,
+  "failed": 0,
+  "results": [
+    {
+      "id": "G6-1",
+      "title": "판정·보고·export·status 구성 시험 4묶음",
+      "pass": true,
+      "detail": "4묶음 94항목 전부 통과"
+    },
+    {
+      "id": "G6-2",
+      "title": "report 로 done 이 된 항목은 다시 빌려지지 않고, 판정은 수집 기록을 안 건드린다",
+      "pass": true,
+      "detail": "판정 뒤 item 1 은 done · 수집 시각 그대로 · 상태 done 4·failed 2·leased 2 에서 w2 가 새로 빌린 것 0건 · 실행 기록 8건 그대로"
+    },
+    {
+      "id": "G6-3",
+      "title": "같은 item 의 상충 판정 둘이 각자의 근거와 함께 남는다",
+      "pass": true,
+      "detail": "item 1: w1=\"후보\" vs w3=\"제외\" · 근거 artifact 1·13(서로 다른 실행 A-873d49·A-ed726d) · 기계 상태는 done 하나뿐이다"
+    },
+    {
+      "id": "G6-4",
+      "title": "다시 대기로 돌려도 앞선 판정과 증거가 남는다",
+      "pass": true,
+      "detail": "되돌린 이력 1건 · 남은 판정 2건 · 수집 기록 2건 — 지워진 것 없음"
+    },
+    {
+      "id": "G6-5",
+      "title": "export 의 모든 줄에서 source → item → attempt → artifact 로 되짚어진다",
+      "pass": true,
+      "detail": "8줄 전부 — 출처·실행·파일 22개가 실제로 그 자리에 있다"
+    },
+    {
+      "id": "G6-6",
+      "title": "DB 기대 행 수와 두 형식의 행 수가 같다",
+      "pass": true,
+      "detail": "DB item 8개 · jsonl 8줄 · csv 8줄(머리글 뺀 수)"
+    },
+    {
+      "id": "G6-7",
+      "title": "필터별 기대 행 수와 실제 파일의 행 수가 같다",
+      "pass": true,
+      "detail": "done=4 · failed=2 · label후보=2 · search=2 전부 일치(넷 다 0보다 크다) · 없는 라벨 0줄 · 오타 난 상태는 오류(0줄로 둔갑 안 함)"
+    },
+    {
+      "id": "G6-8",
+      "title": "export 와 status 만 가진 새 프로세스가 다음 묶음을 정한다",
+      "pass": true,
+      "detail": "책상에 놓인 파일 export.jsonl·status.json 둘뿐 — 다음 0건 · 다시 2건 · 판정 없는 완료 1건 · 갈린 판정 1건 (DB 와 전부 일치) · \"수집은 됐지만 판정이 없는 1건이 남아 있다 — 완료로 세면 안 된다\""
+    },
+    {
+      "id": "G6-9",
+      "title": "status 는 기계 상태만 말하고 조사 완료를 말하지 않는다",
+      "pass": true,
+      "detail": "열두 키 · 합계 8 = 0+2+4+2 · 산출물 13개 15168바이트 · 응답 2157바이트"
+    },
+    {
+      "id": "G6-10",
+      "title": "export 를 여러 번 내도 장부와 파일이 일치하고 지난 export 가 남는다",
+      "pass": true,
+      "detail": "장부 13줄 전부 일치 · 고아 0 · 만들다 만 것 0 · exports 폴더에 8개(덮어쓰지 않는다)"
+    },
+    {
+      "id": "G6-11",
+      "title": "LEGACY 불변 · 금지 import 0",
+      "pass": true,
+      "detail": "재사용 감사 exit=0 · 기준선 대조 exit=0"
+    },
+    {
+      "id": "G6-12",
+      "title": "게이트 자체가 127.0.0.1 밖으로 나가지 않음",
+      "pass": true,
+      "detail": "접촉한 곳 없음"
+    }
+  ]
+}

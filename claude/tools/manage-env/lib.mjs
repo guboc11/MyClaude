@@ -31,10 +31,10 @@ export const SERVICE_APP = {
   'dibang-landing': null,
 };
 
-/** 레포 루트 확인 — .claude/env 가 있어야 한다. 없으면 throw. */
+/** 레포 루트 확인 — .claude/mcp-manage-env 가 있어야 한다. 없으면 throw. */
 export function assertRepoRoot(repo) {
-  if (!fs.existsSync(path.join(repo, '.claude', 'env'))) {
-    throw new Error('.claude/env 가 없는 위치입니다 — 레포 루트에서 실행하세요.');
+  if (!fs.existsSync(path.join(repo, '.claude', 'mcp-manage-env'))) {
+    throw new Error('.claude/mcp-manage-env 가 없는 위치입니다 — 레포 루트에서 실행하세요.');
   }
 }
 
@@ -84,7 +84,7 @@ export function schema(repo, app) {
 /** guide.yaml 최소 파서 — 2단(키 → 한 줄 문자열 필드) 고정 형식 전용. 없으면 빈 Map. */
 export function parseGuide(repo) {
   const guide = new Map();
-  const p = path.join(repo, '.claude/env/guide.yaml');
+  const p = path.join(repo, '.claude/mcp-manage-env/guide.yaml');
   if (!fs.existsSync(p)) return guide;
   let current = null;
   for (const raw of fs.readFileSync(p, 'utf8').split('\n')) {
@@ -101,7 +101,7 @@ export function parseGuide(repo) {
  *  카탈로그와 값 파일의 시각 대응을 만든다. 섹션 밖 키는 없는 것이 현행 (있으면 '기타'로). */
 export function parseGuideSections(repo) {
   const sections = [];
-  const p = path.join(repo, '.claude/env/guide.yaml');
+  const p = path.join(repo, '.claude/mcp-manage-env/guide.yaml');
   if (!fs.existsSync(p)) return sections;
   let current = null;
   for (const raw of fs.readFileSync(p, 'utf8').split('\n')) {

@@ -32,8 +32,8 @@ function toolEnvList({ env }) {
   if (!targets.every((e) => ENVS.includes(e))) return `알 수 없는 환경: ${env} (localhost|dev|prod)`;
   const out = [];
   for (const e of targets) {
-    const ledger = parseEnvFile(path.join(REPO, '.claude/env', `${e}.env`));
-    out.push(`━━ ${e} (.claude/env/${e}.env)`);
+    const ledger = parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${e}.env`));
+    out.push(`━━ ${e} (.claude/mcp-manage-env/${e}.env)`);
     for (const app of SYNC_APPS) {
       const sch = schema(REPO, app);
       const rows = exampleKeys(REPO, app).map((k) => {
@@ -86,7 +86,7 @@ function toolEnvInfo({ key }) {
   if (g?.deploy_required === 'true') out.push('배포 필수: 스키마상 선택이라도 배포 환경(dev·prod) 서비스 온전성에 필수 — check B\'항 검사 대상');
   if (g?.description) out.push(`설명: ${g.description}`);
   if (g?.obtain) out.push(`얻는 곳: ${g.obtain}`);
-  if (g?.screenshot) out.push(`스샷: .claude/env/screenshots/${g.screenshot}`);
+  if (g?.screenshot) out.push(`스샷: .claude/mcp-manage-env/screenshots/${g.screenshot}`);
   if (g?.note) out.push(`주의: ${g.note}`);
   if (g?.example_exempt) out.push(`example 부재 사유: ${g.example_exempt}`);
   // 스키마·example 소속
@@ -102,7 +102,7 @@ function toolEnvInfo({ key }) {
   out.push(`render.yaml 선언: ${decl.join(', ') || '(없음)'}`);
   // 값 존재·갱신일 (환경별)
   for (const e of ENVS) {
-    const p = path.join(REPO, '.claude/env', `${e}.env`);
+    const p = path.join(REPO, '.claude/mcp-manage-env', `${e}.env`);
     const ledger = parseEnvFile(p);
     const scopes = [...ledger.keys()].filter((k) => k === key || k.startsWith(`${key}@`));
     const stamp = fs.existsSync(p) ? fs.statSync(p).mtime.toISOString().slice(0, 10) : '-';
@@ -140,7 +140,7 @@ function toolEnvReveal({ key, env, app }) {
   repoGuard();
   if (!ENVS.includes(env)) return `환경을 지정하라: env = localhost|dev|prod`;
   if (!key || !/^[A-Z_][A-Z0-9_]*$/.test(key)) return `키 이름이 올바르지 않다: ${key}`;
-  const p = path.join(REPO, '.claude/env', `${env}.env`);
+  const p = path.join(REPO, '.claude/mcp-manage-env', `${env}.env`);
   const ledger = parseEnvFile(p);
   const scopes = [...ledger.keys()].filter((k) => k === key || k.startsWith(`${key}@`));
   if (!scopes.length) return `${env} 값 파일에 ${key} 가 없다 (env_list 로 상태 확인)`;

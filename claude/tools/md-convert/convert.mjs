@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // md-convert 본체 — md 원본 → 인쇄용 pdf. 원본은 항상 md, pdf는 파생 산출물이다.
 // 사용: node .claude/tools/md-convert/convert.mjs <파일.md ...> --topic <주제> [--landscape] [--out <폴더>]
-// 산출: .claude/md-convert/{오늘}-{주제}/{원본이름}.pdf  (--out을 주면 그 폴더 우선)
+// 산출: .claude/mcp-md-convert/{오늘}-{주제}/{원본이름}.pdf  (--out을 주면 그 폴더 우선)
 //       — 산출 루트는 도구 이름을 따른다(형식별 폴더 금지: 형식이 늘 때마다 폴더가 늘어남). 형식은 확장자가 말한다.
-// 계획: _PLAN/2026-08-01-md-convert-mcp/PLAN.md
+// 계획: _ARCHIVED/_PLAN/2026-08-01-md-convert-mcp/PLAN.md
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -28,23 +28,42 @@ function todayLocal() {
 }
 
 // 의존성 로드 — 없으면 복사-실행 가능한 설치 명령을 안내한다. 자동 설치는 하지 않는다(설치는 명시 행동).
+function missingDeps() {
+  const rel = path.relative(process.cwd(), TOOL_DIR) || '.';
+  return new Error(`의존성이 없습니다. 여기서 실행: npm install --prefix ${rel}`);
+}
+
 export function loadMarked() {
   const require = createRequire(import.meta.url);
   try {
     return require('marked');
   } catch {
-    const rel = path.relative(process.cwd(), TOOL_DIR) || '.';
-    throw new Error(`의존성이 없습니다. 여기서 실행: npm install --prefix ${rel}`);
+    throw missingDeps();
   }
 }
 
+// 본 양식은 github-markdown-css(light 판)가 맡는다 — 미리보기와 같게 보이는 것이 목적이라
+// 양식을 직접 쓰지 않는다. light 판을 쓰는 이유는 통합판의 prefers-color-scheme 때문에
+// 인쇄가 다크로 뒤집힐 수 있어서다. style.css 는 종이에만 필요한 것(용지·페이지 넘김)만 덮어쓴다.
+function loadStyles() {
+  const require = createRequire(import.meta.url);
+  let theme;
+  try {
+    theme = fs.readFileSync(require.resolve('github-markdown-css/github-markdown-light.css'), 'utf8');
+  } catch {
+    throw missingDeps();
+  }
+  const print = fs.readFileSync(path.join(TOOL_DIR, 'style.css'), 'utf8');
+  return `${theme}\n${print}`;
+}
+
 function htmlShell(bodyHtml, { title, landscape }) {
-  const css = fs.readFileSync(path.join(TOOL_DIR, 'style.css'), 'utf8');
+  const css = loadStyles();
   const pageOverride = landscape ? '@page { size: A4 landscape; }' : '';
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>${title}</title>
 <style>${css}\n${pageOverride}</style></head>
-<body>${bodyHtml}</body></html>`;
+<body class="markdown-body">${bodyHtml}</body></html>`;
 }
 
 // 본체 — MCP server.mjs가 이 함수를 그대로 재사용한다 (변환 로직 중복 구현 금지)
@@ -56,7 +75,7 @@ export function convertFiles({ files, topic, landscape = false, out }) {
   }
   const { marked } = loadMarked();
 
-  const outDir = out || path.join(projectDir(), '.claude', 'md-convert', `${todayLocal()}-${topic}`);
+  const outDir = out || path.join(projectDir(), '.claude', 'mcp-md-convert', `${todayLocal()}-${topic}`);
   fs.mkdirSync(outDir, { recursive: true });
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'md-convert-'));
 

@@ -1,0 +1,448 @@
+{
+  "verdict": "INCOMPLETE",
+  "checked_at_note": "수치는 이 실행에서 장부와 파일을 직접 읽은 값이다",
+  "buttons": {
+    "contract": 10,
+    "listed": 9,
+    "not_built": [
+      "search"
+    ]
+  },
+  "reruns": [
+    {
+      "name": "계약",
+      "command": "node tests/contracts/public-tools.mjs",
+      "exit": 1,
+      "expected": [
+        0,
+        1
+      ],
+      "ok": true,
+      "seconds": 0,
+      "note": "search 한 곳에서만 실패(미구현)"
+    },
+    {
+      "name": "게이트 0",
+      "command": "node tests/gate0.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 5,
+      "note": null
+    },
+    {
+      "name": "게이트 1",
+      "command": "node tests/gate1.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 3,
+      "note": null
+    },
+    {
+      "name": "게이트 2",
+      "command": "node tests/gate2.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 4,
+      "note": null
+    },
+    {
+      "name": "게이트 3",
+      "command": "node tests/gate3.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 41,
+      "note": null
+    },
+    {
+      "name": "게이트 4",
+      "command": "node tests/gate4.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 1,
+      "note": null
+    },
+    {
+      "name": "게이트 5",
+      "command": "node tests/gate5.mjs",
+      "exit": 2,
+      "expected": [
+        2
+      ],
+      "ok": true,
+      "seconds": 0,
+      "note": "BLOCKED — 잴 대상 없음"
+    },
+    {
+      "name": "게이트 6",
+      "command": "node tests/gate6.mjs",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 2,
+      "note": null
+    },
+    {
+      "name": "게이트 7",
+      "command": "node tests/gate7.mjs --project /Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 1,
+      "note": null
+    },
+    {
+      "name": "전환·smoke",
+      "command": "node tests/transition/verify.mjs --project /Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+      "exit": 0,
+      "expected": [
+        0
+      ],
+      "ok": true,
+      "seconds": 1,
+      "note": null
+    }
+  ],
+  "totals": {
+    "workspaces": 3,
+    "items": 202,
+    "domains": 103,
+    "sources": 204,
+    "workers": [
+      3,
+      5,
+      0
+    ],
+    "leases_ever": 26,
+    "leases_live": 1,
+    "attempts": {
+      "failed": 64,
+      "partial": 96,
+      "success": 192,
+      "안 끝남": 3
+    },
+    "artifacts": {
+      "screenshot": {
+        "files": 101,
+        "bytes": 155596493
+      },
+      "text": {
+        "files": 288,
+        "bytes": 1560609
+      },
+      "dom": {
+        "files": 21,
+        "bytes": 147788
+      },
+      "image": {
+        "files": 2353,
+        "bytes": 176825451
+      },
+      "image_manifest": {
+        "files": 86,
+        "bytes": 3307801
+      },
+      "link_manifest": {
+        "files": 71,
+        "bytes": 334948
+      },
+      "map": {
+        "files": 2,
+        "bytes": 44098
+      }
+    },
+    "artifact_bytes": 337817188,
+    "judgments": 255,
+    "abstained": 104,
+    "retries": 121,
+    "ledger_checked": 2922,
+    "ledger_ok": 2922,
+    "ledger_orphans": 0
+  },
+  "per_workspace": [
+    {
+      "key": "A",
+      "id": "2026-08-12-wedding-candidates-worldwide",
+      "what": "후보 사이트 찾기(5개 언어)",
+      "root": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/websearch-workspace/2026-08-12-wedding-candidates-worldwide",
+      "items": 105,
+      "states": {
+        "done": 97,
+        "failed": 8
+      },
+      "domains": 101,
+      "sources": 107,
+      "duplicate_sources": 2,
+      "workers": 3,
+      "leases_ever": 5,
+      "leases_live": 0,
+      "attempts": {
+        "failed": 13,
+        "partial": 28,
+        "success": 69
+      },
+      "artifacts": {
+        "screenshot": {
+          "files": 97,
+          "bytes": 155442763
+        },
+        "text": {
+          "files": 99,
+          "bytes": 1189420
+        }
+      },
+      "artifact_bytes": 156632183,
+      "judgments": 97,
+      "abstained": 20,
+      "retries": 5,
+      "errors": {
+        "browser/browser_failed": 2,
+        "dns/dns_ENOTFOUND": 2,
+        "navigate/goto_failed": 9
+      },
+      "warnings": {
+        "browser_no_pinned_connection": 110,
+        "scroll_limit_reached": 30,
+        "redirected": 20,
+        "http_error_status": 17,
+        "screenshot_truncated": 13,
+        "subresource_blocked": 9,
+        "blocked_page_suspected": 7,
+        "empty_text": 4
+      },
+      "ledger": {
+        "checked": 196,
+        "ok": 196,
+        "orphans": 0,
+        "incomplete": 0,
+        "manifest_missing": 0
+      }
+    },
+    {
+      "key": "B",
+      "id": "2026-08-12-barunson-mcard-deep",
+      "what": "한 판매 도메인 깊게",
+      "root": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/websearch-workspace/2026-08-12-barunson-mcard-deep",
+      "items": 92,
+      "states": {
+        "done": 92
+      },
+      "domains": 1,
+      "sources": 92,
+      "duplicate_sources": 0,
+      "workers": 5,
+      "leases_ever": 17,
+      "leases_live": 0,
+      "attempts": {
+        "failed": 49,
+        "partial": 68,
+        "success": 116,
+        "안 끝남": 2
+      },
+      "artifacts": {
+        "dom": {
+          "files": 21,
+          "bytes": 147788
+        },
+        "image": {
+          "files": 2353,
+          "bytes": 176825451
+        },
+        "image_manifest": {
+          "files": 86,
+          "bytes": 3307801
+        },
+        "link_manifest": {
+          "files": 71,
+          "bytes": 334948
+        },
+        "map": {
+          "files": 2,
+          "bytes": 44098
+        },
+        "text": {
+          "files": 182,
+          "bytes": 368872
+        }
+      },
+      "artifact_bytes": 181028958,
+      "judgments": 158,
+      "abstained": 84,
+      "retries": 115,
+      "errors": {
+        "navigate/goto_failed": 49
+      },
+      "warnings": {
+        "browser_no_pinned_connection": 139,
+        "thin_text": 105,
+        "images_not_requested_by_browser": 86,
+        "error_page_text_detected": 69,
+        "image_fetch_partial": 66,
+        "image_mime_mismatch": 52,
+        "subresource_blocked": 4,
+        "redirected": 3
+      },
+      "ledger": {
+        "checked": 2715,
+        "ok": 2715,
+        "orphans": 0,
+        "incomplete": 0,
+        "manifest_missing": 0
+      }
+    },
+    {
+      "key": "C",
+      "id": "2026-08-12-failure-recovery-drill",
+      "what": "장애 복구 연습",
+      "root": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang/.claude/websearch-workspace/2026-08-12-failure-recovery-drill",
+      "items": 5,
+      "states": {
+        "failed": 1,
+        "leased": 4
+      },
+      "domains": 1,
+      "sources": 5,
+      "duplicate_sources": 0,
+      "workers": 0,
+      "leases_ever": 4,
+      "leases_live": 1,
+      "attempts": {
+        "failed": 2,
+        "success": 7,
+        "안 끝남": 1
+      },
+      "artifacts": {
+        "screenshot": {
+          "files": 4,
+          "bytes": 153730
+        },
+        "text": {
+          "files": 7,
+          "bytes": 2317
+        }
+      },
+      "artifact_bytes": 156047,
+      "judgments": 0,
+      "abstained": 0,
+      "retries": 1,
+      "errors": {
+        "body/body_timeout": 1,
+        "navigate/goto_failed": 1
+      },
+      "warnings": {
+        "thin_text": 7,
+        "browser_no_pinned_connection": 5,
+        "redirected": 2,
+        "error_page_text_detected": 2,
+        "http_error_status": 1
+      },
+      "ledger": {
+        "checked": 11,
+        "ok": 11,
+        "orphans": 0,
+        "incomplete": 0,
+        "manifest_missing": 0
+      }
+    }
+  ],
+  "sample": {
+    "checked": 41,
+    "wrong": []
+  },
+  "conditions": [
+    {
+      "id": "P1",
+      "text": "실제 MCP 클라이언트 여러 개가 같은 workspace 를 사용한다",
+      "met": true,
+      "evidence": "판정한 워커 A 3명·B 5명·C 0명 · 게이트 2(10개 MCP 프로세스)"
+    },
+    {
+      "id": "P2",
+      "text": "활성 임대가 겹치지 않고 워커 종료 뒤 작업이 유실되지 않는다",
+      "met": true,
+      "evidence": "게이트 2·7 · 시나리오 C(강제 종료 뒤 산출물 3개 보존, 만료 뒤 회수 5건)"
+    },
+    {
+      "id": "P3",
+      "text": "URL 1,000개 이상에서 상태 합계와 실제 항목 수가 정확히 맞는다",
+      "met": true,
+      "evidence": "게이트 1(1,000+ URL) · status-full 시험(item 1,200개, 응답 3.3KB)"
+    },
+    {
+      "id": "P4",
+      "text": "요청한 산출물만 만들어지고 긴 내용은 MCP 응답에 섞이지 않는다",
+      "met": true,
+      "evidence": "게이트 3(산출물 5종·요청한 것만) · 게이트 6(버튼 응답 4KB 이내)"
+    },
+    {
+      "id": "P5",
+      "text": "임의 표본에서 파일과 출처 URL 이 잘못 연결된 사례가 0건이다",
+      "met": true,
+      "evidence": "표본 41개 · 어긋남 0건"
+    },
+    {
+      "id": "P6",
+      "text": "상태 200 오류 화면·리다이렉트·타임아웃·차단을 짧은 상태 보고에서 구분할 수 있다",
+      "met": true,
+      "evidence": "관찰 낱말 13가지가 실전에서 실제로 붙었다"
+    },
+    {
+      "id": "P7",
+      "text": "한 항목 재시도 시 이전 원본은 보존되고 새 실행이 별도 기록된다",
+      "met": true,
+      "evidence": "다시 대기 121건 · 시나리오 C(실행 2→3, 앞 증거 보존)"
+    },
+    {
+      "id": "P8",
+      "text": "후보 사이트 찾기와 한 도메인 깊게 수집하기 두 실전 시나리오가 모두 통과한다",
+      "met": true,
+      "evidence": "scenario-a.md(업체 63곳) · scenario-b.md(한 도메인 92곳) · 게이트 7 감사 14항목"
+    },
+    {
+      "id": "P9",
+      "text": "직접 검색 버튼은 검증된 검색 방식 하나가 실제로 작동해야 완료로 표시한다",
+      "met": false,
+      "evidence": "무키 공급자 9곳 전멸 — 작동하는 방식이 없어 이 버튼을 완료로 표시하지 않는다(tests/spikes/search-provider/decision.md · tests/reports/gate5.md)",
+      "blocked_by": [
+        "#36",
+        "#37",
+        "#38"
+      ]
+    },
+    {
+      "id": "P10",
+      "text": "상품 카드 자동 인식이나 의미 기반 완료 판정 없이도 목표 작업이 가능하다",
+      "met": true,
+      "evidence": "게이트 6(상위 역할이 export·status 만으로 다음 묶음 결정) · 게이트 7 G7-10(기계가 완료를 말하지 않음)"
+    }
+  ],
+  "unmet": [
+    {
+      "id": "P9",
+      "text": "직접 검색 버튼은 검증된 검색 방식 하나가 실제로 작동해야 완료로 표시한다",
+      "blocked_by": [
+        "#36",
+        "#37",
+        "#38"
+      ]
+    }
+  ]
+}

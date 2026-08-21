@@ -6,7 +6,7 @@
 //   (코드 주석 원문도 값·포트가 섞일 수 있어 통째로 옮기지 않고, 상세는 스키마 파일 경로로 안내한다)
 //
 // 재료: render.yaml(서비스·선언·분류) + 코드 스키마(필수 여부) + guide.yaml(설명·얻는 곳·스샷·주의)
-// 산출: .claude/env/docs/{서비스명}.md × 배포 서비스, local.md, README.md
+// 산출: .claude/mcp-manage-env/docs/{서비스명}.md × 배포 서비스, local.md, README.md
 //
 // 실행: 레포 루트에서  node ~/.claude/tools/manage-env/docs.mjs
 //       (MCP env_sync 가 분배 후 자동 실행하는 것이 최종 형태 — 4단계에서 연결)
@@ -17,7 +17,7 @@ import { SERVICE_APP, SCHEMA_FILE, assertRepoRoot, schema as libSchema, parseGui
 
 const REPO = process.cwd();
 try { assertRepoRoot(REPO); } catch (e) { console.error(`[manage-env] ${e.message}`); process.exit(1); }
-const OUT = path.join(REPO, '.claude/env/docs');
+const OUT = path.join(REPO, '.claude/mcp-manage-env/docs');
 
 
 
@@ -35,7 +35,7 @@ const AUTOGEN = '<!-- 자동 생성: manage-env docs — 손 편집 금지. 원�
 
 function screenshotLine(g) {
   if (!g?.screenshot) return '';
-  const p = path.join(REPO, '.claude/env/screenshots', g.screenshot);
+  const p = path.join(REPO, '.claude/mcp-manage-env/screenshots', g.screenshot);
   const exists = fs.existsSync(p);
   return exists
     ? `\n  ![얻는 곳](../screenshots/${g.screenshot})`
@@ -59,7 +59,7 @@ function keySection(k, meta, cls, envName, app) {
     `- **무엇**: ${g?.description || '(guide.yaml 에 항목 없음)'}`,
     `- **얻는 곳**: ${g?.obtain || '(미기재)'}${screenshotLine(g)}`,
     '- **값을 바꿀 때**:',
-    `  1. \`.claude/env/${envName}.env\` 에서 이 키 줄을 직접 수정 (에디터로 연다 — Claude 에게 값을 불러주지 않는다)`,
+    `  1. \`.claude/mcp-manage-env/${envName}.env\` 에서 이 키 줄을 직접 수정 (에디터로 연다 — Claude 에게 값을 불러주지 않는다)`,
     `  2. 레포 루트에서 \`node ~/.claude/tools/manage-env/sync.mjs ${envName}\` 실행 → \`apps/${app}/.env.${envName}\` 재생성`,
     cls === 'value'
       ? '  3. 배포 반영: `render.yaml` 해당 서비스의 이 키 `value:` 를 같은 값으로 갱신하고 커밋 (파일이 배포의 원천, 푸시되면 자동 재배포)'
@@ -90,7 +90,7 @@ for (const [svc, app] of Object.entries(SERVICE_APP)) {
       `앱: \`apps/${app}\` (키 명세: \`apps/${app}/.env.example\`, 스키마: \`${SCHEMA_FILE[app]}\`)`,
       '',
       '## 값이 사는 곳',
-      '- `value:` 로 선언된 키 → **render.yaml 이 배포의 원천** (바꾸면 커밋 필요). 로컬 실행용 값은 `.claude/env/*.env`',
+      '- `value:` 로 선언된 키 → **render.yaml 이 배포의 원천** (바꾸면 커밋 필요). 로컬 실행용 값은 `.claude/mcp-manage-env/*.env`',
       dash.length
         ? `- 대시보드 직접 입력(시크릿): ${dash.map((k) => `\`${k}\``).join(', ')} — Render 대시보드 → ${svc} → Environment`
         : '- 이 서비스는 대시보드 직접 입력 키가 없다 (전부 render.yaml `value:`)',
@@ -112,7 +112,7 @@ const local = [
   AUTOGEN,
   '',
   '## 구조 (값은 한 곳에만)',
-  '- 값의 단일 원천: `.claude/env/localhost.env` · `dev.env` · `prod.env` (gitignore — 커밋 금지)',
+  '- 값의 단일 원천: `.claude/mcp-manage-env/localhost.env` · `dev.env` · `prod.env` (gitignore — 커밋 금지)',
   '- 앱 폴더의 `.env.localhost/.env.dev/.env.prod` 는 **생성물** — 직접 고치지 않는다',
   '- 분배: 레포 루트에서 `node ~/.claude/tools/manage-env/sync.mjs [localhost|dev|prod|all]`',
   '- 정합 검사: `node ~/.claude/tools/manage-env/check.mjs`',
@@ -150,7 +150,7 @@ const readme = [
   ...Object.keys(SERVICE_APP).map((s) => `- [${s}.md](${s}.md) — Render 서비스 ${s}`),
   '',
   '## 공통 원칙',
-  '- 값 수정은 언제나 `.claude/env/{환경}.env` 한 곳 → `sync.mjs` 로 분배 → 배포분은 render.yaml(공개) 또는 Render 대시보드(시크릿)',
+  '- 값 수정은 언제나 `.claude/mcp-manage-env/{환경}.env` 한 곳 → `sync.mjs` 로 분배 → 배포분은 render.yaml(공개) 또는 Render 대시보드(시크릿)',
   '- 문서·guide.yaml·render.yaml 에는 시크릿 값을 싣지 않는다',
   '- admin 앱은 배포하지 않으므로 서비스 문서가 없다 (키 설명은 guide.yaml 참조)',
 ].join('\n') + '\n';

@@ -4,6 +4,7 @@
   "description": "md 원본 → 인쇄용 pdf 변환 도구 (본체 convert.mjs + MCP server.mjs)",
   "type": "module",
   "dependencies": {
+    "github-markdown-css": "^5.9.0",
     "marked": "^16.0.0"
   }
 }

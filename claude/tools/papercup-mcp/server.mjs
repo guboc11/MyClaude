@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // papercup-mcp — 같은 LAN의 클로드끼리 직통 쪽지·파일. MCP 창구.
-// 설계: _PLAN/2026-07-31-papercup-lan-messenger/PLAN.md
+// 설계: _ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md
 //
 // 종이컵 전화기: 서로 귀(ear.mjs)를 열어두고, 자석처럼 알아보고, 가끔 한 통씩.
 // 이 창구가 하는 일 — 귀 켜고 끄기 / 문패 / 발견 목록 / 보내기 / 수신함 조회.

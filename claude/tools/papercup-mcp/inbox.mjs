@@ -1,5 +1,5 @@
 // papercup 수신함 도구 — peer_inbox(조회)·peer_mark(읽음 되돌리기).
-// 설계: _PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §4, 합의 7·10.
+// 설계: _ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §4, 합의 7·10.
 
 import * as L from './lib.mjs';
 

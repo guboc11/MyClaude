@@ -47,7 +47,7 @@ try {
   }
 } catch { /* 판별 실패 시 그냥 진행 — 주입 누락이 중복보다 위험하다 */ }
 
-const REMINDERS = path.join(ROOT, '.claude', 'reminders');
+const REMINDERS = path.join(ROOT, '.claude', 'mcp-reminders');
 
 // 참조 해석. 깨진 참조는 침묵하는 대신 명시 문구를 주입한다 —
 // "켜져 있다고 믿는데 안 나가는 상태"가 침묵보다 위험하다 (DESIGN.md 실패 방침).

@@ -1,5 +1,5 @@
 // papercup 공용 로직 — server.mjs·ear.mjs가 공유 (신원·장부·프레임·암호·발견)
-// 설계: _PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
+// 설계: _ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
 // 무의존: node 내장만 (crypto·fs·path·os·net·dgram).
 
 import crypto from 'node:crypto';
@@ -12,12 +12,12 @@ export const MAGIC = 'papercup';
 export const MAX_FILE = 50 * 1024 * 1024; // 파일 상한 50MB
 export const X25519_SPKI_PREFIX = Buffer.from('302a300506032b656e032100', 'hex'); // raw→spki 복원용
 
-// ── 상태 폴더 (기본 .claude/papercup/, 환경변수로 재지정 — 한 머신 검증용) ──
+// ── 상태 폴더 (기본 .claude/mcp-papercup/, 환경변수로 재지정 — 한 머신 검증용) ──
 
 export function stateDir() {
   if (process.env.PAPERCUP_DIR) return process.env.PAPERCUP_DIR;
   const root = process.env.CLAUDE_PROJECT_DIR || process.cwd();
-  return path.join(root, '.claude', 'papercup');
+  return path.join(root, '.claude', 'mcp-papercup');
 }
 export function udpPort() {
   return Number(process.env.PAPERCUP_PORT) || 47777;

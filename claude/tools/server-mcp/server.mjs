@@ -4,9 +4,9 @@
 // 세트 = { 번호 K, env, 포트 블록 } 로 정의되는 로컬 서버 묶음. 필요한 앱만 기동.
 //   - 포트: base = 5200 + K*100. 오프셋 dibang+0 / guest+1 / landing+2 / admin+3 / api+80.
 //   - env(local/dev/prod)·주소는 "런치 시점 주입"으로 고정 (전역 .env 심볼릭 무시, 주입이 우선).
-//   - 장부: <project>/.claude/server-sets/set-{K}/{app}.json  (앱 1개 = 파일 1개)
+//   - 장부: <project>/.claude/mcp-server/set-{K}/{app}.json  (앱 1개 = 파일 1개)
 //   - owner = 세트를 만든 패널(CMUX_SURFACE_ID). set_status 기본은 자기 owner 것만.
-// 설계: _architecture/local-server-orchestration/DESIGN.md
+// 설계: .claude/tools/server-mcp/DESIGN.md
 // stdout에는 JSON-RPC만, 로그는 stderr로.
 
 import fs from 'node:fs';
@@ -20,7 +20,7 @@ const now = () => new Date().toISOString();
 
 // ---- 경로 ----
 function projectDir() { return process.env.CLAUDE_PROJECT_DIR || process.cwd(); }
-function setsRoot() { return path.join(projectDir(), '.claude', 'server-sets'); }
+function setsRoot() { return path.join(projectDir(), '.claude', 'mcp-server'); }
 function setDir(K) { return path.join(setsRoot(), `set-${K}`); }
 function appLedgerPath(K, app) { return path.join(setDir(K), `${app}.json`); }
 function appLogPath(K, app) { return path.join(setDir(K), `${app}.log`); }
@@ -453,7 +453,7 @@ async function toolSetDbBranch({ set, name, drop }) {
 const TOOLS = [
   {
     name: 'set_up',
-    description: '세트의 서버들을 기동한다. 포트 블록: 세트 0~7=5200+K*100, 8~17=7000+(K-8)*100 (6000번대는 prototype 예약이라 건너뜀). 블록에 앱별 오프셋(dibang+0/guest+1/landing+2/admin+3/api+80). env(local|dev|prod)·주소는 런치 시점 주입으로 고정(전역 .env 무시). apps 생략 시 기본(세트0=4앱+api, 그외=3앱+api). 앱 1개=detached 프로세스 1개+로그파일, 장부(.claude/server-sets)에 기록.',
+    description: '세트의 서버들을 기동한다. 포트 블록: 세트 0~7=5200+K*100, 8~17=7000+(K-8)*100 (6000번대는 prototype 예약이라 건너뜀). 블록에 앱별 오프셋(dibang+0/guest+1/landing+2/admin+3/api+80). env(local|dev|prod)·주소는 런치 시점 주입으로 고정(전역 .env 무시). apps 생략 시 기본(세트0=4앱+api, 그외=3앱+api). 앱 1개=detached 프로세스 1개+로그파일, 장부(.claude/mcp-server)에 기록.',
     inputSchema: {
       type: 'object', additionalProperties: false,
       properties: {

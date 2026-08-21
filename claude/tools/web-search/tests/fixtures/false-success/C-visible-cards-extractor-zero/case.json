@@ -1,0 +1,62 @@
+{
+  "schema": "web-search-v2-false-success-case/1",
+  "id": "C-visible-cards-extractor-zero",
+  "regression_name": "R-FALSE-CARDS-ZERO",
+  "title": "화면에는 카드가 보이는데 자동 추출은 0장",
+
+  "source_evidence": [
+    {
+      "file": "LEGACY/tests/gate5-report.md",
+      "line": 11,
+      "quote_gist": "barunson 캡처를 사람이 열어 센 카드 18장 (3열 × 6행)",
+      "why": "이 fixture 의 18장 배치는 그 캡처를 그대로 옮긴 것이다"
+    },
+    {
+      "file": "LEGACY/tests/gate5-report.md",
+      "line": 27,
+      "quote_gist": "사람 18·60·36 에 대해 도구는 0·0·0",
+      "why": "세 목록 전부에서 저장이 0장이었다"
+    },
+    {
+      "file": "LEGACY/tests/gate5-report.md",
+      "line": 33,
+      "quote_gist": "카드 note 는 page_validity 가 content_validated 일 때만 저장하는데 실전 목록은 모두 needs_visual_review 로 끝났다",
+      "why": "itscard 는 DOM 에서 8장을 실제로 보고도 저장이 0장이 된 이유"
+    }
+  ],
+
+  "old_behavior": {
+    "what_happened": "추출기가 카드를 못 찾았거나 문턱에 걸린 것을 '카드 0장'이라는 자료로 장부에 적었다. 수집기의 실패가 목록에 대한 의미 판정으로 바뀌었다.",
+    "why_wrong": "0장은 '카드가 없다'가 아니라 '못 찾았다'였다. 두 가지가 같은 값으로 저장되면 뒤에서 구분할 방법이 없다. 게다가 카드 인식 자체가 v2 core 의 일이 아니다.",
+    "fields_that_should_not_exist": ["cards", "card_count", "extraction_status", "page_validity"]
+  },
+
+  "inputs": [
+    { "path": "input/listing.html", "bytes": 6312, "sha256": "ed42bce47a674ee9e8998c6a84311dd27e9a57d6ab537345b078586708c5a616", "role": "18장이 보이는 목록 원본. 그림은 인라인 SVG 라 네트워크 0회" },
+    { "path": "input/screenshot.svg", "bytes": 2132, "sha256": "928b8ac92157b468a220f41c0b5b171053d0bf21ea95b920b90d52c275f054c9", "role": "그 목록의 시각 표본. 3열 × 6행 18칸이 눈으로 보인다. 도형과 글자뿐이라 브라우저·네트워크 없이 만든다" },
+    { "path": "input/legacy-extraction.json", "bytes": 936, "sha256": "ef7f2405730eed0c4bd03cf5d41cf8bdf8f677afd2e92565388ca5cf1ef34266", "role": "1차 구현이 같은 목록에 남긴 결과(0장)" }
+  ],
+
+  "visible_card_count": 18,
+  "legacy_extracted_count": 0,
+
+  "new_expectation": {
+    "transport": {
+      "requested_url": "https://fixture.invalid/Product/List",
+      "final_url": "https://fixture.invalid/Product/List",
+      "http_status": 200,
+      "title": "청첩장 목록",
+      "artifacts_present": ["dom", "text", "screenshot"]
+    },
+    "collect_result": "success",
+    "collect_result_why": "요청한 산출물(DOM·텍스트·캡처)이 모두 만들어졌다. core 는 여기까지만 말한다.",
+    "core_does_not_count_cards": true,
+    "artifacts_preserved": ["dom", "screenshot"],
+    "artifacts_preserved_why": "카드를 세지 않더라도 원본은 남는다. 그래야 에이전트나 별도 레시피가 나중에 같은 자료로 다시 셀 수 있다.",
+    "warning_codes": [],
+    "judgment": null,
+    "judgment_owner": "agent",
+    "judgment_note": "몇 장이 있는지, 이 쪽이 상품 목록인지는 에이전트가 저장된 DOM·캡처를 읽고 판정한다.",
+    "must_not_contain": ["cards", "card_count", "cards_found", "extraction_status", "page_validity", "is_listing"]
+  }
+}

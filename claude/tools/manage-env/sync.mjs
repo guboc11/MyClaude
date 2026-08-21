@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// manage-env sync — 값 파일(.claude/env/{환경}.env) → apps/*/.env.{환경} 분배 생성기
+// manage-env sync — 값 파일(.claude/mcp-manage-env/{환경}.env) → apps/*/.env.{환경} 분배 생성기
 // 설계: .claude/plans/2026-07-30-manage-env-mcp/PLAN.md §5 / 파서·상수는 lib.mjs 공유(중복 금지)
 //
 // 불변 원칙: 값을 표준 출력·표준 에러에 절대 찍지 않는다 — 키 이름·파일 경로·개수만.
@@ -30,7 +30,7 @@ try { assertRepoRoot(REPO); } catch (e) { console.error(`[manage-env] ${e.messag
 // 템플릿 밖 주석 줄이 보이면 정렬을 건너뛰고 줄 위치만 보고한다 (메모를 조용히 버리지 않기).
 
 const ledgerHeader = (envName) => [
-  `# .claude/env/${envName}.env — ${envName} 환경 값의 단일 원천 (gitignore, 커밋 금지)`,
+  `# .claude/mcp-manage-env/${envName}.env — ${envName} 환경 값의 단일 원천 (gitignore, 커밋 금지)`,
   `# 편집은 이 파일에서만. 앱 폴더의 .env.${envName} 는 manage-env sync 가 만드는 생성물.`,
   `# 표기: KEY=값 (공유 — example 에 이 키를 둔 모든 앱에 분배) / KEY@앱=값 (그 앱에만)`,
   `# 순서: guide.yaml(canonical) — sync 가 자동 정렬. 사람 메모는 이 파일이 아니라 guide.yaml 에.`,
@@ -39,7 +39,7 @@ const COMMENT_ALLOW = [/^# \.claude\/env\//, /^# 유래:/, /^# 편집/, /^# 표�
 
 /** 한 환경의 값 파일을 canonical 순서로 재작성. 반환: true=정상(재작성 또는 변경 없음/건너뜀), false=가드 실패. */
 function reorderLedger(envName) {
-  const p = path.join(REPO, '.claude/env', `${envName}.env`);
+  const p = path.join(REPO, '.claude/mcp-manage-env', `${envName}.env`);
   if (!fs.existsSync(p)) return true;
   const raw = fs.readFileSync(p, 'utf8');
 
@@ -50,7 +50,7 @@ function reorderLedger(envName) {
     if (t.startsWith('#') && !COMMENT_ALLOW.some((re) => re.test(t))) strangers.push(i + 1);
   });
   if (strangers.length) {
-    console.error(`[정렬 건너뜀] .claude/env/${envName}.env — 템플릿 밖 주석 발견 (줄: ${strangers.join(', ')}). 사람 메모는 guide.yaml 로 옮긴 뒤 다시 실행하세요.`);
+    console.error(`[정렬 건너뜀] .claude/mcp-manage-env/${envName}.env — 템플릿 밖 주석 발견 (줄: ${strangers.join(', ')}). 사람 메모는 guide.yaml 로 옮긴 뒤 다시 실행하세요.`);
     return true; // 분배는 원본 그대로 진행
   }
 
@@ -84,24 +84,24 @@ function reorderLedger(envName) {
   }
   for (const k of reparsed.keys()) if (!original.has(k)) diff.push(`${k}(발생)`);
   if (diff.length) {
-    console.error(`[정렬 실패] .claude/env/${envName}.env — 무손실 가드: 재작성 결과가 원본과 다름 (${diff.join(', ')}). 쓰지 않음.`);
+    console.error(`[정렬 실패] .claude/mcp-manage-env/${envName}.env — 무손실 가드: 재작성 결과가 원본과 다름 (${diff.join(', ')}). 쓰지 않음.`);
     return false;
   }
 
   if (assembled === raw) {
-    console.log(`[정렬] .claude/env/${envName}.env — 변경 없음`);
+    console.log(`[정렬] .claude/mcp-manage-env/${envName}.env — 변경 없음`);
     return true;
   }
   const bakDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manage-env-reorder-'));
   fs.copyFileSync(p, path.join(bakDir, `${envName}.env`));
   fs.writeFileSync(p, assembled);
-  console.log(`[정렬] .claude/env/${envName}.env — ${original.size}개 키 canonical 재정렬 (백업: ${bakDir})`);
+  console.log(`[정렬] .claude/mcp-manage-env/${envName}.env — ${original.size}개 키 canonical 재정렬 (백업: ${bakDir})`);
   return true;
 }
 
 /** 한 환경을 분배한다. 성공 여부를 돌려준다. */
 export function sync(envName) {
-  const ledger = parseEnvFile(path.join(REPO, '.claude/env', `${envName}.env`));
+  const ledger = parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${envName}.env`));
   let ok = true;
   for (const app of SYNC_APPS) {
     const keys = exampleKeys(REPO, app);
@@ -124,7 +124,7 @@ export function sync(envName) {
     }
     const header =
       `# 생성됨: manage-env sync (${envName}) — 직접 편집 금지\n` +
-      `# 값 수정은 .claude/env/${envName}.env 에서 하고 sync 를 다시 실행한다. 키 목록·순서 = .env.example\n`;
+      `# 값 수정은 .claude/mcp-manage-env/${envName}.env 에서 하고 sync 를 다시 실행한다. 키 목록·순서 = .env.example\n`;
     fs.writeFileSync(path.join(REPO, 'apps', app, `.env.${envName}`), header + lines.join('\n') + '\n');
     const skipNote = skippedOptional.length ? `  (값 없는 선택 키 생략: ${skippedOptional.join(', ')})` : '';
     console.log(`[생성] apps/${app}/.env.${envName} — ${lines.length}개 키${skipNote}`);

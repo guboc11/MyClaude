@@ -1,0 +1,110 @@
+{
+  "gate": 7,
+  "pass": true,
+  "total": 14,
+  "failed": 0,
+  "project": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+  "scenarios": [
+    {
+      "key": "A",
+      "id": "2026-08-12-wedding-candidates-worldwide",
+      "report": "scenario-a.md"
+    },
+    {
+      "key": "B",
+      "id": "2026-08-12-barunson-mcard-deep",
+      "report": "scenario-b.md"
+    },
+    {
+      "key": "C",
+      "id": "2026-08-12-failure-recovery-drill",
+      "report": "scenario-c.md"
+    }
+  ],
+  "results": [
+    {
+      "id": "G7-1",
+      "title": "세 진행기 어디에도 직접 수집하는 코드가 없다",
+      "pass": true,
+      "detail": "4개 파일(mcp-client.mjs scenario-a.mjs scenario-b.mjs scenario-c.mjs) — playwright·http·fetch·curl 0건, 부르는 것은 MCP 버튼뿐"
+    },
+    {
+      "id": "G7-2",
+      "title": "세 시나리오의 workspace 가 있고 status 가 열린다",
+      "pass": true,
+      "detail": "A 105건(완료 97·실패 8) · B 92건(완료 92·실패 0) · C 5건(완료 0·실패 1)"
+    },
+    {
+      "id": "G7-3",
+      "title": "한 workspace 를 여러 워커가 나눠 썼다",
+      "pass": true,
+      "detail": "A 판정한 워커 3명 · B 판정한 워커 5명 · C 판정한 워커 0명 — 둘 이상인 곳 2곳"
+    },
+    {
+      "id": "G7-4",
+      "title": "임대 겹침 0 · 상태에서 사라진 item 0",
+      "pass": true,
+      "detail": "A 105건 = 상태합 105 · B 92건 = 상태합 92 · C 5건 = 상태합 5 · 임대인데 주인 없는 것 0 · 임대 아닌데 임대번호 남은 것 0"
+    },
+    {
+      "id": "G7-5",
+      "title": "다른 workspace 로 새어 나간 저장 0",
+      "pass": true,
+      "detail": "A 장부 196줄 · B 장부 2715줄 · C 장부 11줄 — 절대경로·상위경로·남의 workspace 0"
+    },
+    {
+      "id": "G7-6",
+      "title": "실패한 실행마다 URL·단계·코드·요약 파일이 있다",
+      "pass": true,
+      "detail": "세 곳 합쳐 실패 64건 — 모두 되짚을 자리가 있다(A 13·B 49·C 2)"
+    },
+    {
+      "id": "G7-7",
+      "title": "표본의 요청 페이지와 저장 자료가 어긋나지 않는다",
+      "pass": true,
+      "detail": "표본 35개(세 곳에서 고르게) — 크기·지문·요약의 URL 까지 일치"
+    },
+    {
+      "id": "G7-8",
+      "title": "검색어 → item → export 로 출처가 끊기지 않는다",
+      "pass": true,
+      "detail": "item 105개 전부 검색어 출처가 있고(검색어 22개), 내보낸 105줄 전부에 그 출처가 실려 있다 (20260812-214653.jsonl)"
+    },
+    {
+      "id": "G7-9",
+      "title": "판정과 기계 상태가 서로를 덮어쓰지 않았다",
+      "pass": true,
+      "detail": "A 판정 97(라벨 없음 20·갈린 item 0) · B 판정 158(라벨 없음 84·갈린 item 0) · C 판정 0(라벨 없음 0·갈린 item 0) — 라벨 없이 done 이 된 item 이 있고(20·18·0), 같은 item 에 다른 라벨이 남은 곳 0건"
+    },
+    {
+      "id": "G7-10",
+      "title": "기계는 조사 완료를 말하지 않는다",
+      "pass": true,
+      "detail": "세 곳 모두 계약 열두 키뿐이고, 대기·임대가 빈 곳은 \"조사 완료라는 뜻은 아닙니다\" 를 함께 적는다"
+    },
+    {
+      "id": "G7-11",
+      "title": "세 곳 모두 장부와 파일이 같은 말을 한다",
+      "pass": true,
+      "detail": "합쳐 2922줄 전부 일치 · 고아 0 · 만들다 만 것 0 · 요약 없는 실행 0"
+    },
+    {
+      "id": "G7-12",
+      "title": "세 시나리오 보고서가 있고 한계를 적었다",
+      "pass": true,
+      "detail": "scenario-a.md · scenario-b.md · scenario-c.md"
+    },
+    {
+      "id": "G7-13",
+      "title": "LEGACY 불변 · 금지 import 0",
+      "pass": true,
+      "detail": "재사용 감사 exit=0 · 기준선 대조 exit=0"
+    },
+    {
+      "id": "G7-14",
+      "title": "감사 자체가 네트워크를 부르지 않음",
+      "pass": true,
+      "detail": "네트워크 시도 0회"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
 //   명령 문자열에 값 파일 경로가 없으므로 자연히 통과한다.
 //
 // 차단 (PLAN §7 그대로):
-//   - Read: .claude/env/*.env / apps/*/.env / apps/*/.env.{localhost,dev,prod}
+//   - Read: .claude/mcp-manage-env/*.env / apps/*/.env / apps/*/.env.{localhost,dev,prod}
 //   - Bash: 위 경로를 내용 읽기 명령(cat·grep·rg·sed·awk·head·tail·less·more·cut·sort·uniq·
 //           strings·xxd·od·source·. 등)으로 여는 경우 — env_reveal 의 grep 명령문도 Claude 가
 //           실행하면 차단이 맞다 (그 명령은 사용자의 외부 터미널용).
@@ -21,7 +21,7 @@
 import fs from 'node:fs';
 
 // 값 파일 경로 패턴 (절대·상대 모두 문자열 매칭)
-const VALUE_FILE = /(\.claude\/env\/[^\s/'"]+\.env|apps\/[^\s/'"]+\/\.env(\.(localhost|dev|prod))?)(?=[\s'"]|$)/;
+const VALUE_FILE = /(\.claude\/mcp-manage-env\/[^\s/'"]+\.env|apps\/[^\s/'"]+\/\.env(\.(localhost|dev|prod))?)(?=[\s'"]|$)/;
 // 내용을 읽어 출력할 수 있는 명령 (단어 경계)
 const READERS = /(^|[\s;|&(])(cat|grep|rg|sed|awk|head|tail|less|more|cut|sort|uniq|strings|xxd|od|source|\.)\s/;
 

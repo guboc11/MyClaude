@@ -1,0 +1,5 @@
+{"item_id":"4410c7cb08d5b7e60ea4","label":null,"confidence":null,"evidence_artifact_ids":["dom-4410c7cb","text-4410c7cb"],"note":"홈이다. 목록인지 아닌지 이 자료만으로는 정하지 못했다."}
+{"item_id":"61ce1910e258a72638d4","label":null,"confidence":null,"evidence_artifact_ids":["dom-61ce1910","text-61ce1910"],"note":"목록처럼 보이나 상품이 렌더되기 전 문서라 판정을 미룬다."}
+{"item_id":"8975885b0c66dba5e39e","label":null,"confidence":null,"evidence_artifact_ids":["dom-8975885b","text-8975885b"],"note":"같은 이유로 미룬다."}
+{"item_id":"806307dfde224161bf52","label":null,"confidence":null,"evidence_artifact_ids":["dom-806307df","text-806307df"],"note":"같은 이유로 미룬다."}
+{"item_id":"7896fd9a1dcbf8b2190b","label":null,"confidence":null,"evidence_artifact_ids":["dom-7896fd9a","text-7896fd9a"],"note":"링크가 80개 보이는 쪽이다. 따라갈지는 아직 정하지 않았다."}

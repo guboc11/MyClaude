@@ -1,0 +1,19 @@
+{
+  "note": "1차 구현이 같은 목록에 대해 실제로 남긴 결과. 화면에는 18장이 보이는데 장부에는 0장이다.",
+  "shape_source": "LEGACY/tests/gate5-report.md 2절 표와 7절 근거(manifests·notes/cards.json)",
+  "ledger_cards": 0,
+  "attempt_cards": 0,
+  "page_validity": "needs_visual_review",
+  "extraction_status": "uncertain",
+  "why": "page_validity:needs_visual_review",
+  "positive_evidence": [],
+  "tier_chain": "curl:200 → jina:403 → headless:200",
+  "capture_saved": true,
+  "dom_saved": true,
+  "gate5_real_counts": {
+    "note": "사람이 캡처를 열어 센 수와 도구가 센 수. 이 fixture 의 18은 barunson 배치를 그대로 옮긴 것이다.",
+    "barunson": { "human": 18, "tool": 0, "layout": "3열 × 6행" },
+    "deardeer": { "human": 60, "tool": 0, "layout": "4열 × 15행" },
+    "itscard": { "human": 36, "tool": 0, "dom_seen": 8, "layout": "4열 × 9행" }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "web-search-v2-false-success-case/1",
+  "id": "A-status-200-error-page",
+  "regression_name": "R-FALSE-200-ERROR",
+  "title": "상태 200 인데 화면은 오류 문구",
+
+  "source_evidence": [
+    {
+      "file": "LEGACY/tests/observe-external.mjs",
+      "line": 26,
+      "quote_gist": "greenvelope 목록 주소의 기대값이 '200 이지만 invalid'",
+      "why": "상태 코드만으로 정상이라 부르면 안 되는 실제 관측 대상"
+    },
+    {
+      "file": "LEGACY/fixtures/server.mjs",
+      "line": 78,
+      "quote_gist": "'상태 200 인 오류 페이지 — 실제 greenvelope 가 이랬다' 주석과 /soft404 의 Whoops 본문",
+      "why": "같은 사례를 1차가 로컬 표본으로 이미 고정해 뒀다. 본문을 길게 둔 이유도 그 자리에 적혀 있다"
+    }
+  ],
+
+  "old_behavior": {
+    "what_happened": "MCP 가 페이지의 의미를 스스로 판정해 page_validity 를 invalid 로 확정하고, 그 판정으로 수집 결과 전체의 쓸모를 결정했다.",
+    "why_wrong": "수집이 실제로 무엇을 가져왔는지(상태 200·본문 1,164바이트·제목 Whoops)와 그 자료가 조사에 쓸 만한지는 다른 질문이다. MCP 가 둘을 한 값으로 합치면 에이전트는 원본을 보지도 못하고 판단 기회를 잃는다.",
+    "fields_that_should_not_exist": ["page_validity", "extraction_status"]
+  },
+
+  "inputs": [
+    { "path": "input/transport.json", "bytes": 656, "sha256": "dee558d7d7628b29dc5bf59401873845b83a5b662f27d68adc566b88c5dbcfb8", "role": "수집 계층이 관측한 사실" },
+    { "path": "input/page.html", "bytes": 1164, "sha256": "8a1ee5b84f63e2be23849c315b493504c70cd811bf7b60ea2f326a9e6a53108f", "role": "저장된 원본 문서" }
+  ],
+
+  "new_expectation": {
+    "transport": {
+      "requested_url": "https://fixture.invalid/online-wedding-invitations",
+      "final_url": "https://fixture.invalid/online-wedding-invitations",
+      "http_status": 200,
+      "title": "Whoops",
+      "artifacts_present": ["text", "dom"]
+    },
+    "collect_result": "success",
+    "collect_result_why": "요청한 산출물이 생성되고 지문까지 기록됐다. success 는 '자료가 유효하다'가 아니라 '기계 작업이 끝났다'는 뜻이다.",
+    "warning_codes": ["error_page_text_detected"],
+    "review_required": true,
+    "judgment": null,
+    "judgment_owner": "agent",
+    "judgment_note": "오류 화면인지 아닌지는 에이전트가 원본을 읽고 report 로 반납한다. MCP 는 관측만 남긴다.",
+    "must_not_contain": ["page_validity", "extraction_status", "is_error_page", "auto_complete"]
+  }
+}

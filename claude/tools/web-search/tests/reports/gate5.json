@@ -1,0 +1,102 @@
+{
+  "gate": 5,
+  "verdict": "BLOCKED",
+  "pass": false,
+  "checks": 9,
+  "failed": 0,
+  "blocked": 3,
+  "open": 1,
+  "results": [
+    {
+      "id": "G5-1",
+      "title": "#6 의 보존 증거가 그대로이고 결정과 앞뒤가 맞는다",
+      "kind": "check",
+      "pass": true,
+      "detail": "spike 검증기 exit=0 · S 항목 13개 통과 · 실패 0"
+    },
+    {
+      "id": "G5-2",
+      "title": "후보 전원 탈락 · 살아남은 공급자 0",
+      "kind": "check",
+      "pass": true,
+      "detail": "후보 9곳 전부 reject(사유 있음 9) · 살아남은 곳 0 · 제약 유료 등록 금지·키 발급 금지·CAPTCHA·차단 우회 금지·로그인 세션 금지"
+    },
+    {
+      "id": "G5-5",
+      "title": "반쯤 만든 검색 공급자가 코드에 남아 있지 않다",
+      "kind": "check",
+      "pass": true,
+      "detail": "lib/search 폴더 없음 · collector 'search-provider' 를 쓰는 파일 0개 · artifact 'search_result' 를 쓰는 파일 0개 (스키마 상수 두 곳에 이름만 남아 있다)"
+    },
+    {
+      "id": "G5-3",
+      "title": "구현이 없는 버튼을 도구 목록에 내지 않는다",
+      "kind": "check",
+      "pass": true,
+      "detail": "목록 9개(add_urls collect export map_domain next report retry status workspace_new) — search 없음 · 눌러 봤더니 \"아직 구현되지 않았습니다\" 로 답한 버튼 0개"
+    },
+    {
+      "id": "G5-4",
+      "title": "search 호출은 오류로 막고 빈 결과로 꾸미지 않으며 갈 길을 알려 준다",
+      "kind": "check",
+      "pass": true,
+      "detail": "isError=true · structuredContent 없음 · 0건 성공으로 위장한 칸 없음 · 안내 \"search 은 아직 구현되지 않았습니다 — 이 MCP 는 검색을 직접 …\""
+    },
+    {
+      "id": "G5-6",
+      "title": "에이전트 WebSearch → add_urls 경로에서 item 마다 검색어가 되짚어진다",
+      "kind": "check",
+      "pass": true,
+      "detail": "언어 5종 · 검색어 10개 · 보낸 URL 19줄(고유 14 · 검색어·URL 짝 18) → item 14개 · 검색어 출처 18줄 · 검색어 없는 item 0개 · 겹친 URL 하나가 검색어 4개로 되짚어진다"
+    },
+    {
+      "id": "G5-7",
+      "title": "같은 검색 결과를 반복해도 item 중복 증가 0",
+      "kind": "check",
+      "pass": true,
+      "detail": "두 번째 실행: 새로 0 · 중복 19 · item 14개 그대로 · 검색어 출처 18줄 그대로(같은 검색어·같은 URL 은 두 번 안 적는다)"
+    },
+    {
+      "id": "G5-8",
+      "title": "버튼 응답이 4KB 이내",
+      "kind": "check",
+      "pass": true,
+      "detail": "이번 게이트에서 오간 버튼 응답 중 가장 큰 것 497바이트 (상한 4096)"
+    },
+    {
+      "id": "G5-O1",
+      "title": "도구 목록 응답이 계약 문구의 상한 밖이다",
+      "kind": "open",
+      "pass": null,
+      "detail": "tools/list 응답 7370바이트 > 4096. 담긴 것은 원문이 아니라 버튼 스키마이고, 계약 시험(C4)과 서버(callTool)는 상한을 버튼 응답에만 적용한다. 계약 문구를 \"버튼 응답\" 으로 좁힐지, 스키마 설명을 줄일지는 계약 개정 사안이라 여기서 정하지 않는다."
+    },
+    {
+      "id": "G5-B1",
+      "title": "5개 언어·50개 검색어 실행과 성공·진짜 0건·차단·공급자 오류 구분",
+      "kind": "blocked",
+      "pass": null,
+      "detail": "실행할 공급자가 0곳이라 검색을 한 번도 돌리지 못했다 — search 실행 기록 0건. 성공·진짜 0건·차단·공급자 오류를 가르는 일은 결과가 있어야 성립한다."
+    },
+    {
+      "id": "G5-B2",
+      "title": "결과마다 rank·제목·설명 원문·원문 artifact 역추적",
+      "kind": "blocked",
+      "pass": null,
+      "detail": "search_result artifact 0개 · sources 칸은 [source_id, item_id, source_kind, source_value, source_item_id, discovered_at] 뿐이다. 되짚어지는 것은 검색어 하나(source_value)까지다. rank·제목·설명 원문은 넣을 자리가 없고, 이번 실행에서 보낸 locale 5종도 어디에도 안 남았다."
+    },
+    {
+      "id": "G5-B3",
+      "title": "반복 실행에서 CAPTCHA·차단 빈도와 이용 조건 기록",
+      "kind": "blocked",
+      "pass": null,
+      "detail": "반복 실행 자체가 없다. 이용 조건은 #6 이 하루치 한 번 기록해 둔 것이 전부이고(robots 10건·probe 3건·이용 조건 4건), 빈도는 여러 날 돌려야 나오는 수치라 이 게이트로 못 낸다."
+    },
+    {
+      "id": "G5-9",
+      "title": "게이트가 바깥 네트워크를 부르지 않음",
+      "kind": "check",
+      "pass": true,
+      "detail": "접촉한 곳 없음 (add_urls 는 URL 을 넣기만 하고 방문하지 않는다)"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "gate": 3,
+  "pass": true,
+  "total": 12,
+  "failed": 0,
+  "results": [
+    {
+      "id": "G3-1",
+      "title": "수집 계층 구성 시험 8묶음",
+      "pass": true,
+      "detail": "8묶음 260항목 전부 통과"
+    },
+    {
+      "id": "G3-2",
+      "title": "브라우저 구성 시험 2묶음",
+      "pass": true,
+      "detail": "2묶음 52항목 전부 통과 · playwright ~/Github/WORK/GoraeUniverse/dibang"
+    },
+    {
+      "id": "G3-3",
+      "title": "fixture 8종에서 요청하지 않은 산출물 0",
+      "pass": true,
+      "detail": "8종 각각 시킨 파일만 생겼다 (normal:1 rendered:1 soft-404:2 one:1 404:1 2s:2 partial:1 page:3)"
+    },
+    {
+      "id": "G3-5",
+      "title": "원문은 파일에만 · MCP 응답 4KB 이내",
+      "pass": true,
+      "detail": "응답 최대 399바이트 (상한 4096) · 원문 조각이 실린 응답 0건"
+    },
+    {
+      "id": "G3-6",
+      "title": "요청·최종 URL 과 상태·경고가 기대대로",
+      "pass": true,
+      "detail": "리다이렉트·200오류·404·그림일부·긴쪽·JS 여섯 자리가 기대대로 · 모든 줄에 요청/최종 URL 있음"
+    },
+    {
+      "id": "G3-4",
+      "title": "screenshot+http 는 네트워크 전에 거절",
+      "pass": true,
+      "detail": "http 방식에서는 screenshot 를 요청할 수 없습니다 · 서버가 받은 요청 0건"
+    },
+    {
+      "id": "G3-8",
+      "title": "이미지 manifest 와 실제 파일·지문 전수 일치",
+      "pass": true,
+      "detail": "manifest 1장 · 성공 줄 10개 전수 대조 일치"
+    },
+    {
+      "id": "G3-9",
+      "title": "무작위 30개 item 에서 URL·자료 교차 연결 0",
+      "pass": true,
+      "detail": "30개 각각 제 표지만 있고 남의 표지 0 · 링크·요약 경로도 제 번호를 가리킨다"
+    },
+    {
+      "id": "G3-7",
+      "title": "수집 도중 강제 종료 — 만들다 만 것이 artifact 로 안 보임",
+      "pass": true,
+      "detail": "도중에 끊긴 실행 1건(있어야 이 시험이 성립한다) · 장부 0줄 · 장부에 든 임시 파일 0 · 디스크의 만들다 만 파일 0(그중 장부에 오른 것 0) · 없는 파일 0 · 지문 어긋남 0 · 고아 0"
+    },
+    {
+      "id": "G3-10",
+      "title": "LEGACY 불변 · 금지 import 0",
+      "pass": true,
+      "detail": "재사용 감사 exit=0 · 기준선 대조 exit=0"
+    },
+    {
+      "id": "G3-11",
+      "title": "게이트 자체가 127.0.0.1 밖으로 나가지 않음",
+      "pass": true,
+      "detail": "접촉한 곳 127.0.0.1:61927"
+    },
+    {
+      "id": "G3-12",
+      "title": "이 게이트가 낸 관찰이 모두 낱말표에 있음",
+      "pass": true,
+      "detail": "관찰 4종(error_page_text_detected·redirected·http_error_status·image_fetch_partial) · 모르는 이름 0"
+    }
+  ]
+}

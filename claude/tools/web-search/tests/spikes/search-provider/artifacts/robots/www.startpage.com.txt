@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /sp/cdn/images/
+Allow: /sp/cdn/favicons/
+Disallow: /cgi-bin/
+Disallow: /do/
+Disallow: /sp/
+Disallow: /av/
+Noindex: /cgi-bin/
+Noindex: /do/
+Noindex: /sp/
+Noindex: /av/

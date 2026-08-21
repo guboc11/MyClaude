@@ -32,7 +32,7 @@
 
 ## 장부
 
-`{메인 체크아웃}/.claude/proto-servers/ledger.json` — 전 체크아웃이 공유(워크트리는 `git rev-parse --git-common-dir`로 메인을 찾음). git 제외.
+`{메인 체크아웃}/.claude/mcp-prototype/ledger.json` — 전 체크아웃이 공유(워크트리는 `git rev-parse --git-common-dir`로 메인을 찾음). git 제외.
 
 ```json
 {
@@ -213,5 +213,5 @@ proto_down
 
 - 서버: `.claude/tools/prototype-mcp/server.mjs`
 - 매뉴얼: `.claude/tools/prototype-mcp/MANUAL.md` (이 파일)
-- 장부·로그: `{메인}/.claude/proto-servers/` (git 제외)
+- 장부·로그: `{메인}/.claude/mcp-prototype/` (git 제외)
 - 헌장: `_PROTOTYPES/README.md` — 조항 조회는 onboarding MCP (`read doc:"prototypes"`)

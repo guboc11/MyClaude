@@ -10,8 +10,8 @@
 //   손으로 넘기게 하면 남의 세션에 꽂는 실수가 가능해지고, 서버가 채우면 그 실수가 불가능하다.
 //
 // 저장 (한 장 = 한 파일. 여러 프로세스가 한 JSON을 같이 고치는 상황을 만들지 않는다):
-//   .claude/reminders/labels/{label}.md              프리셋 (프로젝트 공용)
-//   .claude/reminders/sessions/{session_id}/{name}.md  점등 상태 (켜기=생성, 끄기=삭제)
+//   .claude/mcp-reminders/labels/{label}.md              프리셋 (프로젝트 공용)
+//   .claude/mcp-reminders/sessions/{session_id}/{name}.md  점등 상태 (켜기=생성, 끄기=삭제)
 //
 // stdout에는 JSON-RPC만, 로그는 stderr로.
 
@@ -25,7 +25,7 @@ function projectDir() {
   return process.env.CLAUDE_PROJECT_DIR || process.cwd();
 }
 function remindersRoot() {
-  return path.join(projectDir(), '.claude', 'reminders');
+  return path.join(projectDir(), '.claude', 'mcp-reminders');
 }
 function labelsDir() {
   return path.join(remindersRoot(), 'labels');
@@ -131,7 +131,7 @@ const ON_USAGE = [
   'reminder_on 은 label · text · file · group 중 정확히 하나만 받습니다.',
   '  reminder_on{label: "lint"}                              프리셋 켜기',
   '  reminder_on{text: "빌드 전에 lint 먼저"}                 즉석 문구 켜기',
-  '  reminder_on{file: "_CODE_CONVENTION/DB_MIGRATIONS.md"}  파일 참조 켜기 (매 턴 새로 읽음)',
+  '  reminder_on{file: "_CRAFT_GUIDE/DB_MIGRATIONS.md"}  파일 참조 켜기 (매 턴 새로 읽음)',
   '  reminder_on{group: "coding"}                            그룹에 든 프리셋 통째로 켜기',
 ].join('\n');
 
@@ -270,7 +270,7 @@ function toolSet({ label, text, file, remove } = {}) {
     throw new Error(
       'reminder_set 은 text 또는 file 중 하나를 받습니다 (지우려면 remove:true).\n' +
       '  reminder_set{label:"lint", text:"빌드 전에 lint 먼저"}\n' +
-      '  reminder_set{label:"db", file:"_CODE_CONVENTION/DB_MIGRATIONS.md"}\n' +
+      '  reminder_set{label:"db", file:"_CRAFT_GUIDE/DB_MIGRATIONS.md"}\n' +
       `\n받은 인자: ${given.length ? given.map(([k]) => k).join(', ') : '(없음)'}`
     );
   }

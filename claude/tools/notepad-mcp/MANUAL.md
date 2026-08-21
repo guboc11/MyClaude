@@ -1,14 +1,14 @@
 # notepad-mcp MANUAL
 
 사람용 메모장 도구 8종 — 적기(note_add / note_add_conversation) · 주제 노트(note_new_topic / note_append) · 꺼내기(note_list / note_read / note_search) · 원문(note_source).
-관할 공간: `.claude/notepad/` (gitignore 대상 — 개인 기록).
+관할 공간: `.claude/mcp-notepad/` (gitignore 대상 — 개인 기록).
 설계 원천은 `.claude/tools/notepad-mcp/DESIGN.md`. 사용 장면은 같은 폴더 `USAGE.md`.
 
 ## 노트는 두 종류다
 
 | | 날짜 노트 | 주제 노트 |
 |---|---|---|
-| 자리 | `.claude/notepad/{YYYY-MM}/` 월 폴더 안 | `.claude/notepad/` 루트에 바로 |
+| 자리 | `.claude/mcp-notepad/{YYYY-MM}/` 월 폴더 안 | `.claude/mcp-notepad/` 루트에 바로 |
 | 이름 | `{YYYY-MM-DD-HHMM}.md` — 이름이 곧 시각 | `{만든 날}-{주제}.md` — 이름이 곧 정체 |
 | 성격 | **그 순간을 찍고 끝난다.** 한 장이 한 순간 | **줄이 계속 쌓인다.** 한 장이 한 주제 |
 | 만들기 | `note_add` / `note_add_conversation` | `note_new_topic` |
@@ -198,7 +198,7 @@ frontmatter는 **네 칸 고정**. 값이 비어도 칸은 사라지지 않는�
 ```
 .claude/tools/notepad-mcp/server.mjs   도구 코드 (git 추적)
 .claude/tools/notepad-mcp/MANUAL.md    이 문서 (git 추적)
-.claude/notepad/{YYYY-MM}/*.md         날짜 노트 (gitignore)
-.claude/notepad/{날짜}-{주제}.md         주제 노트 (gitignore)
+.claude/mcp-notepad/{YYYY-MM}/*.md         날짜 노트 (gitignore)
+.claude/mcp-notepad/{날짜}-{주제}.md         주제 노트 (gitignore)
 .mcp.json                              "notepad" 항목 (git 추적)
 ```

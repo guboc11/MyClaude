@@ -1,0 +1,58 @@
+{
+  "pass": true,
+  "total": 10,
+  "failed": 0,
+  "workspace": "2026-08-12-transition-smoke",
+  "results": [
+    {
+      "id": "T1-entrypoint",
+      "pass": true,
+      "detail": "web-search 2.0.0-dev · 버튼 9개: add_urls collect export map_domain next report retry status workspace_new"
+    },
+    {
+      "id": "T2-nine-of-ten",
+      "pass": true,
+      "detail": "계약 10개 중 낸 것 9개 · 안 낸 것 search — 무키 공급자가 없어 만들지 않았다(tests/reports/gate5.md)"
+    },
+    {
+      "id": "T3-not-built-says-where-to-go",
+      "pass": true,
+      "detail": "isError=true · \"search 은 아직 구현되지 않았습니다 — 이 MCP 는 검색을 직접 하지 않습니다. 확정할 무키 공급자가…\""
+    },
+    {
+      "id": "T4-smoke",
+      "pass": true,
+      "detail": "workspace_new → add_urls(새 2·중복 1) → status(전체 2) → export(2줄, 파일에도 2줄)"
+    },
+    {
+      "id": "T5-gitignore",
+      "pass": true,
+      "detail": "새 프로젝트에 규칙 1줄 · git 이 실제로 무시함(exit 0)"
+    },
+    {
+      "id": "T6-runtime-no-legacy",
+      "pass": true,
+      "detail": "실행 중 불러온 이 도구의 모듈 35개(수집 계층 포함 true) · 그중 LEGACY 0개"
+    },
+    {
+      "id": "T7-source-no-legacy",
+      "pass": true,
+      "detail": "lib·server 의 .mjs 35개에서 금지 이름 import 0건"
+    },
+    {
+      "id": "T8-manual",
+      "pass": true,
+      "detail": "버튼 9개 전부 · 안 만든 것 명시 · 복구 절 있음 · 안 하는 것 절 있음 · 5183자"
+    },
+    {
+      "id": "T9-frozen-untouched",
+      "pass": true,
+      "detail": "기준선 대조 exit=0"
+    },
+    {
+      "id": "T10-quiet-stderr",
+      "pass": true,
+      "detail": "실험 기능 경고 말고는 조용하다"
+    }
+  ]
+}

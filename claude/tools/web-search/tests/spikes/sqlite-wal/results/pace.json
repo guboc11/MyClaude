@@ -1,0 +1,177 @@
+{
+  "spike": "global pace.db",
+  "ran_at": "2026-08-12T22:55:08.089Z",
+  "node_version": "v22.21.0",
+  "sqlite_version": "3.50.4",
+  "db_path": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/web-search-pace-spike/pace.db",
+  "tables": [
+    "spike_pace_domain",
+    "spike_pace_reservation"
+  ],
+  "table_note": "이 spike 전용 표다. #24 가 만들 진짜 pace 계약이 아니며, 스키마를 그대로 쓰라는 뜻도 아니다.",
+  "safety_boundary": {
+    "clears": [
+      "spike_pace_domain 의 행",
+      "spike_pace_reservation 의 행"
+    ],
+    "never": [
+      "다른 표 삭제",
+      "pace.db 파일 삭제",
+      "runtime 폴더의 다른 파일 손대기"
+    ],
+    "tables_seen_before": [
+      "spike_pace_domain",
+      "spike_pace_reservation"
+    ],
+    "foreign_tables_untouched": []
+  },
+  "limitation": {
+    "experimental": "node:sqlite 는 Node v22.21.0 에서 아직 실험 기능이라 실행마다 ExperimentalWarning 이 뜬다.",
+    "means": "이번 실측이 이 환경에서 통과했다는 뜻이지 API 가 앞으로 그대로 남는다는 보장은 아니다.",
+    "guard_needed": "구현에 Node 최소 버전 확인을 넣고, node:sqlite import 실패나 동작 변화를 명시적 오류로 드러내야 한다."
+  },
+  "settings": {
+    "workers": 20,
+    "reservations_each": 3,
+    "min_interval_ms": 25,
+    "busy_timeout_ms": 5000,
+    "kill_targets": 2,
+    "domain": "spike.invalid"
+  },
+  "measured": {
+    "journal_mode": "wal",
+    "distinct_project_roots": 20,
+    "planned_reservations": 60,
+    "reservations": 60,
+    "gave_up": 0,
+    "accounting_holds": true,
+    "duplicate_slot_index": 0,
+    "duplicate_allowed_at": 0,
+    "min_gap_ms": 25,
+    "interval_violations": 0,
+    "sqlite_busy_count": 0,
+    "wait_ms": {
+      "max": 121,
+      "avg": 17
+    },
+    "worker_errors": [],
+    "killed_pids": [
+      99882,
+      99883
+    ],
+    "kill_rounds": [
+      {
+        "target": "k0",
+        "held": true,
+        "pid": 99882,
+        "exited": true,
+        "signal": "SIGKILL",
+        "cwd": "/private/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/pace-proj-0-i72hHr"
+      },
+      {
+        "target": "k1",
+        "held": true,
+        "pid": 99883,
+        "exited": true,
+        "signal": "SIGKILL",
+        "cwd": "/private/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/pace-proj-1-TDPOcT"
+      }
+    ],
+    "integrity_check": "ok",
+    "uncommitted_after_kill": 0,
+    "writable_after_kill": true,
+    "permanent_lock_files": [],
+    "control_without_transaction": {
+      "reservations": 60,
+      "duplicate_slot_index": 39,
+      "interval_violations": 59
+    }
+  },
+  "checks": [
+    {
+      "id": "P1-exact-path",
+      "pass": true,
+      "detail": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/web-search-pace-spike/pace.db (journal_mode=wal)"
+    },
+    {
+      "id": "P1b-safety-boundary",
+      "pass": true,
+      "detail": "표 spike_pace_domain, spike_pace_reservation · 이 spike 가 만들지 않은 표 0개는 손대지 않았다"
+    },
+    {
+      "id": "P2-all-workers-finished",
+      "pass": true,
+      "detail": "일꾼 20/20 · 대기 한도 초과 0"
+    },
+    {
+      "id": "P3-distinct-project-roots",
+      "pass": true,
+      "detail": "서로 다른 cwd 20개"
+    },
+    {
+      "id": "P4-reservation-accounting",
+      "pass": true,
+      "detail": "계획 60 = 받음 60 + 포기 0 + 오류 0 · 장부 60"
+    },
+    {
+      "id": "P5-no-duplicate-slot",
+      "pass": true,
+      "detail": "같은 slot_index 중복 0건"
+    },
+    {
+      "id": "P6-no-duplicate-time",
+      "pass": true,
+      "detail": "같은 allowed_at 중복 0건"
+    },
+    {
+      "id": "P7-interval-respected",
+      "pass": true,
+      "detail": "연속 예약 59쌍 중 25ms 미만 0건 · 최소 간격 25ms"
+    },
+    {
+      "id": "P8-no-worker-errors",
+      "pass": true,
+      "detail": "오류 0 · SQLITE_BUSY 0회 · busy_timeout 5000ms · 실제 대기 최대 121ms 평균 17ms"
+    },
+    {
+      "id": "P-kill0-exited",
+      "pass": true,
+      "detail": "pid 99882 종료=true 신호=SIGKILL"
+    },
+    {
+      "id": "P-kill1-exited",
+      "pass": true,
+      "detail": "pid 99883 종료=true 신호=SIGKILL"
+    },
+    {
+      "id": "P9-reopen-integrity",
+      "pass": true,
+      "detail": "integrity_check = ok"
+    },
+    {
+      "id": "P10-uncommitted-rolled-back",
+      "pass": true,
+      "detail": "커밋 안 된 예약 0건 · 강제 종료 pid 99882,99883"
+    },
+    {
+      "id": "P11-committed-survived",
+      "pass": true,
+      "detail": "강제 종료 뒤 예약 60 / 이전 60"
+    },
+    {
+      "id": "P12-writable-after-kill",
+      "pass": true,
+      "detail": "강제 종료 뒤에도 새 예약이 된다"
+    },
+    {
+      "id": "P13-no-permanent-lock",
+      "pass": true,
+      "detail": "모든 프로세스가 끝난 뒤 -wal·-shm 이 남지 않았다"
+    },
+    {
+      "id": "P14-control-catches-duplicates",
+      "pass": true,
+      "detail": "transaction 을 뺀 대조: 예약 60건 중 slot 중복 39건 · 간격 위반 59건 → 시험이 실제로 잡는다"
+    }
+  ]
+}

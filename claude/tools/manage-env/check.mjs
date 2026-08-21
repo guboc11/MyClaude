@@ -44,7 +44,7 @@ export function runCheck() {
 
   // ── B. 필수 키의 값 존재 (sync 대상 3앱) ──
   for (const env of ENVS) {
-    const ledger = parseEnvFile(path.join(REPO, '.claude/env', `${env}.env`));
+    const ledger = parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${env}.env`));
     for (const app of SYNC_APPS) {
       for (const [k, meta] of schema(REPO, app)) {
         if (!meta.required) continue;
@@ -98,7 +98,7 @@ export function runCheck() {
   // ── E. 값 파일 고아 키 ──
   const known = new Set(SYNC_APPS.flatMap((a) => [...exampleSets[a]]));
   for (const env of ENVS) {
-    for (const k of parseEnvFile(path.join(REPO, '.claude/env', `${env}.env`)).keys()) {
+    for (const k of parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${env}.env`)).keys()) {
       const base = k.split('@')[0];
       if (!known.has(base)) findings.push(`E. [${env}] 값 파일에 있으나 어느 앱 .env.example 에도 없는 키: ${k}`);
     }
@@ -106,8 +106,8 @@ export function runCheck() {
 
   // ── G. dev↔prod 대칭성 (원시 키 문자열 기준, KEY@앱 포함. localhost 제외) ──
   {
-    const devKeys = new Set(parseEnvFile(path.join(REPO, '.claude/env/dev.env')).keys());
-    const prodKeys = new Set(parseEnvFile(path.join(REPO, '.claude/env/prod.env')).keys());
+    const devKeys = new Set(parseEnvFile(path.join(REPO, '.claude/mcp-manage-env/dev.env')).keys());
+    const prodKeys = new Set(parseEnvFile(path.join(REPO, '.claude/mcp-manage-env/prod.env')).keys());
     for (const k of new Set([...devKeys, ...prodKeys])) {
       if (guide.get(k.split('@')[0])?.parity_exempt) continue; // 의도된 비대칭 (사유는 guide.yaml 에)
       if (!devKeys.has(k)) findings.push(`G. ${k} — prod 에만 있음, dev 값 파일에 없음`);
@@ -117,7 +117,7 @@ export function runCheck() {
 
   // ── H. 값 파일 순서 ↔ canonical(guide.yaml) — 눈 감사를 위한 순서 일관성 ──
   for (const env of ENVS) {
-    const keys = [...parseEnvFile(path.join(REPO, '.claude/env', `${env}.env`)).keys()];
+    const keys = [...parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${env}.env`)).keys()];
     const sorted = canonicalSort(REPO, keys);
     if (keys.join('\n') !== sorted.join('\n')) {
       const idx = keys.findIndex((k, i) => k !== sorted[i]);
@@ -130,7 +130,7 @@ export function runCheck() {
     if (g.deploy_required !== 'true') continue;
     // (a) dev·prod 값 파일에 값 존재 (KEY 또는 KEY@* 아무거나)
     for (const env of ['dev', 'prod']) {
-      const ledger = parseEnvFile(path.join(REPO, '.claude/env', `${env}.env`));
+      const ledger = parseEnvFile(path.join(REPO, '.claude/mcp-manage-env', `${env}.env`));
       const has = [...ledger.keys()].some((k) => k === key || k.startsWith(`${key}@`));
       if (!has) findings.push(`B'. [${env}] 배포 필수 키 누락 (값 파일): ${key}`);
     }

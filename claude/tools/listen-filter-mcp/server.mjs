@@ -34,7 +34,7 @@ function projectDir() {
   return process.env.CLAUDE_PROJECT_DIR || process.cwd();
 }
 function topicDir(topic) {
-  return path.join(projectDir(), '.claude', 'listen', safeName(topic || DEFAULT_TOPIC));
+  return path.join(projectDir(), '.claude', 'mcp-listen-filter', safeName(topic || DEFAULT_TOPIC));
 }
 const inboxDir = (t) => path.join(topicDir(t), 'inbox');
 const queueDir = (t) => path.join(topicDir(t), 'queue');
@@ -183,7 +183,7 @@ function stopTimer(t) {
 }
 // 서버가 죽었다 살아나면 켜져 있던 주제의 타이머를 되살린다.
 function restoreTimers() {
-  const root = path.join(projectDir(), '.claude', 'listen');
+  const root = path.join(projectDir(), '.claude', 'mcp-listen-filter');
   for (const t of listDirs(root)) {
     const st = readJsonOr(batcherPath(t), null);
     if (st?.on) {

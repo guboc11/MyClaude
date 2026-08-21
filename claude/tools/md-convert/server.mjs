@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // md-convert MCP — md 원본 → 인쇄용 pdf. stdio JSON-RPC (newline-delimited).
 // 변환 본체는 convert.mjs 의 convertFiles 를 그대로 재사용한다 (변환 로직 중복 구현 금지).
-// 골격: manage-env server.mjs 와 동일. 계획: _PLAN/2026-08-01-md-convert-mcp/PLAN.md
+// 골격: manage-env server.mjs 와 동일. 계획: _ARCHIVED/_PLAN/2026-08-01-md-convert-mcp/PLAN.md
 import { convertFiles } from './convert.mjs';
 
 const log = (...a) => console.error('[md-convert]', ...a);
@@ -20,7 +20,7 @@ const TOOLS = [
   {
     name: 'convert_pdf',
     description:
-      'md 파일들을 인쇄용 pdf로 변환한다. 원본 md는 그대로 두고 .claude/md-convert/{오늘}-{topic}/ 폴더를 만들어 파생 pdf를 쓴다. 칼럼 많은 표 문서는 landscape를 켠다. (후속 형식은 convert_html 등으로 추가 예정)',
+      'md 파일들을 인쇄용 pdf로 변환한다. 원본 md는 그대로 두고 .claude/mcp-md-convert/{오늘}-{topic}/ 폴더를 만들어 파생 pdf를 쓴다. 칼럼 많은 표 문서는 landscape를 켠다. (후속 형식은 convert_html 등으로 추가 예정)',
     inputSchema: {
       type: 'object',
       properties: {
@@ -30,7 +30,7 @@ const TOOLS = [
         },
         topic: {
           type: 'string',
-          description: '산출 폴더의 주제부 — .claude/md-convert/{오늘}-{topic}/ (kebab-case 권장)',
+          description: '산출 폴더의 주제부 — .claude/mcp-md-convert/{오늘}-{topic}/ (kebab-case 권장)',
         },
         landscape: {
           type: 'boolean',

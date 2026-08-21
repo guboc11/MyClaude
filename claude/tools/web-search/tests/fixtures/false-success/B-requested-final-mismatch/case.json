@@ -1,0 +1,53 @@
+{
+  "schema": "web-search-v2-false-success-case/1",
+  "id": "B-requested-final-mismatch",
+  "regression_name": "R-FALSE-REDIRECT-MISMATCH",
+  "title": "요청한 목록 주소가 홈을 거쳐 가격 안내로 끝났다",
+
+  "source_evidence": [
+    {
+      "file": "LEGACY/tests/observe-external.mjs",
+      "line": 27,
+      "quote_gist": "thedigitalyes 의 collections 목록 주소에 대한 기대값이 'final != requested'",
+      "why": "요청한 주소와 도착한 주소가 다른 것이 이미 관측 대상으로 박혀 있었다"
+    },
+    {
+      "file": "온보딩 실측 기록",
+      "line": null,
+      "quote_gist": "collections URL 이 홈으로 튕겨 /pricing 에 도착",
+      "why": "이 fixture 의 세 홉 사슬은 그 경로를 그대로 옮긴 것이다"
+    }
+  ],
+  "provenance_note": "브랜드 이름은 근거로만 남기고 fixture 주소는 fixture.invalid 로 둔다. 자동 시험은 네트워크를 0회 쓴다.",
+
+  "old_behavior": {
+    "what_happened": "최종 주소가 요청과 다른데도 상태 200 과 멀쩡한 본문만 보고 정상 수집으로 취급했다. 리다이렉트는 flags 한 줄로만 남아 완료 판정에 영향을 주지 않았다.",
+    "why_wrong": "청첩장 목록을 달라고 했는데 가격 안내가 왔다. 자료 자체는 정상이라 상태 코드로는 걸러지지 않고, 최종 주소를 함께 보지 않으면 잘못된 페이지가 조사 결과에 섞인다.",
+    "fields_that_should_not_exist": ["page_validity"]
+  },
+
+  "inputs": [
+    { "path": "input/redirect-chain.json", "bytes": 995, "sha256": "4442b38ef983140f7aad14bd394d490645b414c07be0f82fad326ed1c5657f8a", "role": "세 홉 리다이렉트 사슬과 관측 사실" },
+    { "path": "input/final-page.html", "bytes": 1093, "sha256": "eb1510209e69c05504ae7422b21e375197f098d96104208912a0b7e47d3a7f3d", "role": "도착한 쪽의 원본 문서" }
+  ],
+
+  "new_expectation": {
+    "transport": {
+      "requested_url": "https://fixture.invalid/collections/digital-wedding-invitations",
+      "final_url": "https://fixture.invalid/pricing",
+      "http_status": 200,
+      "title": "Pricing",
+      "redirect_hops": 2,
+      "artifacts_present": ["text", "dom"]
+    },
+    "requested_equals_final": false,
+    "collect_result": "success",
+    "collect_result_why": "산출물은 만들어졌다. 다만 요청한 쪽이 아니라는 사실을 warning 과 final_url 로 드러낸다.",
+    "warning_codes": ["redirected", "final_url_differs_from_requested"],
+    "review_required": true,
+    "judgment": null,
+    "judgment_owner": "agent",
+    "judgment_note": "이 리다이렉트가 받아들일 만한 것인지(같은 자료의 새 주소인지, 아주 다른 쪽인지)는 에이전트가 정한다.",
+    "must_not_contain": ["page_validity", "auto_complete", "research_complete"]
+  }
+}

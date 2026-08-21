@@ -49,7 +49,7 @@ Listen은 **넓히는 쪽**(다 받고 조사로 살을 붙임), Filter는 **벼
 ## 저장 구조
 
 ```
-.claude/listen/{주제}/
+.claude/mcp-listen-filter/{주제}/
   inbox/          2026-08-02T00-32-20-p1xx.md    한 발화 = 한 파일 (경합 없음)
   queue/          b-003/ b-004/ …                 대기줄
   archive/        b-001/ b-002/ …                 처리 끝난 배치

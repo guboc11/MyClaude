@@ -1,0 +1,122 @@
+{
+  "gate": 0,
+  "ran_at": "2026-08-12T22:55:08.138Z",
+  "node_version": "v22.21.0",
+  "project_root": "/Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+  "items": [
+    {
+      "id": "G0-1",
+      "title": "#1 frozen 기준선 불변",
+      "pass": true,
+      "detail": "baseline --verify exit 0 · LEGACY 36개/집계 일치 · 기존 수집 데이터는 기준선에 부재로 적혀 있고 지금도 없다",
+      "evidence": {
+        "legacy_aggregate": "e1b55fbfd1ebafc5e0bfa980d828d2c0754a50e07624ca26e12cf35cf2d79215",
+        "crawl_content_aggregate": null
+      }
+    },
+    {
+      "id": "G0-2",
+      "title": "#2 계약 위반은 미구현 버튼에서만 나온다",
+      "pass": true,
+      "detail": "본시험 exit 1 · 범위 확인 exit 0 · 구현 9개 [add_urls, collect, export, map_domain, next, report, retry, status, workspace_new] · 미구현 1개 · 초과 0 · 실패 3건 원인 [tool_missing, tools_list_mismatch] · 구현된 버튼 실패 0 · 부정 시험 6/6 통과",
+      "evidence": {
+        "not_product_green": "계약이 고정됐다는 뜻이지 남은 버튼이 동작한다는 뜻이 아니다.",
+        "at_first_pass": "게이트 0 을 처음 통과시킬 때는 공개 도구가 0개였다. 그 뒤 구현이 붙어도 같은 불변식으로 판정한다."
+      }
+    },
+    {
+      "id": "G0-3",
+      "title": "#3 함수 단위 판정과 금지 import 0",
+      "pass": true,
+      "detail": "verify exit 0 · scan exit 0 · 87행 · reuse 26 / copy 23 / reject 38",
+      "evidence": {
+        "scan_scope": "server.mjs 와 lib/**/*.mjs · 지금은 lib/ 가 없어 실질 검사는 #8 이후"
+      }
+    },
+    {
+      "id": "G0-4",
+      "title": "#4 네 거짓 성공을 로컬에서 재현",
+      "pass": true,
+      "detail": "verify exit 0 · A 상태 200 · B requested≠final true · C 보이는 카드 18/추출 0 · D 미방문 112(events 합 112)",
+      "evidence": {
+        "regression_names": [
+          "R-FALSE-200-ERROR",
+          "R-FALSE-REDIRECT-MISMATCH",
+          "R-FALSE-CARDS-ZERO",
+          "R-FALSE-COMPLETE-UNVISITED"
+        ]
+      }
+    },
+    {
+      "id": "G0-5",
+      "title": "#5 내장 SQLite 가 공유 장부로 충분",
+      "pass": true,
+      "detail": "run-all exit 0 · workspace 10프로세스/200행(셈 일치 true, 포기 0, 물러남 0), 강제 종료 2건, integrity ok, 잔존 잠금 0 · pace 20프로세스/60예약, 중복 0, 간격 위반 0, 잔존 잠금 0 · 대조(transaction 제거) 중복 39건",
+      "evidence": {
+        "pace_db_path": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/web-search-pace-spike/pace.db",
+        "node": "v22.21.0",
+        "sqlite": "3.50.4",
+        "limitation": "node:sqlite 는 Node v22.21.0 에서 아직 실험 기능이라 실행마다 ExperimentalWarning 이 뜬다."
+      }
+    },
+    {
+      "id": "G0-6",
+      "title": "#6 direct search 미완료 결정이 근거와 함께 명시",
+      "pass": true,
+      "detail": "verify exit 0 · 후보 9곳 전멸(살아남은 0) · 증거 17개 · corpus 실행 false · 결정 문구 4/4",
+      "evidence": {
+        "decision": "direct search 미완료 · WebSearch → add_urls 경로 유지 · #36~#38 선행 불충족"
+      }
+    },
+    {
+      "id": "G0-7",
+      "title": "게이트 0 자체가 네트워크를 부르지 않음",
+      "pass": true,
+      "detail": "호출 시도 0회 (fetch 를 던지도록 바꿔 두고 셌다)",
+      "evidence": null
+    }
+  ],
+  "runs": {
+    "baseline": {
+      "cmd": "node tests/baseline/baseline.mjs --verify --project /Users/taewonpark/Github/WORK/GoraeUniverse/dibang",
+      "exit": 0,
+      "ms": 158
+    },
+    "contractNormal": {
+      "cmd": "node tests/contracts/public-tools.mjs --json",
+      "exit": 1,
+      "ms": 225
+    },
+    "contractRed": {
+      "cmd": "node tests/contracts/public-tools.mjs --red-state --expect-missing search",
+      "exit": 0,
+      "ms": 204
+    },
+    "reuse": {
+      "cmd": "node tests/baseline/verify-reuse-audit.mjs",
+      "exit": 0,
+      "ms": 52
+    },
+    "reuseScan": {
+      "cmd": "node tests/baseline/verify-reuse-audit.mjs --scan",
+      "exit": 0,
+      "ms": 47
+    },
+    "falseSuccess": {
+      "cmd": "node tests/fixtures/false-success/verify.mjs",
+      "exit": 0,
+      "ms": 49
+    },
+    "sqlite": {
+      "cmd": "node tests/spikes/sqlite-wal/run-all.mjs",
+      "exit": 0,
+      "ms": 4069
+    },
+    "provider": {
+      "cmd": "node tests/spikes/search-provider/verify.mjs",
+      "exit": 0,
+      "ms": 45
+    }
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,233 @@
+{
+  "schema": "web-search-v2-scenario-a-input/1",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#44",
+  "harvested_at": "2026-08-12",
+  "how": "워커(에이전트)가 자기 WebSearch 로 22개 검색어를 돌려 얻은 결과다. MCP 의 search 버튼은 없다 — 무키 공급자가 0이라 만들지 않았고(tests/spikes/search-provider/decision.md), 대신 이 결과를 add_urls 에 source_kind=\"search\", source_value=검색어 로 넣는다. 그 경로는 게이트 5 에서 검증됐다.",
+  "note": "URL 은 검색 결과가 돌려준 그대로다. 우리가 고르거나 다듬지 않았다 — 어느 것이 업체이고 어느 것이 마켓·언론·무관인지는 수집한 뒤 사람이 판정한다.",
+  "countries": ["대한민국", "미국·영국", "일본", "스페인", "프랑스", "이탈리아"],
+  "locales": ["ko-KR", "en-US", "ja-JP", "es-ES", "fr-FR"],
+
+  "queries": [
+    {
+      "locale": "ko-KR", "country": "대한민국", "query": "수제 청첩장 제작 스튜디오",
+      "urls": [
+        "https://fromtoday.co.kr/",
+        "https://theirmood.com/",
+        "https://nemodi.com/category/%EC%B2%AD%EC%B2%A9%EC%9E%A5/264/",
+        "https://www.doyoupress.com/",
+        "https://www.idus.com/v2/search?keyword=%EC%B2%AD%EC%B2%A9%EC%9E%A5%EC%A0%9C%EC%9E%91",
+        "https://ko.wix.com/blog/post/how-to-make-free-mobile-wedding-invitation"
+      ]
+    },
+    {
+      "locale": "ko-KR", "country": "대한민국", "query": "모바일 청첩장 서비스 추천",
+      "urls": [
+        "https://deardeer.kr/mcard/list",
+        "https://salondeletter.com/",
+        "https://maisondemarie.co.kr/",
+        "https://toourguest.com/home",
+        "https://feelmaker.co.kr/list/invitation",
+        "https://g4marry.com/%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%B2%AD%EC%B2%A9%EC%9E%A5-%EB%B9%84%EC%9A%A9/"
+      ]
+    },
+    {
+      "locale": "ko-KR", "country": "대한민국", "query": "레터프레스 청첩장 인쇄소",
+      "urls": [
+        "https://millist.co.kr/",
+        "https://www.print89.com/",
+        "https://www.samwonpaper.com/",
+        "https://www.doyoupress.com/"
+      ]
+    },
+    {
+      "locale": "ko-KR", "country": "대한민국", "query": "결혼 청첩장 브랜드 온라인 주문 제작",
+      "urls": [
+        "https://www.barunsoncard.com/",
+        "https://www.itscard.co.kr/",
+        "https://www.bizhows.com/ko/v/category?mock=product_list_800",
+        "https://www.canva.com/ko_kr/wedding-invitations/templates/"
+      ]
+    },
+    {
+      "locale": "ko-KR", "country": "대한민국", "query": "웨딩 페이퍼 아이템 브랜드 스튜디오",
+      "urls": [
+        "https://www.iwedding.co.kr/",
+        "https://weddinglab.kr/studio",
+        "https://mywedding.designhouse.co.kr/"
+      ]
+    },
+
+    {
+      "locale": "en-US", "country": "미국·영국", "query": "letterpress wedding invitations custom studio",
+      "urls": [
+        "https://www.bellafigura.com/",
+        "https://www.mospensstudio.com/",
+        "https://nicetystudio.com/",
+        "https://bodegapress.co/",
+        "https://dinglewooddesign.com/collections/wedding-invitations",
+        "https://www.vistaprint.com/stationery/letterpress-wedding-invitations"
+      ]
+    },
+    {
+      "locale": "en-US", "country": "미국·영국", "query": "custom wedding stationery shop online",
+      "urls": [
+        "https://www.minted.com/",
+        "https://smittenonpaper.com/",
+        "https://empressstationery.com/",
+        "https://peachpaperdesign.com/",
+        "https://www.thestationerystudio.com/wedding/",
+        "https://www.theknot.com/paper",
+        "https://en.wikipedia.org/wiki/Papier_(company)"
+      ]
+    },
+    {
+      "locale": "en-US", "country": "미국·영국", "query": "UK bespoke wedding invitation designer",
+      "urls": [
+        "https://www.purely-bespoke.co.uk/",
+        "https://marrymebyamoretti.co.uk/",
+        "https://www.luccastudios.co.uk/bespoke-wedding-invitations",
+        "https://www.idodesigns.org.uk/",
+        "https://www.mirabellemakery.com/bespoke-stationery",
+        "https://www.writtenbyemily.com/shop-the-collection"
+      ]
+    },
+    {
+      "locale": "en-US", "country": "미국·영국", "query": "save the date cards printing company",
+      "urls": [
+        "https://www.printplace.com/save-the-date-cards",
+        "https://www.uprinting.com/save-the-date-card-printing.html",
+        "https://smartpress.com/offering/save-the-date-printing",
+        "https://www.paperculture.com/eco/wedding-save-date-cards-c-133.html",
+        "https://www.basicinvite.com/wedding/save-the-date/upload-your-own-save-the-date.html"
+      ]
+    },
+    {
+      "locale": "en-US", "country": "이탈리아", "query": "italian wedding invitation atelier partecipazioni matrimonio",
+      "urls": [
+        "https://www.atelierisabey.com/italy-wedding-invitations",
+        "https://www.etsy.com/it/market/partecipazioni_matrimonio"
+      ]
+    },
+
+    {
+      "locale": "ja-JP", "country": "일본", "query": "結婚式 招待状 オーダーメイド 専門店",
+      "urls": [
+        "https://www.farbeco.jp/c/ct460",
+        "https://www.cocosab-attend.jp/",
+        "https://tcnpp.design/",
+        "https://daidai.wedding/invitation/",
+        "https://www.happyleaf.biz/invitation/",
+        "https://www.mwed.jp/articles/10536/"
+      ]
+    },
+    {
+      "locale": "ja-JP", "country": "일본", "query": "ウェディング ペーパーアイテム 通販",
+      "urls": [
+        "https://www.piary.jp/paper/",
+        "https://cordy.jp/collections/paperitem",
+        "https://www.creema.jp/listing/522",
+        "https://hands.net/cate/stationery/wedding/"
+      ]
+    },
+    {
+      "locale": "ja-JP", "country": "일본", "query": "結婚式 席次表 オーダー 印刷 おしゃれ",
+      "urls": [
+        "https://www.graphic.jp/feature/wedding/the_day",
+        "https://www.happyleaf.biz/reception/",
+        "https://www.niwaka.com/ksm/radio/wedding/invitation-seating/seating-chart/04/"
+      ]
+    },
+    {
+      "locale": "ja-JP", "country": "일본", "query": "ウェディング 招待状 デザイン ブランド 通販",
+      "urls": [
+        "https://www.cocosab.com/",
+        "https://www.piary.jp/written_invitation/",
+        "https://www.farbeco.jp/c/ct460"
+      ]
+    },
+
+    {
+      "locale": "es-ES", "country": "스페인", "query": "invitaciones de boda personalizadas imprenta",
+      "urls": [
+        "https://www.imprentaonline24.es/imprimir-invitaciones",
+        "https://www.imprentaonline.net/invitaciones-boda",
+        "https://www.helloprint.com/es-es/invitacionesdeboda",
+        "https://www.hofmann.es/tarjetas-personalizadas/boda/invitaciones",
+        "https://www.bodapix.es/imprime-diseno",
+        "https://sheedomoments.com/imprimir-invitaciones-online/",
+        "https://felizboda.com/24-invitaciones-de-boda-baratas-y-originales"
+      ]
+    },
+    {
+      "locale": "es-ES", "country": "스페인", "query": "papelería de boda tienda online España",
+      "urls": [
+        "https://papeleriaboda.com/",
+        "https://latiendadeolivia.com/",
+        "https://www.altamarstudio.com/",
+        "https://papelariashop.es/",
+        "https://www.artepapel.es/",
+        "https://www.papeleriadetuboda.com/"
+      ]
+    },
+    {
+      "locale": "es-ES", "country": "스페인", "query": "invitaciones de boda letterpress España taller",
+      "urls": [
+        "https://www.elcalotipoweddings.com/",
+        "https://www.paperstudio.es/producto/invitacion-de-boda-en-letterpress/",
+        "https://ohmycard.es/products/invitaciones-y-tarjetones-en-letterpress-bajo-relieve",
+        "https://www.letraenpapel.com/en",
+        "https://www.savethedateprojects.com/invitaciones-de-boda-originales/invitaciones-vintage-y-sobre-con-forro/",
+        "https://www.bodas.net/invitaciones-de-boda/obsolete-letterpress--e172549"
+      ]
+    },
+    {
+      "locale": "es-ES", "country": "스페인", "query": "tarjetas de boda artesanales diseño estudio",
+      "urls": [
+        "https://www.etsy.com/market/tarjetas_para_boda",
+        "https://www.canva.com/es_es/invitaciones-de-boda/"
+      ]
+    },
+
+    {
+      "locale": "fr-FR", "country": "프랑스", "query": "faire-part mariage personnalisé création",
+      "urls": [
+        "https://www.rosemood.fr/faire-part-mariage/",
+        "https://www.popcarte.com/catalogue/faire-part-mariage.html",
+        "https://www.faireparterie.fr/mariage/faire-part-de-mariage.html",
+        "https://www.planet-cards.com/collections/creation-faire-part-mariage",
+        "https://www.faire-part.com/faire-part-mariage",
+        "https://www.mesfairepart.com/54-faire-part-mariage",
+        "https://www.photobox.fr/faire-part/mariage"
+      ]
+    },
+    {
+      "locale": "fr-FR", "country": "프랑스", "query": "papeterie mariage boutique en ligne",
+      "urls": [
+        "https://www.dismoioui-mariage.fr/categorie-produit/papeterie/",
+        "https://www.monfairepart.com/papeterie-mariage",
+        "https://www.lesbanditspapers.fr/pages/papeterie-mariage",
+        "https://www.lecomptoirdubonheur.com/",
+        "https://www.mariages.net/faire-part-mariage"
+      ]
+    },
+    {
+      "locale": "fr-FR", "country": "프랑스", "query": "faire-part mariage letterpress imprimeur",
+      "urls": [
+        "https://www.cocorico-letterpress.fr/faire-part-mariage.php",
+        "https://letterpressdeparis.com/",
+        "https://promessegraphique.com/",
+        "https://www.unbeaujour.fr/blog-mariage/imprimeur-letterpress-en-france/"
+      ]
+    },
+    {
+      "locale": "fr-FR", "country": "프랑스", "query": "carton invitation mariage sur mesure atelier",
+      "urls": [
+        "https://www.jodieatelier.fr/",
+        "https://www.toi-moi-atelier.com/carton-reponse-mariage/",
+        "https://www.faire-part-elegant.fr/s/101/carton-invitation-mariage-classique",
+        "https://www.art-du-papier.fr/en/collections/carton-invitation-mariage",
+        "https://www.lacocotteencarton.com/faire-part-mariage-original-moderne-unique/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "spike": "search-provider probe",
+  "ran_at": "2026-08-12T06:44:43.903Z",
+  "user_agent": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+  "ua_note": "브라우저로 가장하지 않는 식별 가능한 자동화 UA. 앞선 예비 조회에 쓴 Chrome UA 는 비교용이었고 채택 근거로 쓰지 않는다.",
+  "pacing": {
+    "domain_gap_ms": 4000,
+    "timeout_ms": 20000
+  },
+  "requests": 6,
+  "total_ms": 5300,
+  "findings": [
+    {
+      "step": "robots",
+      "target": "www.bing.com",
+      "status": 200,
+      "bytes": 2676,
+      "artifact": "artifacts/robots/www.bing.com.txt"
+    },
+    {
+      "step": "probe",
+      "candidate": "ddg-html",
+      "requested": "https://html.duckduckgo.com/html/?q=wedding%20invitation",
+      "final": "https://html.duckduckgo.com/html/?q=wedding%20invitation",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 33670,
+      "elapsed_ms": 1194,
+      "verdict": "reachable",
+      "why": "형식은 왔다. 이용 조건·결과 품질은 따로 본다",
+      "artifact": "artifacts/probe/ddg-html.txt"
+    },
+    {
+      "step": "probe",
+      "candidate": "ddg-lite",
+      "requested": "https://lite.duckduckgo.com/lite/?q=wedding%20invitation",
+      "final": "https://lite.duckduckgo.com/lite/?q=wedding%20invitation",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 23927,
+      "elapsed_ms": 1319,
+      "verdict": "reachable",
+      "why": "형식은 왔다. 이용 조건·결과 품질은 따로 본다",
+      "artifact": "artifacts/probe/ddg-lite.txt"
+    },
+    {
+      "step": "probe",
+      "candidate": "bing-rss",
+      "requested": "https://www.bing.com/search?q=wedding%20invitation&format=rss",
+      "final": "https://www.bing.com/search?q=wedding%20invitation&format=rss",
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "bytes": 4956,
+      "elapsed_ms": 269,
+      "verdict": "reachable",
+      "why": "형식은 왔다. 이용 조건·결과 품질은 따로 본다",
+      "artifact": "artifacts/probe/bing-rss.txt"
+    },
+    {
+      "step": "terms",
+      "target": "tos:ddg-aup",
+      "status": 200,
+      "final": "https://duckduckgo.com/?q=acceptable-use-policy&&rpl=1",
+      "bytes": 25110,
+      "artifact": "artifacts/tos/duckduckgo-acceptable-use.html"
+    },
+    {
+      "step": "terms",
+      "target": "tos:bing-msa",
+      "status": 200,
+      "final": "https://www.microsoft.com/en-us/servicesagreement",
+      "bytes": 288515,
+      "artifact": "artifacts/tos/microsoft-services-agreement.html"
+    }
+  ],
+  "request_log": [
+    {
+      "label": "robots:bing",
+      "requested": "https://www.bing.com/robots.txt",
+      "host": "www.bing.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 0,
+      "status": 200,
+      "final": "https://www.bing.com/robots.txt",
+      "content_type": "text/plain",
+      "bytes": 2676,
+      "elapsed_ms": 286,
+      "artifact": "artifacts/robots/www.bing.com.txt"
+    },
+    {
+      "label": "probe:ddg-html",
+      "requested": "https://html.duckduckgo.com/html/?q=wedding%20invitation",
+      "host": "html.duckduckgo.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 0,
+      "status": 200,
+      "final": "https://html.duckduckgo.com/html/?q=wedding%20invitation",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 33670,
+      "elapsed_ms": 1194,
+      "artifact": "artifacts/probe/ddg-html.txt"
+    },
+    {
+      "label": "probe:ddg-lite",
+      "requested": "https://lite.duckduckgo.com/lite/?q=wedding%20invitation",
+      "host": "lite.duckduckgo.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 0,
+      "status": 200,
+      "final": "https://lite.duckduckgo.com/lite/?q=wedding%20invitation",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 23927,
+      "elapsed_ms": 1319,
+      "artifact": "artifacts/probe/ddg-lite.txt"
+    },
+    {
+      "label": "probe:bing-rss",
+      "requested": "https://www.bing.com/search?q=wedding%20invitation&format=rss",
+      "host": "www.bing.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 1199,
+      "status": 200,
+      "final": "https://www.bing.com/search?q=wedding%20invitation&format=rss",
+      "content_type": "text/xml; charset=utf-8",
+      "bytes": 4956,
+      "elapsed_ms": 269,
+      "artifact": "artifacts/probe/bing-rss.txt"
+    },
+    {
+      "label": "tos:ddg-aup",
+      "requested": "https://duckduckgo.com/acceptable-use-policy",
+      "host": "duckduckgo.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 0,
+      "status": 200,
+      "final": "https://duckduckgo.com/?q=acceptable-use-policy&&rpl=1",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 25110,
+      "elapsed_ms": 558,
+      "artifact": "artifacts/tos/duckduckgo-acceptable-use.html"
+    },
+    {
+      "label": "tos:bing-msa",
+      "requested": "https://www.microsoft.com/en-us/servicesagreement",
+      "host": "www.microsoft.com",
+      "ua": "WebSearchMCP-Spike/2.0 (+automated evaluation; no browser emulation)",
+      "waited_ms": 0,
+      "status": 200,
+      "final": "https://www.microsoft.com/en-us/servicesagreement",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 288515,
+      "elapsed_ms": 470,
+      "artifact": "artifacts/tos/microsoft-services-agreement.html"
+    }
+  ]
+}

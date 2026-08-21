@@ -1,0 +1,120 @@
+{
+  "gate": 2,
+  "ran_at": "2026-08-12T22:55:15.239Z",
+  "node_version": "v22.21.0",
+  "sandbox_project": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/gate2-Fdnjkt/project",
+  "workspace": "2026-08-13-gate-two",
+  "workers": 10,
+  "each": 100,
+  "total": 1000,
+  "items": [
+    {
+      "id": "G2-1",
+      "title": "URL 1000건 준비",
+      "pass": true,
+      "detail": "새로 1000 · 중복 0 · 거절 0",
+      "evidence": null
+    },
+    {
+      "id": "G2-2",
+      "title": "독립 프로세스 10개가 결과를 냈다",
+      "pass": true,
+      "detail": "일꾼 10/10 · 오류 0 · 대기 한도 초과 0",
+      "evidence": {
+        "errors": []
+      }
+    },
+    {
+      "id": "G2-3",
+      "title": "합계 1000 · 활성 임대 사이 중복 0",
+      "pass": true,
+      "detail": "일꾼 보고 합 1000 · DB leased 1000 · 중복 item 0 · 서로 다른 임대 10개",
+      "evidence": null
+    },
+    {
+      "id": "G2-4",
+      "title": "작업 파일과 DB 의 임대가 정확히 같다",
+      "pass": true,
+      "detail": "파일 1000건 · DB 1000건 · 어긋남 0건",
+      "evidence": null
+    },
+    {
+      "id": "G2-5",
+      "title": "강제 종료된 워커의 항목만 재배정된다",
+      "pass": true,
+      "detail": "과녁 2개 임대 성립 · 재배정 100건 모두 과녁 것 true · 다른 임대 8개 그대로 true · 중복 0",
+      "evidence": null
+    },
+    {
+      "id": "G2-6",
+      "title": "같은 report 두 번 중 한 번만 반영된다",
+      "pass": true,
+      "detail": "1차 반영 3 · 2차 3(같은 셈) · 판정 행 3 · report 기록 1 · done 3",
+      "evidence": null
+    },
+    {
+      "id": "G2-7",
+      "title": "반납된 임대로 온 새 report 는 거절되고 아무것도 안 바뀐다",
+      "pass": true,
+      "detail": "report 실패 (stale_lease): 이 lease_id 로 잡힌 항목이 없습니다. 만료돼 회수됐거나 이미 반납됐습니다 · 판정 3→3",
+      "evidence": null
+    },
+    {
+      "id": "G2-8",
+      "title": "다른 workspace 의 lease_id 를 받지 않는다",
+      "pass": true,
+      "detail": "report 실패 (stale_lease): 이 lease_id 로 잡힌 항목이 없습니다. 만료돼 회수됐거나 이미 반납됐습니다 · 저쪽 판정 0건",
+      "evidence": null
+    },
+    {
+      "id": "G2-9",
+      "title": "retry 뒤에도 attempts·판정 지문이 그대로다",
+      "pass": true,
+      "detail": "다시 대기 3 · attempts 지문 동일 · 판정 3→3 · 이력 3건",
+      "evidence": null
+    },
+    {
+      "id": "G2-10",
+      "title": "다른 장부의 번호는 되돌리지 않는다",
+      "pass": true,
+      "detail": "다시 대기 0 · 거절 1 · not_in_this_workspace×1 · 이전 증거는 그대로 둡니다",
+      "evidence": null
+    },
+    {
+      "id": "G2-11",
+      "title": "status 가 DB 와 같은 말을 하고 합계가 맞는다",
+      "pass": true,
+      "detail": "total 1000 = 100+900+0+0 · 보고 대기 0 · 만료 임대 0",
+      "evidence": null
+    },
+    {
+      "id": "G2-12",
+      "title": "게이트 2의 여섯 버튼이 있고, 공개된 버튼은 모두 계약을 지킨다",
+      "pass": true,
+      "detail": "게이트 2 버튼 6/6 존재 · 공개 9개 [add_urls, collect, export, map_domain, next, report, retry, status, workspace_new] 중 계약 실패 0 · 미구현 1개는 비공개",
+      "evidence": null
+    },
+    {
+      "id": "G2-13",
+      "title": "임대·보고·재시도 단위 시험",
+      "pass": true,
+      "detail": "exit 0 · 38항목",
+      "evidence": null
+    },
+    {
+      "id": "G2-14",
+      "title": "LEGACY 불변 · 금지 import 0",
+      "pass": true,
+      "detail": "기준선 exit 0 · 금지 검사 exit 0",
+      "evidence": null
+    },
+    {
+      "id": "G2-15",
+      "title": "게이트 2 자체가 네트워크를 부르지 않음",
+      "pass": true,
+      "detail": "호출 시도 0회",
+      "evidence": null
+    }
+  ],
+  "verdict": "PASS"
+}

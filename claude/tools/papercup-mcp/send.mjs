@@ -1,5 +1,5 @@
 // papercup 송신부 — peer_send·peer_send_file. 한 호출에 발견→접속→악수→전송→확인→끊기 완결.
-// 설계: _PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
+// 설계: _ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
 // 연결 상태를 들고 다니지 않는다 — 편지 한 통이 지나가는 동안만 연결이 존재한다.
 
 import dgram from 'node:dgram';

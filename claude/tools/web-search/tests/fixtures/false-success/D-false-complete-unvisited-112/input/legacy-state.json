@@ -1,0 +1,16 @@
+{
+  "note": "1차 장부 모양 그대로. 대기·임대가 0이라는 이유만으로 completion 을 complete 로 적었다.",
+  "shape_source": "LEGACY/tests/task22-report.md 4장 후속 회차 표, gate5-report.md 4절",
+  "completion": "complete",
+  "urls": {
+    "4410c7cb08d5b7e60ea4": { "state": "fetched", "page_validity": "needs_visual_review" },
+    "61ce1910e258a72638d4": { "state": "fetched", "page_validity": "needs_visual_review" },
+    "8975885b0c66dba5e39e": { "state": "fetched", "page_validity": "needs_visual_review" },
+    "806307dfde224161bf52": { "state": "fetched", "page_validity": "needs_visual_review" },
+    "7896fd9a1dcbf8b2190b": { "state": "fetched", "page_validity": "needs_visual_review" }
+  },
+  "cards": {},
+  "counts": { "queued": 0, "leased": 0, "fetched": 5, "known_deferred": 0, "excluded": 0 },
+  "links_seen_total": 112,
+  "links_added_total": 0
+}

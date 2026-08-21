@@ -1,0 +1,74 @@
+{
+  "gate": 4,
+  "pass": true,
+  "total": 11,
+  "failed": 0,
+  "results": [
+    {
+      "id": "G4-1",
+      "title": "지도 구성 시험 2묶음",
+      "pass": true,
+      "detail": "2묶음 52항목 전부 통과"
+    },
+    {
+      "id": "G4-2",
+      "title": "robots·sitemap·대표 페이지·기존 link_manifest 를 예상 수대로 발견",
+      "pass": true,
+      "detail": "robots 선언 sitemap 6개(계약 6) · 내부 링크 23개 · 출처 robots·sitemap_declared·sitemap_error·entry_page·prior_link_manifests · 발견 29 = 지도 29줄"
+    },
+    {
+      "id": "G4-3",
+      "title": "상대 URL·fragment·추적 파라미터 정규화",
+      "pass": true,
+      "detail": "상대 → /r/relative · 자리표를 뗀 /r/frag(지도에 # 든 줄 0개) · 추적 파라미터 짝이 /r/dup 하나로(utm 든 줄 0개)"
+    },
+    {
+      "id": "G4-4",
+      "title": "발견 URL 은 queued · 지도가 만든 collect 실행 0",
+      "pass": true,
+      "detail": "item 29개 — queued 28 · leased 1 · 실행 map 1 · collect 1(지도 전에 우리가 부른 그 한 번) · collect 산출물 1개 — 지도가 새로 만든 것 0"
+    },
+    {
+      "id": "G4-9",
+      "title": "지도 뒤에도 장부와 파일이 일치",
+      "pass": true,
+      "detail": "장부 2줄 · 고아 0 · 요약 없는 실행 0"
+    },
+    {
+      "id": "G4-5",
+      "title": "지도에 확인 범위와 미확인 범위가 나뉘어 있음",
+      "pass": true,
+      "detail": "확인한 출처 4곳 · 그 밖 2곳 · 미확인 범위 2줄 — \"sitemap 을 다 못 읽었습니다 — 못 연 파일 1장 · 오류 1건…\""
+    },
+    {
+      "id": "G4-6",
+      "title": "찾은 쪽을 지도가 스스로 방문하지 않음",
+      "pass": true,
+      "detail": "서버가 받은 요청 4곳 (/robots.txt /sitemaps/from-robots.xml /sitemaps/broken.xml /static/normal) · 발견 29곳 중 방문한 것 0곳"
+    },
+    {
+      "id": "G4-7",
+      "title": "순환·중복에서 같은 파일을 두 번 열지 않음",
+      "pass": true,
+      "detail": "두 번째 지도에서 같은 경로를 두 번 이상 받은 곳 0개 · 발견 6 · 새 URL 0(이미 있는 것은 안 는다)"
+    },
+    {
+      "id": "G4-8",
+      "title": "sitemap 오류가 0건 완료로 둔갑하지 않음",
+      "pass": true,
+      "detail": "못 읽은 sitemap 이 unreadable 로 남고 오류 줄(unreadable)이 따로 있다 · 실행 판정 partial(success 가 아니다) · 그래도 읽은 것은 29개로 그대로 센다 · 미확인 범위에 \"sitemap 을 다 못 읽었습니다 — 못 연 파일 1장 · 오류…\""
+    },
+    {
+      "id": "G4-10",
+      "title": "LEGACY 불변 · 금지 import 0",
+      "pass": true,
+      "detail": "재사용 감사 exit=0 · 기준선 대조 exit=0"
+    },
+    {
+      "id": "G4-11",
+      "title": "게이트 자체가 127.0.0.1 밖으로 나가지 않음",
+      "pass": true,
+      "detail": "접촉한 곳 127.0.0.1:63097"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Let's treat everybody the same, bad bots will ignore it anyway.
+User-agent: *
+Disallow: /search
+Disallow: /url
+Disallow: /focus/dashboard
+Disallow: /eval
+Disallow: /image?

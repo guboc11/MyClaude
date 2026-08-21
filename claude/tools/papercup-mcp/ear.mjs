@@ -1,5 +1,5 @@
 // papercup 귀 — 방송 응답 + 악수 수신 + 기록. detached 장기 실행.
-// 설계: _PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
+// 설계: _ARCHIVED/_PLAN/2026-07-31-papercup-lan-messenger/PLAN.md §3
 //
 // 하는 일은 셋뿐 — ① 매직 방송에 유니캐스트 응답 ② TCP 악수 수신측 ③ 받은 것을 파일에 기록.
 // 자동 행동 없음: 어떤 메시지·파일도 실행하지 않는다. 로그는 stderr.

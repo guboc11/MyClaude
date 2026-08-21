@@ -1,0 +1,140 @@
+{
+  "schema": "web-search-v2-url-samples/1",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#11",
+  "note": "canonical_url 표본. 합쳐져야 하는 것과 갈라져야 하는 것을 함께 둔다 — 한쪽만 보면 '전부 합치기'나 '전부 남기기'가 통과한다.",
+
+  "merge_groups": [
+    { "why": "추적 파라미터만 다른 주소는 하나다", "expect": "https://example.com/products/abc",
+      "urls": [
+        "https://example.com/products/abc",
+        "https://example.com/products/abc/",
+        "https://Example.com/products/abc",
+        "https://example.com:443/products/abc",
+        "https://example.com/products/abc#reviews",
+        "https://example.com/products/abc?utm_source=newsletter",
+        "https://example.com/products/abc?utm_medium=email",
+        "https://example.com/products/abc?utm_campaign=summer",
+        "https://example.com/products/abc?utm_term=wedding",
+        "https://example.com/products/abc?utm_content=hero",
+        "https://example.com/products/abc?utm_id=99",
+        "https://example.com/products/abc?gclid=abc123",
+        "https://example.com/products/abc?gclsrc=aw.ds",
+        "https://example.com/products/abc?dclid=x1",
+        "https://example.com/products/abc?fbclid=zz",
+        "https://example.com/products/abc?msclkid=m1",
+        "https://example.com/products/abc?yclid=y1",
+        "https://example.com/products/abc?igshid=i1",
+        "https://example.com/products/abc?ttclid=t1",
+        "https://example.com/products/abc?twclid=w1",
+        "https://example.com/products/abc?li_fat_id=l1",
+        "https://example.com/products/abc?ref=partner",
+        "https://example.com/products/abc?referrer=blog",
+        "https://example.com/products/abc?source=insta",
+        "https://example.com/products/abc?src=mail",
+        "https://example.com/products/abc?spm=a1z.2",
+        "https://example.com/products/abc?scm=1003",
+        "https://example.com/products/abc?trk=feed",
+        "https://example.com/products/abc?mkt_tok=tok1",
+        "https://example.com/products/abc?_ga=GA1.2.3",
+        "https://example.com/products/abc?_gl=1*abc",
+        "https://example.com/products/abc?_hsenc=h1",
+        "https://example.com/products/abc?_hsmi=h2",
+        "https://example.com/products/abc?mc_cid=c1",
+        "https://example.com/products/abc?mc_eid=e1",
+        "https://example.com/products/abc?vero_id=v1",
+        "https://example.com/products/abc?n_media=1&n_query=wedding&n_rank=3",
+        "https://example.com/products/abc?NaPm=ct%3Dabc",
+        "https://example.com/products/abc?sessionid=S1",
+        "https://example.com/products/abc?PHPSESSID=S2",
+        "https://example.com/products/abc?jsessionid=S3",
+        "https://example.com/products/abc?sid=S4",
+        "https://example.com/products/abc?cfid=1&cftoken=2",
+        "https://example.com/products/abc?utm_source=a&fbclid=b&sessionid=c"
+      ]
+    },
+    { "why": "파라미터 순서만 다른 주소도 하나다", "expect": "https://shop.example.com/list?cate=10&page=2",
+      "urls": [
+        "https://shop.example.com/list?page=2&cate=10",
+        "https://shop.example.com/list?cate=10&page=2",
+        "https://shop.example.com/list?utm_source=x&page=2&cate=10",
+        "https://shop.example.com/list/?cate=10&page=2#top"
+      ]
+    },
+    { "why": "기본 포트와 끝 슬래시", "expect": "http://plain.example.org/",
+      "urls": ["http://plain.example.org", "http://plain.example.org/", "http://plain.example.org:80/", "http://PLAIN.example.org/", "http://plain.example.org./"]
+    }
+  ],
+
+  "distinct_pairs": [
+    { "why": "상품 번호가 다르면 다른 쪽이다", "a": "https://shop.example.com/goods?goodsNo=100", "b": "https://shop.example.com/goods?goodsNo=200" },
+    { "why": "쪽 번호는 보존한다", "a": "https://shop.example.com/list?page=1", "b": "https://shop.example.com/list?page=2" },
+    { "why": "언어는 보존한다", "a": "https://example.com/invitations?lang=ko", "b": "https://example.com/invitations?lang=en" },
+    { "why": "정렬은 기본으로 지우지 않는다", "a": "https://shop.example.com/list?sort=new", "b": "https://shop.example.com/list?sort=price" },
+    { "why": "검색어는 보존한다", "a": "https://example.com/search?q=wedding", "b": "https://example.com/search?q=invitation" },
+    { "why": "경로가 다르면 다른 쪽이다", "a": "https://example.com/a", "b": "https://example.com/b" },
+    { "why": "호스트가 다르면 다른 쪽이다", "a": "https://a.example.com/x", "b": "https://b.example.com/x" },
+    { "why": "www 는 실제로 다른 호스트다", "a": "https://example.com/x", "b": "https://www.example.com/x" },
+    { "why": "스킴이 다르면 다른 쪽이다", "a": "http://example.com/x", "b": "https://example.com/x" },
+    { "why": "기본이 아닌 포트는 남는다", "a": "https://example.com/x", "b": "https://example.com:8443/x" },
+    { "why": "대소문자 경로는 서버가 가른다", "a": "https://example.com/Product", "b": "https://example.com/product" },
+    { "why": "지역·통화도 보존한다", "a": "https://example.com/p?country=kr&currency=krw", "b": "https://example.com/p?country=us&currency=usd" }
+  ],
+
+  "normalize": [
+    { "in": "https://example.com", "out": "https://example.com/" },
+    { "in": "https://example.com/a/b/", "out": "https://example.com/a/b" },
+    { "in": "https://example.com/a//b", "out": "https://example.com/a//b" },
+    { "in": "https://EXAMPLE.com/A", "out": "https://example.com/A" },
+    { "in": "https://example.com/p?b=2&a=1", "out": "https://example.com/p?a=1&b=2" },
+    { "in": "https://example.com/p?a=1&a=2", "out": "https://example.com/p?a=1&a=2" },
+    { "in": "https://example.com/p#frag", "out": "https://example.com/p" },
+    { "in": "https://example.com/p?id=1&utm_source=x", "out": "https://example.com/p?id=1" },
+    { "in": "https://example.com/한글", "out": "https://example.com/%ED%95%9C%EA%B8%80" },
+    { "in": "https://example.com/p?q=wedding%20card", "out": "https://example.com/p?q=wedding+card" },
+    { "in": "http://example.com:8080/x/", "out": "http://example.com:8080/x" },
+    { "in": "https://example.com/?", "out": "https://example.com/" }
+  ],
+
+  "reject": [
+    { "in": "ftp://example.com/x", "code": "scheme" },
+    { "in": "file:///etc/passwd", "code": "scheme" },
+    { "in": "javascript:alert(1)", "code": "scheme" },
+    { "in": "data:text/html,hi", "code": "scheme" },
+    { "in": "mailto:someone@example.com", "code": "scheme" },
+    { "in": "https://user:pass@example.com/x", "code": "userinfo" },
+    { "in": "https://user@example.com/x", "code": "userinfo" },
+    { "in": "", "code": "empty" },
+    { "in": "   ", "code": "empty" },
+    { "in": "not a url", "code": "unparsable" },
+    { "in": "https://", "code": "unparsable" },
+    { "in": "//example.com/x", "code": "unparsable" }
+  ],
+
+  "network": {
+    "public_ips": ["93.184.216.34", "1.1.1.1", "2606:2800:220:1:248:1893:25c8:1946"],
+    "blocked_ips": [
+      { "address": "127.0.0.1", "kind": "loopback" },
+      { "address": "::1", "kind": "loopback" },
+      { "address": "::ffff:127.0.0.1", "kind": "loopback" },
+      { "address": "10.0.0.5", "kind": "private" },
+      { "address": "172.16.9.9", "kind": "private" },
+      { "address": "172.31.255.255", "kind": "private" },
+      { "address": "192.168.1.1", "kind": "private" },
+      { "address": "fd00::1", "kind": "private" },
+      { "address": "169.254.169.254", "kind": "link_local" },
+      { "address": "fe80::1", "kind": "link_local" },
+      { "address": "0.0.0.0", "kind": "unspecified" },
+      { "address": "::", "kind": "unspecified" },
+      { "address": "100.64.0.1", "kind": "shared_cgnat" },
+      { "address": "224.0.0.1", "kind": "multicast" },
+      { "address": "ff02::1", "kind": "multicast" },
+      { "address": "240.0.0.1", "kind": "reserved" },
+      { "address": "192.0.2.1", "kind": "documentation" },
+      { "address": "198.51.100.7", "kind": "documentation" },
+      { "address": "203.0.113.9", "kind": "documentation" },
+      { "address": "2001:db8::1", "kind": "documentation" },
+      { "address": "198.18.0.1", "kind": "benchmark" }
+    ],
+    "blocked_hosts": ["http://localhost/x", "http://foo.localhost/x", "http://127.0.0.1:8080/x", "http://[::1]/x", "http://169.254.169.254/latest/meta-data/"]
+  }
+}

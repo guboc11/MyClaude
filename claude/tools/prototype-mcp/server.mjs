@@ -5,7 +5,7 @@
 // 규칙 원천은 _PROTOTYPES/README.md(헌장) 한 곳 — proto_new가 실시간 파싱해 응답에 동봉한다(생성 시점 규칙 주입).
 //
 // 포트: 메인 체크아웃 6100, 워크트리 N번 6100+N×10. 6000 자체는 Chrome이 X11 예약 포트로 차단해 쓰지 않는다.
-// 장부: 메인 체크아웃의 .claude/proto-servers/ledger.json — 전 체크아웃 공유(포트 충돌 방지). git 제외.
+// 장부: 메인 체크아웃의 .claude/mcp-prototype/ledger.json — 전 체크아웃 공유(포트 충돌 방지). git 제외.
 // 안전: 다른 체크아웃의 서버는 건드리지 않는다. 시안 삭제 기능은 만들지 않는다(헌장 2-3 — 처분은 사용자 판단).
 
 import fs from 'node:fs';
@@ -35,7 +35,7 @@ const P = {
   docs: () => path.join(root(), '_PROTOTYPES'),
   routes: () => path.join(root(), 'apps', 'playground', 'src', 'prototypes'),
   playground: () => path.join(root(), 'apps', 'playground'),
-  ledgerDir: () => path.join(mainRoot(), '.claude', 'proto-servers'),
+  ledgerDir: () => path.join(mainRoot(), '.claude', 'mcp-prototype'),
   ledger: () => path.join(P.ledgerDir(), 'ledger.json'),
   logs: () => path.join(P.ledgerDir(), 'logs'),
 };
@@ -284,10 +284,10 @@ function toolNew({ name, form, goal }) {
     '- 다음 순서: ①proto_spec_write로 설계서 기록(인간과 합의 반복) → ②proto_board·proto_frame 스토리보드 → ③판정 → ④proto_build',
     '',
     '■ 시작 전 필독 — 코드 컨벤션 4문서 전부 (헌장 시작하는 법 3)',
-    '- _CODE_CONVENTION/FRONTEND_STRUCTURE.md',
-    '- _CODE_CONVENTION/STATE_MANAGEMENT.md',
-    '- _CODE_CONVENTION/UI_TRANSITIONS.md',
-    '- _CODE_CONVENTION/data-fetching.md',
+    '- _CRAFT_GUIDE/FRONTEND_STRUCTURE.md',
+    '- _CRAFT_GUIDE/STATE_MANAGEMENT.md',
+    '- _CURRENT_SHAPE/DESIGN.md',
+    '- _CRAFT_GUIDE/data-fetching.md',
     '',
     '■ 금지사항',
     '- 임의 hex 색 금지 — lng-* 토큰만 쓴다',
@@ -816,7 +816,7 @@ function toolBuild({ name }) {
     libraryInventory(),
     '',
     '■ 시작 전 필독 — 코드 컨벤션 4문서 전부',
-    '- _CODE_CONVENTION/FRONTEND_STRUCTURE.md · STATE_MANAGEMENT.md · UI_TRANSITIONS.md · data-fetching.md',
+    '- _CRAFT_GUIDE/FRONTEND_STRUCTURE.md · STATE_MANAGEMENT.md · UI_TRANSITIONS.md · data-fetching.md',
     '',
     '■ 디자인 시스템 (CLAUDE.md 발췌)',
     designSystemExcerpt(),

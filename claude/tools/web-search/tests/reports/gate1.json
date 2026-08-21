@@ -1,0 +1,194 @@
+{
+  "gate": 1,
+  "ran_at": "2026-08-12T22:55:11.061Z",
+  "node_version": "v22.21.0",
+  "sandbox_project": "/var/folders/mz/j431f5w53zn7tbf9016990q00000gn/T/gate1-FR9zvQ/project",
+  "workspace": "2026-08-13-gate-one",
+  "urls_loaded": 10000,
+  "duplicates": 1000,
+  "unit_runs": {
+    "paths": {
+      "exit": 0,
+      "checks": 25
+    },
+    "db": {
+      "exit": 0,
+      "checks": 26
+    },
+    "workspace-new": {
+      "exit": 0,
+      "checks": 18
+    },
+    "url": {
+      "exit": 0,
+      "checks": 23
+    },
+    "import": {
+      "exit": 0,
+      "checks": 20
+    },
+    "items": {
+      "exit": 0,
+      "checks": 19
+    },
+    "status": {
+      "exit": 0,
+      "checks": 17
+    }
+  },
+  "items": [
+    {
+      "id": "G1-1",
+      "title": "단위 시험 전부 통과",
+      "pass": true,
+      "detail": "7개 파일 · 검사 148항목 · paths:25 db:26 workspace-new:18 url:23 import:20 items:19 status:17",
+      "evidence": {
+        "paths": {
+          "exit": 0,
+          "checks": 25
+        },
+        "db": {
+          "exit": 0,
+          "checks": 26
+        },
+        "workspace-new": {
+          "exit": 0,
+          "checks": 18
+        },
+        "url": {
+          "exit": 0,
+          "checks": 23
+        },
+        "import": {
+          "exit": 0,
+          "checks": 20
+        },
+        "items": {
+          "exit": 0,
+          "checks": 19
+        },
+        "status": {
+          "exit": 0,
+          "checks": 17
+        }
+      }
+    },
+    {
+      "id": "G1-2",
+      "title": "같은 이름 충돌에서 기존 파일이 변하지 않는다",
+      "pass": true,
+      "detail": "생성 2026-08-13-gate-one · 재생성 거절 true · brief 지문 그대로 · db 지문 그대로",
+      "evidence": {
+        "message": "workspace_new 실패 (workspace_exists): 같은 이름의 workspace 가 이미 있습니다: 2026-08-13-gate-one"
+      }
+    },
+    {
+      "id": "G1-3",
+      "title": "URL 1만 건의 신규·중복·거절이 기대와 같다",
+      "pass": true,
+      "detail": "받은 것 11001 · 새로 10000 · 중복 1000 · 거절 1 · 179ms",
+      "evidence": null
+    },
+    {
+      "id": "G1-4",
+      "title": "응답에 입력 원문이 실리지 않는다",
+      "pass": true,
+      "detail": "응답 316바이트 ≤ 4096 (입력은 628816바이트)",
+      "evidence": null
+    },
+    {
+      "id": "G1-5",
+      "title": "중복은 item 을 늘리지 않고 출처만 는다",
+      "pass": true,
+      "detail": "item 10000 · sources 10003 · 출처가 둘 이상인 item 3개",
+      "evidence": null
+    },
+    {
+      "id": "G1-6",
+      "title": "추적 파라미터는 합쳐지고 기능성 파라미터는 보존된다",
+      "pass": true,
+      "detail": "표본 77개 → item 25개 = 열쇠 25개 · 합침 열쇠 3개 모두 존재 true · 갈려야 할 쌍 12/12 · 빠짐 0 · 군더더기 0",
+      "evidence": {
+        "missing": [],
+        "extra": []
+      }
+    },
+    {
+      "id": "G1-7",
+      "title": "상태 합계 불변식과 4KB 상한",
+      "pass": true,
+      "detail": "total 10000 = queued 10000 + leased 0 + done 0 + failed 0 · 응답 392바이트 · workspace_drained false",
+      "evidence": null
+    },
+    {
+      "id": "G1-8",
+      "title": "workspace 밖 입력과 심볼릭 링크를 거절한다",
+      "pass": true,
+      "detail": "절대경로 true · 상위 이동 true · 심볼릭 링크 true · 들어간 바깥 URL 0건",
+      "evidence": {
+        "messages": [
+          "add_urls 실패 (input_outside_workspace): workspace 밖 파일은 읽지 않습",
+          "add_urls 실패 (input_outside_workspace): workspace 밖 파일은 읽지 않습",
+          "add_urls 실패 (input_outside_workspace): workspace 밖 파일은 읽지 않습"
+        ]
+      }
+    },
+    {
+      "id": "G1-9",
+      "title": "없는 workspace 를 0건으로 꾸미지 않는다",
+      "pass": true,
+      "detail": "status 실패 (workspace_missing): workspace 가 없습니다: 2026-08-12-no-such-workspace",
+      "evidence": null
+    },
+    {
+      "id": "G1-10",
+      "title": "재시작 뒤에도 상태가 같고 DB 가 멀쩡하다",
+      "pass": true,
+      "detail": "새 서버가 본 total 10000 · DB item 10000 · integrity_check ok",
+      "evidence": null
+    },
+    {
+      "id": "G1-11",
+      "title": "이중 장부가 없다",
+      "pass": true,
+      "detail": "workspace 파일 README.md, artifacts, brief.md, exports, link.jsonl, logs, seed.jsonl, workspace.db",
+      "evidence": null
+    },
+    {
+      "id": "G1-12",
+      "title": "workspace 산출물이 git 에 나타나지 않는다",
+      "pass": true,
+      "detail": "check-ignore 4/4 · git status 노출 0줄",
+      "evidence": {
+        "rules": [
+          ".gitignore:1:.claude/websearch-workspace/\t.claude/websearch-workspace/2026-08-13-gate-one",
+          ".gitignore:1:.claude/websearch-workspace/\t.claude/websearch-workspace/2026-08-13-gate-one/workspace.db",
+          ".gitignore:1:.claude/websearch-workspace/\t.claude/websearch-workspace/2026-08-13-gate-one/artifacts/pages",
+          ".gitignore:1:.claude/websearch-workspace/\t.claude/websearch-workspace/2026-08-13-gate-one/exports"
+        ]
+      }
+    },
+    {
+      "id": "G1-13",
+      "title": "게이트 1의 세 버튼이 있고, 공개된 버튼은 모두 계약을 지킨다",
+      "pass": true,
+      "detail": "게이트 1 버튼 3/3 존재 · 공개 9개 [add_urls, collect, export, map_domain, next, report, retry, status, workspace_new] 중 계약 실패 0 · 미구현 1개는 비공개 true · 초과 0",
+      "evidence": null
+    },
+    {
+      "id": "G1-14",
+      "title": "LEGACY·기존 데이터 불변, 새 코드에 금지 import 0",
+      "pass": true,
+      "detail": "기준선 exit 0 · 금지 검사 exit 0 · 검사 대상 runtime 파일 35개: server.mjs, lib/artifacts.mjs, lib/attempts.mjs, lib/db.mjs, lib/errors.mjs, lib/export.mjs, lib/fixture-allow.mjs, lib/http.mjs, lib/import.mjs, lib/items.mjs, lib/judgments.mjs, lib/lease.mjs, lib/network-policy.mjs, lib/pace.mjs, lib/paths.mjs, lib/report.mjs, lib/retry.mjs, lib/robots.mjs, lib/schema.mjs, lib/status.mjs, lib/tool-schemas.mjs, lib/url.mjs, lib/workspace.mjs, lib/map/index.mjs, lib/map/robots.mjs, lib/map/sitemap.mjs, lib/collect/browser-images.mjs, lib/collect/browser.mjs, lib/collect/extract-images.mjs, lib/collect/extract-links.mjs, lib/collect/extract-text.mjs, lib/collect/html.mjs, lib/collect/http.mjs, lib/collect/images.mjs, lib/collect/index.mjs",
+      "evidence": null
+    },
+    {
+      "id": "G1-15",
+      "title": "게이트 1 자체가 네트워크를 부르지 않음",
+      "pass": true,
+      "detail": "호출 시도 0회",
+      "evidence": null
+    }
+  ],
+  "verdict": "PASS"
+}

@@ -1,0 +1,15 @@
+{
+  "note": "수집 계층이 관측한 사실만 담는다. 이 파일에는 의미 판정이 없다.",
+  "requested_url": "https://fixture.invalid/online-wedding-invitations",
+  "final_url": "https://fixture.invalid/online-wedding-invitations",
+  "http_status": 200,
+  "collector": "http",
+  "title": "Whoops",
+  "content_type": "text/html; charset=utf-8",
+  "body_byte_size": 1164,
+  "body_byte_size_means": "같은 폴더 page.html 의 실제 바이트. 저장한 문서와 어긋나면 안 되므로 시험이 대조한다.",
+  "elapsed_ms": 214,
+  "redirect_chain": [],
+  "outputs_requested": ["text", "dom"],
+  "outputs_produced": ["text", "dom"]
+}

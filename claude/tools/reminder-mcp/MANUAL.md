@@ -70,7 +70,7 @@ reminder_off →  파일 삭제        →  (매 턴) 훅이 읽을 게 없음  
 ```
 reminder_on{label: "lint"}                               프리셋 켜기
 reminder_on{text: "빌드 전에 lint 먼저"}                  즉석 문구 켜기
-reminder_on{file: "_CODE_CONVENTION/DB_MIGRATIONS.md"}   파일 참조 켜기
+reminder_on{file: "_CRAFT_GUIDE/DB_MIGRATIONS.md"}   파일 참조 켜기
 reminder_on{group: "coding"}                             그룹 통째로 켜기
 ```
 
@@ -166,7 +166,7 @@ reminder_on{group: "coding"}                             그룹 통째로 켜기
 ## 저장 레이아웃
 
 ```
-<project>/.claude/reminders/
+<project>/.claude/mcp-reminders/
   labels/{label}.md                   프리셋 (프로젝트 공용)
   groups/{group}.md                   그룹. 프리셋 이름을 줄마다 하나씩 (프로젝트 공용)
   always/{name}.md                    영구 점등 — 모든 세션에 나감

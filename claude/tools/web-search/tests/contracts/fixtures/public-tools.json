@@ -1,0 +1,173 @@
+{
+  "schema": "web-search-v2-public-contract/3",
+  "task": "2026-08-12-web-search-MCP-v2-rebuild#2",
+  "source": "_PLAN/2026-08-11-web-search-mcp/PLAN.md 1·2·4·5절",
+  "note": "구현 전에 고정한 공개 계약이다. 구현이 이 파일에 맞춰야 하며 반대가 아니다.",
+
+  "public_tool_names": [
+    "workspace_new",
+    "add_urls",
+    "search",
+    "map_domain",
+    "next",
+    "collect",
+    "report",
+    "status",
+    "retry",
+    "export"
+  ],
+
+  "input_schema_policy": {
+    "additional_properties": false,
+    "one_of_keyword": "anyOf",
+    "one_of_shape": "anyOf: [{ required: [A] }, { required: [B] }] — 둘 중 하나는 반드시 온다"
+  },
+
+  "response_contract": {
+    "max_bytes": 4096,
+    "measured_on": "JSON-RPC 응답 한 줄 전체",
+    "rule": "긴 원문(DOM·텍스트·이미지 목록·검색 원문)은 응답에 싣지 않고 파일 경로와 짧은 수치만 돌려준다",
+    "structured": "성공 응답은 outputSchema 에 선언한 키만 담은 structuredContent 를 포함한다",
+    "forbidden_substrings": ["<!DOCTYPE", "<html", "</body>", "<head>"]
+  },
+
+  "tools": {
+    "workspace_new": {
+      "required": ["topic", "brief"],
+      "optional": [],
+      "returns": ["workspace_id", "workspace_path", "brief_path"]
+    },
+    "add_urls": {
+      "required": ["workspace", "source_kind", "source_value"],
+      "optional": ["urls", "file"],
+      "one_of": ["urls", "file"],
+      "returns": ["received", "added", "duplicates", "rejected", "reject_reasons"]
+    },
+    "search": {
+      "required": ["workspace", "queries"],
+      "optional": ["locale", "max_results_per_query"],
+      "returns": ["queries_succeeded", "queries_failed", "new_urls", "duplicates", "result_path"]
+    },
+    "map_domain": {
+      "required": ["workspace"],
+      "optional": ["domain", "url"],
+      "one_of": ["domain", "url"],
+      "returns": ["sources", "discovered", "new_urls", "map_path", "limits", "needs_review"]
+    },
+    "next": {
+      "required": ["workspace", "worker_id"],
+      "optional": ["count", "lease_minutes"],
+      "property_rules": {
+        "count": { "default": 20, "maximum": 100 },
+        "lease_minutes": { "default": 60 }
+      },
+      "returns": ["lease_id", "expires_at", "work_file", "leased"]
+    },
+    "collect": {
+      "required": ["workspace", "lease_id", "outputs", "mode"],
+      "optional": [],
+      "conditional": {
+        "keyword": "allOf",
+        "why": "PLAN 4-6·게이트 3 — mode=http 이면 screenshot 을 요청할 수 없다. 접속하기 전에 입력 오류로 거절한다.",
+        "branches": [
+          {
+            "if": { "properties": { "mode": { "const": "http" } }, "required": ["mode"] },
+            "then": { "properties": { "outputs": { "items": { "enum": ["text", "dom", "links", "images"] } } } }
+          }
+        ]
+      },
+      "returns": ["succeeded", "partial", "failed", "warnings", "index_path", "awaiting_report"]
+    },
+    "report": {
+      "required": ["workspace", "lease_id", "worker_id"],
+      "optional": ["judgments", "file"],
+      "one_of": ["judgments", "file"],
+      "judgment_item": {
+        "null_representation": "type_array",
+        "additional_properties": false,
+        "properties": ["item_id", "label", "confidence", "evidence_artifact_ids", "note"],
+        "required": ["item_id", "label", "confidence", "evidence_artifact_ids", "note"],
+        "types": {
+          "item_id": ["string"],
+          "label": ["null", "string"],
+          "confidence": ["null", "number"],
+          "evidence_artifact_ids": ["array"],
+          "note": ["string"]
+        }
+      },
+      "returns": ["accepted", "rejected", "done"]
+    },
+    "status": {
+      "required": ["workspace"],
+      "optional": [],
+      "returns": [
+        "total", "queued", "leased", "done", "failed",
+        "awaiting_report", "review_required", "expired_leases",
+        "top_errors", "artifact_counts", "last_export", "workspace_drained"
+      ]
+    },
+    "retry": {
+      "required": ["workspace", "item_ids", "reason"],
+      "optional": [],
+      "returns": ["requeued", "rejected"]
+    },
+    "export": {
+      "required": ["workspace", "format"],
+      "optional": ["fields", "filter_state", "filter_label", "filter_domain", "filter_source", "filter_warning"],
+      "returns": ["rows", "path", "filter_summary"]
+    }
+  },
+
+  "enums": {
+    "add_urls.source_kind": ["seed", "search", "sitemap", "robots", "internal_link", "import"],
+    "collect.outputs": ["screenshot", "text", "dom", "links", "images"],
+    "collect.mode": ["http", "browser"],
+    "export.format": ["jsonl", "csv"]
+  },
+
+  "input_combinations": [
+    {
+      "id": "collect-screenshot-requires-browser",
+      "tool": "collect",
+      "when": { "mode": "http", "outputs": ["screenshot"] },
+      "expect": "input_error_before_network",
+      "declared_as": "collect.conditional (inputSchema.allOf) 로 선언하고 C2 가 구조를 정확 비교한다",
+      "runtime_verified_at": "게이트 3 — 유효한 workspace·lease 와 요청 계수를 세는 로컬 fixture 가 생긴 뒤",
+      "why": "호출 한 번의 isError 만 보면 workspace·lease 오류를 거절로 오인한다"
+    },
+    {
+      "id": "unknown-tool-rejected",
+      "tool": "*",
+      "when": { "name": "no_such_tool" },
+      "expect": "is_error",
+      "why": "공개 목록에 없는 이름은 호출을 거절한다. 다른 인자가 없어 오인 위험이 없다"
+    }
+  ],
+
+  "forbidden": {
+    "why": "PLAN 1-3·9절 — 의미 판단과 숨은 자동화는 core 계약에 스며들면 안 된다",
+    "tool_names": [
+      "crawl", "crawl_new", "crawl_list", "discover", "fetch", "lease", "cycle_report",
+      "wake_details", "detect_cards", "extract_cards", "classify_page", "classify_kind",
+      "paginate", "pagination", "domain_profile",
+      "login", "set_cookies", "bypass_block", "solve_captcha",
+      "jina_fetch", "use_real_chrome"
+    ],
+    "input_fields": [
+      "recursive", "follow_links", "auto_follow", "auto_expand", "max_depth", "depth", "crawl_depth",
+      "card_selector", "cards", "list_or_detail", "page_kind", "pagination", "wake_details",
+      "domain_profile", "profile",
+      "jina", "use_jina", "chrome", "real_chrome", "headful", "channel",
+      "cookies", "cookie_file", "session", "login", "credentials", "auth", "authorization",
+      "bypass", "evade", "user_agent_rotate", "captcha"
+    ],
+    "return_fields": [
+      "cards", "card_count", "cards_found", "page_kind", "is_listing", "is_detail",
+      "list_or_detail", "research_complete", "goal_achieved", "auto_complete",
+      "html", "dom", "body", "text_content", "raw"
+    ],
+    "enum_values": {
+      "collect.mode": ["jina", "chrome", "real_chrome", "curl", "auto"]
+    }
+  }
+}

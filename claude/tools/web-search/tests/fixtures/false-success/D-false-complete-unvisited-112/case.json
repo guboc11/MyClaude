@@ -1,0 +1,81 @@
+{
+  "schema": "web-search-v2-false-success-case/1",
+  "id": "D-false-complete-unvisited-112",
+  "regression_name": "R-FALSE-COMPLETE-UNVISITED",
+  "title": "본 링크 112개를 안 따라갔는데 complete 라고 닫았다",
+
+  "source_evidence": [
+    {
+      "file": "LEGACY/tests/task22-report.md",
+      "line": 114,
+      "quote_gist": "후속 회차 kr-barunson-postfix 의 '링크 본 것 / 들인 것 = 112 / 0'",
+      "why": "본 링크 수와 들인 링크 수가 장부에 따로 남아 있었다"
+    },
+    {
+      "file": "LEGACY/tests/task22-report.md",
+      "line": 123,
+      "quote_gist": "그 상태에서 완료 판정이 complete 로 나왔다. 안 본 것을 없는 것으로 보고한다",
+      "why": "거짓 완료의 직접 기술"
+    },
+    {
+      "file": "LEGACY/tests/gate5-report.md",
+      "line": 48,
+      "quote_gist": "links_not_followed 5건: 8·8·8·8·80 인데 완료 판정이 complete",
+      "why": "112 = 8+8+8+8+80 의 내역"
+    }
+  ],
+
+  "old_behavior": {
+    "what_happened": "대기(queued)와 임대(leased)가 0이라는 이유만으로 완료를 complete 로 적었다. 본 링크 112개를 하나도 따라가지 않은 사실은 events 에만 남고 완료 판정에 닿지 않았다.",
+    "why_wrong": "기계적으로 처리할 일이 남지 않은 것과 조사가 끝난 것은 다른 말이다. 안 본 것을 없는 것으로 보고하면 그 뒤의 모든 집계가 거짓이 된다.",
+    "fields_that_should_not_exist": ["completion", "research_complete", "goal_achieved", "auto_complete"]
+  },
+
+  "inputs": [
+    { "path": "input/legacy-state.json", "bytes": 890, "sha256": "ed2c15ab487f1ef675a6acd21833af615a9f81b07a38c5ca5f30283d3bc812c1", "role": "1차 장부 모양. completion=complete 가 그대로 들어 있다" },
+    { "path": "input/events.jsonl", "bytes": 1284, "sha256": "704ff7294d172141709e2a01cbf629bb41d0c7dd9ca02615b82af66decaeca75", "role": "links_not_followed 5건. links_seen 합이 112" },
+    { "path": "input/judgments.jsonl", "bytes": 956, "sha256": "885bda9d2b89a4722c6205f534b55f22e1035c969a48893255d9ae7933253877", "role": "다섯 항목에 대한 label=null 판정. 이것이 반납돼 done 이 5가 됐다" }
+  ],
+
+  "unvisited_discovered": 112,
+  "unvisited_breakdown": [8, 8, 8, 8, 80],
+
+  "how_done_became_five": "워커가 다섯 항목을 임대해 수집하고, 판정을 정하지 못한 채 label=null 로 report 를 반납했다. report 가 수락됐으므로 done 이 5, awaiting_report 가 0 이 된다. 판정이 비어 있다고 해서 임대가 남아 있는 것은 아니다 — 그래서 대기·임대가 0 이고 workspace_drained 가 true 가 된다. 이 사례의 요점은 바로 그 상태에서도 조사는 끝나지 않았다는 것이다.",
+
+  "new_expectation": {
+    "status_report": {
+      "total": 5,
+      "queued": 0,
+      "leased": 0,
+      "done": 5,
+      "failed": 0,
+      "awaiting_report": 0,
+      "review_required": 5,
+      "expired_leases": 0,
+      "top_errors": [],
+      "artifact_counts": { "by_kind": { "dom": 5, "text": 5, "link_manifest": 5 }, "files": 15 },
+      "last_export": null,
+      "workspace_drained": true
+    },
+    "artifact_counts_bytes_absent_why": "실제 status 는 bytes 도 낸다(#42). 이 사례는 1차 실행의 종이 기록이라 파일 용량을 재지 않았다 — 없는 수치를 지어 적지 않는다.",
+    "status_report_key_source": "#2 계약(tests/contracts/fixtures/public-tools.json)의 status 반환 목록. 이 절에는 그 열두 키만 온다.",
+    "workspace_drained_means": "명시적으로 넣은 항목에 대기·임대가 남지 않았다는 뜻뿐이다. 조사가 끝났다는 뜻이 아니다.",
+
+    "preserved_observation": {
+      "unvisited_discovered": 112,
+      "where": "링크 산출물(link_manifest) 집계. status 반환 필드가 아니라 artifact 쪽 사실이다.",
+      "why_not_in_status": "status 의 반환 키는 #2 에서 고정됐다. 새 수치를 status 에 끼워 넣으면 그 계약이 깨진다.",
+      "breakdown": [8, 8, 8, 8, 80],
+      "must_survive": true
+    },
+
+    "judgments_stored": 5,
+    "judgments_all_null_label": true,
+    "judgments_note": "판정을 못 정한 것도 판정 기록이다. label 이 null 이라고 해서 done 이 아닌 것은 아니다.",
+
+    "judgment": null,
+    "judgment_owner": "agent",
+    "judgment_note": "조사 목표 달성 여부는 상위 에이전트가 판단한다. MCP 는 기계 상태만 보고한다.",
+    "must_not_contain": ["completion", "research_complete", "goal_achieved", "auto_complete", "complete"]
+  }
+}
