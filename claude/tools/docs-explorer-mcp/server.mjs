@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// docs-mcp — 무의존성 MCP stdio 서버 (레포 md의 헤더 단위 탐색·조회)
+// docs-explorer-mcp — 무의존성 MCP stdio 서버 (레포 md의 헤더 단위 탐색·조회)
 //
 // 문서 문법 (파서 계약):
 //   - 문서의 첫 헤더            = 제목 (주소 없음, list에 문서명으로만 표시)
@@ -18,7 +18,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 
-const log = (...a) => process.stderr.write(`[docs-mcp] ${a.join(' ')}\n`);
+const log = (...a) => process.stderr.write(`[docs-explorer] ${a.join(' ')}\n`);
 const HEADER_RE = /^(#{1,6})\s+(.+?)\s*$/;
 
 function projectDir() {
@@ -26,7 +26,7 @@ function projectDir() {
 }
 
 const FALLBACK_SKIP_DIRS = new Set(['.git', 'node_modules']);
-const SEARCH_ALIASES_PATH = '.claude/tools/docs-mcp/ALIASES.md';
+const SEARCH_ALIASES_PATH = '.claude/tools/docs-explorer-mcp/ALIASES.md';
 const TRACKING_STATUSES = new Set(['tracked', 'untracked', 'ignored']);
 
 function repoRelative(root, file) {
@@ -1154,7 +1154,7 @@ function toolHistory(args = {}) {
 function usageLog(file, ids) {
   try {
     const rec = { ts: new Date().toISOString(), doc: file, ids };
-    const dir = path.join(projectDir(), '.claude', 'mcp-docs');
+    const dir = path.join(projectDir(), '.claude', 'mcp-docs-explorer');
     fs.mkdirSync(dir, { recursive: true });
     fs.appendFileSync(path.join(dir, 'usage.jsonl'), JSON.stringify(rec) + '\n');
   } catch { /* 기록 실패는 무시 — 조회 기능에 영향 주지 않기 */ }
@@ -1277,7 +1277,7 @@ function handle(msg) {
     return reply(id, {
       protocolVersion: params?.protocolVersion || '2025-06-18',
       capabilities: { tools: {} },
-      serverInfo: { name: 'docs-mcp', version: '0.1.0' },
+      serverInfo: { name: 'docs-explorer-mcp', version: '0.1.0' },
     });
   }
   if (method === 'notifications/initialized' || method === 'notifications/cancelled') return;

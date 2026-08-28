@@ -19,9 +19,9 @@ import {
 } from '../server.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
-const SERVER = path.join(REPO, '.claude', 'tools', 'docs-mcp', 'server.mjs');
+const SERVER = path.join(REPO, '.claude', 'tools', 'docs-explorer-mcp', 'server.mjs');
 const MCP_CALL = path.join(REPO, '.claude', 'tools', 'mcp-call.mjs');
-const ALIASES_PATH = '.claude/tools/docs-mcp/ALIASES.md';
+const ALIASES_PATH = '.claude/tools/docs-explorer-mcp/ALIASES.md';
 const AUDIT_DEFINITION_SHA256 = 'b916be6abf796bf4cac1923f8ad0ef3b45817f2e6cc9ad8f128778c4ebe1e93a';
 
 function mcpCallResult(tool, args, { projectDir } = {}) {
@@ -228,7 +228,7 @@ test('gate A: definition은 예약 주소이고 숫자 순번을 소비하지 �
 test('gate A: git이 없으면 Node 파일 순회로 내려간다', () => {
   const paths = collectMarkdownPaths(REPO, { gitCommand: '__onboarding_missing_git__' });
   assert.ok(paths.includes('CLAUDE.md'));
-  assert.ok(paths.includes('.claude/tools/docs-mcp/MANUAL.md'));
+  assert.ok(paths.includes('.claude/tools/docs-explorer-mcp/MANUAL.md'));
   console.log(`fallback_documents=${paths.length}`);
 });
 
@@ -997,7 +997,7 @@ test('gate F: 별칭 확장과 INDEX 미등재 신호가 최종 출력에 함께
 });
 
 test('gate F: 프로젝트 매뉴얼과 _MANUALS INDEX가 다섯 도구와 최신 경계를 설명한다', () => {
-  const manual = fs.readFileSync(path.join(REPO, '.claude/tools/docs-mcp/MANUAL.md'), 'utf8');
+  const manual = fs.readFileSync(path.join(REPO, '.claude/tools/docs-explorer-mcp/MANUAL.md'), 'utf8');
   const manualsIndex = fs.readFileSync(path.join(REPO, '_MANUALS/INDEX.md'), 'utf8');
   for (const name of ['map', 'search', 'outline', 'read', 'history']) {
     assert.ok(manual.includes(name), `MANUAL에 ${name} 없음`);

@@ -1,10 +1,10 @@
-# docs(MCP) — 매뉴얼
+# docs-explorer(MCP) — 매뉴얼
 
-> 조회 규율 자체는 [clause-reference/GOVERNANCE.md](../../../_CRAFT_GUIDE/clause-reference/GOVERNANCE.md)의 CG-0016 — 문서·조항의 첫 조회는 docs MCP로 시작한다.
+> 조회 규율 자체는 [clause-reference/GOVERNANCE.md](../../../_CRAFT_GUIDE/clause-reference/GOVERNANCE.md)의 CG-0016 — 문서·조항의 첫 조회는 docs-explorer MCP로 시작한다.
 
 ## 이름
 
-**docs** — 레포의 Markdown 문서를 폴더·문서·절 순서로 찾고 읽는 읽기 전용 지도
+**docs-explorer** — 레포의 Markdown 문서를 폴더·문서·절 순서로 찾고 읽는 읽기 전용 지도
 
 ## 형식
 
@@ -34,7 +34,7 @@ md를 훑어 조회 기능을 유지하며, 이때는 git 이력을 붙이지 �
 
 npm 패키지와 `rg`에 의존하지 않는다. 시스템 git은 세 문서 목록과 사용자가 명시한 git 정보,
 `history`에만 쓴다. 도구 API에는 쓰기 도구가 없다. 성공한 `read`의 내부 사용 기록은 기존처럼
-`.claude/mcp-docs/usage.jsonl`에 남긴다.
+`.claude/mcp-docs-explorer/usage.jsonl`에 남긴다.
 
 보통은 다음 순서로 쓴다.
 
@@ -177,11 +177,11 @@ read({ ids: ["MCP"] })  # 복수이면 후보만 반환
 실행한다.
 
 ```bash
-node .claude/tools/mcp-call.mjs .claude/tools/docs-mcp/server.mjs read '{"ids":["CG-0241"]}'
-node .claude/tools/mcp-call.mjs .claude/tools/docs-mcp/server.mjs read '{"doc":"AUDIT","ids":["definition"]}'
-node .claude/tools/mcp-call.mjs .claude/tools/docs-mcp/server.mjs read '{"ids":["MCP"]}'
-node .claude/tools/mcp-call.mjs .claude/tools/docs-mcp/server.mjs search '{"query":"업로드","limit":3}'
-node .claude/tools/mcp-call.mjs .claude/tools/docs-mcp/server.mjs search '{"query":"업로드","limit":3,"cursor":"v1.3.8Y1p2ojElm_AiLufwERgib3BIyrvee58BQFaesHHyAY"}'
+node .claude/tools/mcp-call.mjs .claude/tools/docs-explorer-mcp/server.mjs read '{"ids":["CG-0241"]}'
+node .claude/tools/mcp-call.mjs .claude/tools/docs-explorer-mcp/server.mjs read '{"doc":"AUDIT","ids":["definition"]}'
+node .claude/tools/mcp-call.mjs .claude/tools/docs-explorer-mcp/server.mjs read '{"ids":["MCP"]}'
+node .claude/tools/mcp-call.mjs .claude/tools/docs-explorer-mcp/server.mjs search '{"query":"업로드","limit":3}'
+node .claude/tools/mcp-call.mjs .claude/tools/docs-explorer-mcp/server.mjs search '{"query":"업로드","limit":3,"cursor":"v1.3.8Y1p2ojElm_AiLufwERgib3BIyrvee58BQFaesHHyAY"}'
 ```
 
 ### history
@@ -217,7 +217,7 @@ history({ doc: "CLAUDE.md", range: "34..35", confirm: true })
 
 ## 별칭
 
-프로젝트별 별칭은 `.claude/tools/docs-mcp/ALIASES.md`에 아래 형식으로 둔다.
+프로젝트별 별칭은 `.claude/tools/docs-explorer-mcp/ALIASES.md`에 아래 형식으로 둔다.
 
 ```text
 - 질의어 = 문서 용어
@@ -243,12 +243,12 @@ history({ doc: "CLAUDE.md", range: "34..35", confirm: true })
 
 | 경로 | 역할 |
 |---|---|
-| `<repo>/.claude/tools/docs-mcp/server.mjs` | 프로젝트 원본 서버 |
-| `<repo>/.claude/tools/docs-mcp/MANUAL.md` | 프로젝트 원본 매뉴얼 |
-| `<repo>/.claude/tools/docs-mcp/ALIASES.md` | 프로젝트별 별칭, 사용자 사본에 복사하지 않음 |
-| `<repo>/.claude/mcp-docs/usage.jsonl` | 성공한 read의 내부 사용 기록 |
-| `~/.claude/tools/docs-mcp/server.mjs` | 게이트 통과 뒤 동기화하는 사용자 스코프 서버 |
-| `~/.claude/tools/docs-mcp/MANUAL.md` | 게이트 통과 뒤 동기화하는 사용자 스코프 매뉴얼 |
+| `<repo>/.claude/tools/docs-explorer-mcp/server.mjs` | 프로젝트 원본 서버 |
+| `<repo>/.claude/tools/docs-explorer-mcp/MANUAL.md` | 프로젝트 원본 매뉴얼 |
+| `<repo>/.claude/tools/docs-explorer-mcp/ALIASES.md` | 프로젝트별 별칭, 사용자 사본에 복사하지 않음 |
+| `<repo>/.claude/mcp-docs-explorer/usage.jsonl` | 성공한 read의 내부 사용 기록 |
+| `~/.claude/tools/docs-explorer-mcp/server.mjs` | 게이트 통과 뒤 동기화하는 사용자 스코프 서버 |
+| `~/.claude/tools/docs-explorer-mcp/MANUAL.md` | 게이트 통과 뒤 동기화하는 사용자 스코프 매뉴얼 |
 
 프로젝트 사본을 먼저 검증한 뒤 서버와 매뉴얼만 사용자 스코프에 동기화한다. 서버 코드가 바뀌면
 장기 실행 중인 MCP는 재연결해야 한다.
@@ -256,5 +256,5 @@ history({ doc: "CLAUDE.md", range: "34..35", confirm: true })
 ## 설치
 
 ```text
-claude mcp add docs --scope user -- node ~/.claude/tools/docs-mcp/server.mjs
+claude mcp add docs-explorer -- node .claude/tools/docs-explorer-mcp/server.mjs
 ```

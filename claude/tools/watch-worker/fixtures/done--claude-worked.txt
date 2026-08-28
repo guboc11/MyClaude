@@ -1,0 +1,5 @@
+✻ Worked for 26m 16s · 1 shell still running
+──────────────────────────────────────────────
+❯ 
+──────────────────────────────────────────────
+  ⏵⏵ auto mode on · 1 shell · ← 3 agents · ↓ to manage        388847 tokens
